@@ -66,6 +66,10 @@
 		}
 		
 		public function changeLevel(lvl:int){
+			if(lvl == 0){
+				lvlbg = new a1bg1;
+				lvlbg2 = new a1bg2;
+			}
 			if(lvl == 1){
 				lvlbg = new a2bg1;
 				lvlbg2 = new a2bg2;

@@ -40,7 +40,7 @@
 				//return;
 			//}
 			this.rotation = 180*Math.atan(vY/vX)/Math.PI;
-			trace('rotation = ' + this.rotation);
+			//trace('rotation = ' + this.rotation);
 			
 			//yvelocity+=gravity;
 			//vX*=wind;

@@ -14,6 +14,7 @@
 		private var arrowReady:Boolean = false;
 		private var shotAngle:Number;
 		private var shotVel:Number;
+		private var maxShotVel:Number = 30;
 		private var shotDeltaX:Number;
 		private var shotDeltaY:Number;
 		
@@ -116,6 +117,7 @@
 				shotAngle = 180*Math.atan(shotDeltaY/shotDeltaX)/Math.PI;
 				trace('angle = ' + shotAngle);
 				shotVel = Math.sqrt((shotDeltaY * shotDeltaY)+(shotDeltaX * shotDeltaX));
+				if(shotVel > maxShotVel){shotVel = maxShotVel};
 				trace('vel = ' + shotVel);
 				aim.x = player.x;
 				aim.y = player.y;
@@ -129,36 +131,55 @@
 			}
 		}
 		
-		private function updatePhysics(){			
+		private function updatePhysics(){
+			trace('player touchingGround = ' + player.touchingGround);
+			trace('arrow touchingGround = ' + anArrow.touchingGround);
 			var collisions:Array = _collisionList.checkCollisions();
-			
-			if(collisions.length)
+			player.touchingGround = false;
+			anArrow.touchingGround = false;
+			for(var i:uint = 0; i < collisions.length; i++)   
 			{
-				player.touchingGround = true;
-				var collision:Object = collisions[0];
-				var angle:Number = collision.angle;
-				var overlap:int = collision.overlapping.length;
-				
-				var sin:Number = Math.sin(angle);
-				var cos:Number = Math.cos(angle);
+				trace("Information for collision " + i);
+				trace("_________________________");
+				trace(collisions[i].object1);   
+				trace(collisions[i].object2);
+				trace(collisions[i].angle); 
+				trace(collisions[i].overlap + "\n");
+				//collisions[i].object1.touchingGround = true;
+
+				if(collisions[i].object1 == player){
+					player.touchingGround = true;
+	
+					var collision:Object = collisions[i];
+					var angle:Number = collision.angle;
+					var overlap:int = collision.overlapping.length;
 					
-				var vx0:Number = player.vX * cos + player.vY * sin;
-				var vy0:Number = player.vY * cos - player.vX * sin;
-				
-				// Unlike the other examples, here I'm choosing to calculate the amount
-				// of bounce based on the objects' masses, with a default mass of 10000 (IMMOVABLE)
-				// being used for the drawing the wheel is colliding with.  As such, the only
-				// real variable in play here is the current vector of the wheel.
-				vx0 = ((player.mass - IMMOVABLE) * vx0) / (player.mass + IMMOVABLE);
-				player.vX = vx0 * cos - vy0 * sin;
-				player.vY = vy0 * cos + vx0 * sin;
-				
-				player.vX -= cos * overlap /player.radius;
-				player.vY -= sin * overlap / player.radius;
-				
-				//player.vx += _speed;
-			}else{
-				player.touchingGround = false;
+					var sin:Number = Math.sin(angle);
+					var cos:Number = Math.cos(angle);
+					
+					var vx0:Number = player.vX * cos + player.vY * sin;
+					var vy0:Number = player.vY * cos - player.vX * sin;
+					
+					// Unlike the other examples, here I'm choosing to calculate the amount
+					// of bounce based on the objects' masses, with a default mass of 10000 (IMMOVABLE)
+					// being used for the drawing the wheel is colliding with.  As such, the only
+					// real variable in play here is the current vector of the wheel.
+					vx0 = ((player.mass - IMMOVABLE) * vx0) / (player.mass + IMMOVABLE);
+					player.vX = vx0 * cos - vy0 * sin;
+					player.vY = vy0 * cos + vx0 * sin;
+					
+					player.vX -= cos * overlap /player.radius;
+					player.vY -= sin * overlap / player.radius;
+					
+					//player.vx += _speed;
+				//}else{
+					//player.touchingGround = false;
+				}
+				if(collisions[i].object1 == anArrow){
+					anArrow.touchingGround = true;
+					anArrow.vX = 0;
+					anArrow.vY = 0;
+				}
 			}
 			
 			if(player.x > stage.stageWidth){
@@ -169,7 +190,19 @@
 				_collisionList.swapTarget(view.lvlbg);
 				view.viewContainer.addChild(player);
 			}
-			if(player.x < 0) player.x = 0;									
+			if(player.x < 0){
+				if(lvl > 0){
+					player.x = stage.stageWidth - 20;
+					//fix next line later
+					player.y = stage.stageHeight / 2;
+					lvl --;
+					view.changeLevel(lvl);
+					_collisionList.swapTarget(view.lvlbg);
+					view.viewContainer.addChild(player);
+				}else{ 
+					player.x = 0;
+				}
+			}									
 			if(player.y > stage.stageHeight) player.y = stage.stageHeight;
 			if(player.y < 0) player.y = 0;
 			
