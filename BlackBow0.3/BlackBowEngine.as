@@ -113,10 +113,10 @@
 			if(controls.leftClickDown == true){
 				nockArrow();
 				shotDeltaX = (mouseX - player.x);
-				shotDeltaY = (mouseY - player.y)
+				shotDeltaY = (mouseY - player.y);
 				shotAngle = 180*Math.atan(shotDeltaY/shotDeltaX)/Math.PI;
 				trace('angle = ' + shotAngle);
-				shotVel = Math.sqrt((shotDeltaY * shotDeltaY)+(shotDeltaX * shotDeltaX));
+				shotVel = (Math.sqrt((shotDeltaY * shotDeltaY)+(shotDeltaX * shotDeltaX)))/10;
 				if(shotVel > maxShotVel){shotVel = maxShotVel};
 				trace('vel = ' + shotVel);
 				aim.x = player.x;
@@ -189,6 +189,8 @@
 				view.changeLevel(lvl);
 				_collisionList.swapTarget(view.lvlbg);
 				view.viewContainer.addChild(player);
+				view.viewContainer.addChild(anArrow);
+				view.viewContainer.addChild(aim);
 			}
 			if(player.x < 0){
 				if(lvl > 0){
@@ -199,6 +201,8 @@
 					view.changeLevel(lvl);
 					_collisionList.swapTarget(view.lvlbg);
 					view.viewContainer.addChild(player);
+					view.viewContainer.addChild(anArrow);
+					view.viewContainer.addChild(aim);
 				}else{ 
 					player.x = 0;
 				}
