@@ -4,6 +4,9 @@ package
 	/**
 	 * ...
 	 * @author Scott Simpson
+	 * 
+	 * Set up like Actor class from Puggle.
+	 * 
 	 */
 	public class Actor extends EventDispatcher
 	{
