@@ -11,7 +11,7 @@ package
 	 */
 	public class UserInput 
 	{
-		public static var toggleMenu:Boolean = false;
+		public static var toggleMenu:Boolean = false; //FLAG FOR VISIBILITY
 		
 		public function UserInput(stageRef:Stage) 
 		{
@@ -39,12 +39,44 @@ package
 		private function keyUpHandler(e:KeyboardEvent):void 
 		{
 			switch(e.keyCode) {
-				case 80:
+				case 80: 					//"P"
 					toggleMenu = true;
 					break;
 					
-				case Keyboard.ESCAPE:
+				case Keyboard.ESCAPE: 		//"ESC"
 					toggleMenu = true;
+					break;
+					
+				case 87: 					//"W"
+					
+					break;
+					
+				case 65: 					//"A"
+					
+					break;
+					
+				case 83: 					//"S"
+					
+					break;
+					
+				case 68: 					//"D"
+					
+					break;
+					
+				case 38: 					//"UP"
+					
+					break;
+					
+				case 37: 					//"LEFT"
+					
+					break;
+					
+				case 40: 					//"DOWN"
+					
+					break;
+					
+				case 39: 					//"RIGHT"
+					
 					break;
 			}
 		}

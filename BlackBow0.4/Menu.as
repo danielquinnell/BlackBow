@@ -17,6 +17,7 @@ package
 		
 		public function Menu() 
 		{
+			//START WITH MENU NOT VISIBLE
 			isVisible = false;
 			setVisibility();
 		}
@@ -28,6 +29,7 @@ package
 		
 		public function toggleMenu():void
 		{
+			//CHECK VISIBILITY AND SET IT TO OPPOSITE
 			if (!isVisible) {
 				isVisible = true;
 			}else if (isVisible) {

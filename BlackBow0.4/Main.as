@@ -22,12 +22,13 @@ package
 		
 		public function Main() 
 		{	
+			//ADD THE MENU
 			menu = new Menu();
 			stage.addChild(menu);
 			menu.x = stage.width / 2;
 			menu.y = stage.height / 2;
 			
-			
+			//ENTER FRAME LISTENER
 			addEventListener(Event.ENTER_FRAME, newFrameListener);
 		}
 		
@@ -38,6 +39,9 @@ package
 		
 		private function processUserInput():void 
 		{
+			//CHECK FLAGS IN USERINPUT AND DO STUFF WITH THAT
+			
+			//TOGGLE THE MENU ON AND OFF
 			if (UserInput.toggleMenu) {
 				UserInput.toggleMenu = false;
 				menu.toggleMenu();
