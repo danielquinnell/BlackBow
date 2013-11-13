@@ -66,6 +66,15 @@ package
 			
 		}
 		
+		public function safelyRemoveActor(actorToRemove:Actor):void 
+		{
+			//mark actor to be removed later
+			if (_actorsToRemove.indexOf(actorToRemove) < 0) {
+				_actorsToRemove.push(actorToRemove);
+			}
+			
+		}
+		
 		private function reallyRemoveActors():void 
 		{
 			//ACTUALLY REMOVE ACTORS THAT HAVE BEEN MARKED
@@ -109,9 +118,20 @@ package
 		
 		private function createLevel():void 
 		{
+			var newPlayer:Player = new Player(this, new Point(100, 300));
+			newPlayer.addEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);
+			_allActors.push(newPlayer);
 			var newEnemy:Enemy = new Enemy(this, new Point(300, 300));
 			newEnemy.addEventListener(EnemyEvent.ENEMY_HIT, handleEnemyHit);
 			_allActors.push(newEnemy);
+		}
+		
+		private function handlePlayerOffScreen(e:PlayerEvent):void 
+		{
+			trace("Player Off Screen");
+			var playerToRemove:Player = Player(e.currentTarget);
+			playerToRemove.removeEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);
+			safelyRemoveActor(playerToRemove);
 		}
 		
 		private function handleEnemyHit(e:EnemyEvent):void 

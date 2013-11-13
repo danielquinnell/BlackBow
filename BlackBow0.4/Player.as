@@ -3,6 +3,9 @@ package
 	import Box2D.Collision.Shapes.b2PolygonDef;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Scott Simpson
@@ -16,11 +19,12 @@ package
 		
 		private static const playerWidth:int = 12;
 		private static const playerHeight:int = 12;
-		public function Player(parent:DisplayObjectContainer, location:Point, initVel:Point) 
+		
+		public function Player(parent:DisplayObjectContainer, location:Point) 
 		{
 			//create costume
 			var playerSprite:Sprite = new PlayerSprite();
-			playerSprite.scaleX = PlayerWidth / playerSprite.width;
+			playerSprite.scaleX = playerWidth / playerSprite.width;
 			playerSprite.scaleY = playerHeight / playerSprite.height;
 			parent.addChild(playerSprite);
 			
@@ -37,7 +41,7 @@ package
 			//something else
 			
 			//body
-			var playerBody:b2Body = WorldVals.world.CreateBody(ballBodyDef);
+			var playerBody:b2Body = WorldVals.world.CreateBody(playerBodyDef);
 			
 			//shape
 			playerBody.CreateShape(playerShapeDef);
@@ -50,7 +54,7 @@ package
 		override protected function childSpecificUpdating():void 
 		{
 			if (_costume.y > _costume.stage.stageHeight) {
-				dispatchEvent(new playerEvent(PlayerEvent.PLAYER_OFF_SCREEN));
+				dispatchEvent(new PlayerEvent(PlayerEvent.PLAYER_OFF_SCREEN));
 				
 			}
 			
