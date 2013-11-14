@@ -24,6 +24,7 @@ package
 		var _allActors:Array;
 		var _actorsToRemove:Array;
 		var _enemiesHit:Array;
+		var _player:Player;
 		
 		private const STARTING_POINT:Point = new Point(323, 10);
 		private var menu:Menu; //MENU
@@ -55,6 +56,8 @@ package
 		private function newFrameListener(e:Event):void 
 		{
 			processUserInput();
+			
+			_player.update();
 			
 			WorldVals.world.Step(1 / 30.0, 10);
 			
@@ -118,10 +121,12 @@ package
 		
 		private function createLevel():void 
 		{
-			var newPlayer:Player = new Player(this, new Point(100, 300));
-			newPlayer.addEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);
-			_allActors.push(newPlayer);
-			var newEnemy:Enemy = new Enemy(this, new Point(300, 300));
+			var newGround:Ground = new Ground(this, new Point(0, 400));
+			_allActors.push(newGround);
+			_player = new Player(this, new Point(100, 200));
+			_player.addEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);
+			_allActors.push(_player);
+			var newEnemy:Enemy = new Enemy(this, new Point(300, 200));
 			newEnemy.addEventListener(EnemyEvent.ENEMY_HIT, handleEnemyHit);
 			_allActors.push(newEnemy);
 		}

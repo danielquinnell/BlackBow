@@ -1,6 +1,7 @@
 package  
 {
 	import Box2D.Collision.Shapes.b2PolygonDef;
+	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import flash.display.DisplayObjectContainer;
@@ -19,6 +20,8 @@ package
 		
 		private static const playerWidth:int = 12;
 		private static const playerHeight:int = 12;
+		private static const speed:int = 3;
+		private static const jumpHeight:int = 3;
 		
 		public function Player(parent:DisplayObjectContainer, location:Point) 
 		{
@@ -59,6 +62,26 @@ package
 			}
 			
 			super.childSpecificUpdating();
+		}
+		
+		public function update():void
+		{
+			var Body = this._body;
+			if (UserInput.left) {
+				Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+				Body.m_linearVelocity.x = -speed;//ADDS TO THE LINEARVELOCITY OF THE BOX.
+			}
+			if (UserInput.right) {
+				Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+				Body.m_linearVelocity.x = speed;//ADDS TO THE LINEARVELOCITY OF THE BOX.
+			}
+			if (UserInput.up) {
+				if (Body.GetLinearVelocity().y > -1) {//Stops player from sometimes jumping higher then suppose to
+					
+                    Body.ApplyImpulse(new b2Vec2(0.0, -jumpHeight), Body.GetWorldCenter());//Applys and impuls to the player. (Makes it jump)
+					
+                }
+			}
 		}
 		
 	}
