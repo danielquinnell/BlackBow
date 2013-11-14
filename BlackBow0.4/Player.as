@@ -20,8 +20,8 @@ package
 		
 		private static const playerWidth:int = 12;
 		private static const playerHeight:int = 12;
-		private static const speed:int = 3;
-		private static const jumpHeight:int = 3;
+		private static const speed:int = 2;
+		private static const jumpHeight:int = 1;
 		
 		public function Player(parent:DisplayObjectContainer, location:Point) 
 		{
@@ -35,7 +35,7 @@ package
 			var playerShapeDef:b2PolygonDef = new b2PolygonDef();
 			playerShapeDef.SetAsBox(playerWidth / 2 / WorldVals.RATIO, playerHeight / 2 / WorldVals.RATIO);
 			playerShapeDef.density = 1.5;
-			playerShapeDef.friction = 0.7;
+			playerShapeDef.friction = 0.9;
 			playerShapeDef.restitution = 0.2;
 			
 			//body def
