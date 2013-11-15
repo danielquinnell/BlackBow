@@ -36,7 +36,7 @@ package
 			playerShapeDef.SetAsBox(playerWidth / 2 / WorldVals.RATIO, playerHeight / 2 / WorldVals.RATIO);
 			playerShapeDef.density = 1.5;
 			playerShapeDef.friction = 0.9;
-			playerShapeDef.restitution = 0.3;
+			playerShapeDef.restitution = 0.2;
 			
 			//body def
 			var playerBodyDef:b2BodyDef = new b2BodyDef();
