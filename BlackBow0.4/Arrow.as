@@ -34,9 +34,9 @@ package
 			//create shape def
 			var arrowShapeDef:b2PolygonDef = new b2PolygonDef();
 			arrowShapeDef.SetAsBox(ARROW_WIDTH / 2 / WorldVals.RATIO, ARROW_HEIGHT / 2 / WorldVals.RATIO);
-			arrowShapeDef.density = 1.5;
-			arrowShapeDef.friction = 0.0;
-			arrowShapeDef.restitution = 0.45;
+			arrowShapeDef.density = 1.2;
+			arrowShapeDef.friction = 1.0;
+			arrowShapeDef.restitution = 0.0;
 			
 			//body def
 			var arrowBodyDef:b2BodyDef = new b2BodyDef();
