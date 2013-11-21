@@ -16,6 +16,7 @@ package
 		public static var down:Boolean = false; //FLAG FOR LEFT
 		public static var left:Boolean = false; //FLAG FOR DOWN
 		public static var right:Boolean = false; //FLAG FOR RIGHT
+		public static var leftClick:Boolean = false; //FLAG FOR LEFT CLICK
 		
 		
 		public function UserInput(stageRef:Stage) 
@@ -28,12 +29,12 @@ package
 		
 		private function moDownHandler(e:MouseEvent):void 
 		{
-			
+			leftClick = true;
 		}
 		
 		private function moUpHandler(e:MouseEvent):void 
 		{
-			
+			leftClick = false;
 		}
 		
 		private function keyDownHandler(e:KeyboardEvent):void 
