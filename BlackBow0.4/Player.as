@@ -84,6 +84,12 @@ package
 			}
 		}
 		
+		public function getLocation():Point 
+		{
+			var myLocation:Point = new Point(this._costume.x, this._costume.y);
+			return myLocation;
+		}
+		
 	}
 
 }

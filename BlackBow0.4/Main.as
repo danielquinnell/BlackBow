@@ -25,11 +25,11 @@ package
 		var _actorsToRemove:Array;
 		var _enemiesHit:Array;
 		var _player:Player;
-		var _inventory:int = 10;
+		var _inventory:int = 30;
 		var _arrowReady:Boolean = false;
 		
 		private const STARTING_POINT:Point = new Point(323, 10);
-		private const LAUNCH_POINT:Point = new Point(323, 10);
+		//private const LAUNCH_POINT:Point = new Point(323, 10);
 		private const LAUNCH_VELOCITY:Number = 300.0;
 		private var menu:Menu; //MENU
 		
@@ -121,10 +121,11 @@ package
 		{
 			_arrowReady = false;
 			
-			var direction:Point = new Point(mouseX, mouseY).subtract(LAUNCH_POINT);
+			var shootingPoint:Point = _player.getLocation();
+			var direction:Point = new Point(mouseX, mouseY).subtract(shootingPoint);
 			direction.normalize(LAUNCH_VELOCITY);
 			
-			var newArrow:Arrow = new Arrow(this, LAUNCH_POINT, direction);
+			var newArrow:Arrow = new Arrow(this, shootingPoint, direction);
 			newArrow.addEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
 			_allActors.push(newArrow);
 			
