@@ -37,6 +37,8 @@ package
 			enemyShapeDef.density = 1.5;
 			enemyShapeDef.friction = 0.7;
 			enemyShapeDef.restitution = 0.2;
+			enemyShapeDef.filter.categoryBits = 0x0010;
+			enemyShapeDef.filter.maskBits = 0x0002 | 0x0004 | 0x0008 | 0x0010;
 			
 			
 			//body def

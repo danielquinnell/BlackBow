@@ -33,6 +33,8 @@ package
 			groundShapeDef.density = 0;
 			groundShapeDef.friction = 0.2;
 			groundShapeDef.restitution = 0.3;
+			groundShapeDef.filter.categoryBits = 0x0008;
+			groundShapeDef.filter.maskBits = 0x0002 | 0x0004 | 0x0010;
 			
 			//body def
 			var groundBodyDef:b2BodyDef = new b2BodyDef();

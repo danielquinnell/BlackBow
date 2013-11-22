@@ -24,7 +24,7 @@ package
 		private static const ARROW_HEIGHT:int = 2;
 		
 		public function Arrow(parent:DisplayObjectContainer, location:Point, initVel:Point) 
-		{
+		{	
 			//create costume
 			var arrowSprite:Sprite = new ArrowSprite();
 			arrowSprite.scaleX = ARROW_WIDTH / arrowSprite.width;
@@ -34,13 +34,18 @@ package
 			//create shape def
 			var arrowShapeDef:b2PolygonDef = new b2PolygonDef();
 			arrowShapeDef.SetAsBox(ARROW_WIDTH / 2 / WorldVals.RATIO, ARROW_HEIGHT / 2 / WorldVals.RATIO);
-			arrowShapeDef.density = 1.2;
-			arrowShapeDef.friction = 1.0;
-			arrowShapeDef.restitution = 0.0;
+			arrowShapeDef.density = 1.0;
+			arrowShapeDef.friction = 0.5;
+			arrowShapeDef.restitution = 0.5;
+			arrowShapeDef.filter.categoryBits = 0x0002;
+			arrowShapeDef.filter.maskBits = 0x0002 | 0x0008 | 0x0010;
 			
 			//body def
 			var arrowBodyDef:b2BodyDef = new b2BodyDef();
 			arrowBodyDef.position.Set(location.x / WorldVals.RATIO, location.y / WorldVals.RATIO);
+			arrowBodyDef.isBullet = true;
+			var angle:Number = Math.atan2(initVel.y, initVel.x);
+			arrowBodyDef.angle = angle;
 			//something else
 			
 			//body
@@ -62,6 +67,7 @@ package
 		{
 			if (_costume.y > _costume.stage.stageHeight) {
 				dispatchEvent(new ArrowEvent(ArrowEvent.ARROW_OFF_SCREEN));
+				
 				
 			}
 			

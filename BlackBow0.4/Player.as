@@ -37,6 +37,8 @@ package
 			playerShapeDef.density = 1.5;
 			playerShapeDef.friction = 0.9;
 			playerShapeDef.restitution = 0.2;
+			playerShapeDef.filter.categoryBits = 0x0004;
+			playerShapeDef.filter.maskBits = 0x0008 | 0x0010;
 			
 			//body def
 			var playerBodyDef:b2BodyDef = new b2BodyDef();
