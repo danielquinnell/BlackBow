@@ -33,6 +33,18 @@ package
 				
 			}
 			
+			if (point.shape1.GetBody().GetUserData() is Player &&
+				point.shape2.GetBody().GetUserData() is Ground) {
+				
+				Player(point.shape1.GetBody().GetUserData()).falling = false;
+				
+			} else if(point.shape2.GetBody().GetUserData() is Player &&
+				point.shape1.GetBody().GetUserData() is Ground) {
+				
+				Player(point.shape2.GetBody().GetUserData()).falling = false;
+				
+			}
+			
 			super.Add(point);
 		}
 		

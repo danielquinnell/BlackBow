@@ -22,6 +22,7 @@ package
 		private static const playerHeight:int = 12;
 		private static const speed:int = 2;
 		private static const jumpHeight:int = 1;
+		public var falling:Boolean = true;
 		
 		public function Player(parent:DisplayObjectContainer, location:Point) 
 		{
@@ -78,7 +79,12 @@ package
 				Body.m_linearVelocity.x = speed;//ADDS TO THE LINEARVELOCITY OF THE BOX.
 			}
 			if (UserInput.up) {
-				if (Body.GetLinearVelocity().y > -1) {//Stops player from sometimes jumping higher then suppose to
+				if (Body.GetLinearVelocity().y > -1 && !falling) {//Stops player from jumping while falling
+					
+					//change this so if player's feet are touching anything, allow jump
+					//set falling to true in ContactListener
+					
+					falling = true;
 					
                     Body.ApplyImpulse(new b2Vec2(0.0, -jumpHeight), Body.GetWorldCenter());//Applys and impuls to the player. (Makes it jump)
 					
