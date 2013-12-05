@@ -1,8 +1,10 @@
 package  
 {
-	import Box2D.Collision.Shapes.b2PolygonDef;
+	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -25,32 +27,35 @@ package
 		{
 			_beenHit = false;
 			
-			//create costume
+			//costume
 			var enemy:MovieClip = new EnemyMC();
 			enemy.scaleX = enemyWidth / enemy.width;
 			enemy.scaleY = enemyHeight / enemy.height;
 			parent.addChild(enemy);
 			
-			//shape def
-			var enemyShapeDef:b2PolygonDef = new b2PolygonDef();
-			enemyShapeDef.SetAsBox(enemyWidth / 2 / WorldVals.RATIO, enemyHeight / 2 / WorldVals.RATIO);
-			enemyShapeDef.density = 1.5;
-			enemyShapeDef.friction = 0.7;
-			enemyShapeDef.restitution = 0.2;
-			enemyShapeDef.filter.categoryBits = 0x0010;
-			enemyShapeDef.filter.maskBits = 0x0002 | 0x0004 | 0x0008 | 0x0010;
+			//shape
+			var polygonShape:b2PolygonShape = new b2PolygonShape();
+			polygonShape.SetAsBox(enemyWidth / 2 / WorldVals.RATIO, enemyHeight / 2 / WorldVals.RATIO);
 			
+			//fixture def
+			var enemyFixtureDef:b2FixtureDef = new b2FixtureDef();
+			enemyFixtureDef.density = 1.5;
+			enemyFixtureDef.friction = 0.7;
+			enemyFixtureDef.restitution = 0.2;
+			enemyFixtureDef.filter.categoryBits = 0x0010;
+			enemyFixtureDef.filter.maskBits = 0x0002 | 0x0004 | 0x0008 | 0x0010;
+			enemyFixtureDef.shape = polygonShape;
 			
 			//body def
 			var enemyBodyDef:b2BodyDef = new b2BodyDef();
+			enemyBodyDef.type = b2Body.b2_dynamicBody;
 			enemyBodyDef.position.Set(location.x / WorldVals.RATIO, location.y / WorldVals.RATIO);
 			
 			//body
 			var enemyBody:b2Body = WorldVals.world.CreateBody(enemyBodyDef);
 			
-			//shape
-			enemyBody.CreateShape(enemyShapeDef);
-			enemyBody.SetMassFromShapes();
+			//fixture
+			var enemyFixture:b2Fixture = enemyBody.CreateFixture(enemyFixtureDef);
 			
 			super(enemyBody, enemy);
 			

@@ -28,7 +28,7 @@ package
 		
 		public function updateNow():void
 		{
-			if (! _body.IsStatic())
+			if (_body.GetType() != 0)
 			{
 			updateMyLook();
 			}

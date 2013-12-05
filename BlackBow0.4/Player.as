@@ -1,9 +1,13 @@
 package  
 {
-	import Box2D.Collision.Shapes.b2PolygonDef;
+	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -20,7 +24,8 @@ package
 		
 		private static const playerWidth:int = 12;
 		private static const playerHeight:int = 12;
-		private static const speed:int = 2;
+		private static const speed:Number = 2 / WorldVals.RATIO;
+		private static const maxVel:Number = 3;
 		private static const jumpHeight:int = 1;
 		public var falling:Boolean = true;
 		
@@ -32,26 +37,30 @@ package
 			playerSprite.scaleY = playerHeight / playerSprite.height;
 			parent.addChild(playerSprite);
 			
-			//create shape def
-			var playerShapeDef:b2PolygonDef = new b2PolygonDef();
-			playerShapeDef.SetAsBox(playerWidth / 2 / WorldVals.RATIO, playerHeight / 2 / WorldVals.RATIO);
-			playerShapeDef.density = 1.5;
-			playerShapeDef.friction = 0.9;
-			playerShapeDef.restitution = 0.2;
-			playerShapeDef.filter.categoryBits = 0x0004;
-			playerShapeDef.filter.maskBits = 0x0008 | 0x0010;
+			//shape
+			var polygonShape:b2PolygonShape = new b2PolygonShape();
+            polygonShape.SetAsBox(playerWidth / 2 / WorldVals.RATIO, playerHeight / 2 / WorldVals.RATIO);
+			
+			//fixture def
+			var playerFixtureDef:b2FixtureDef = new b2FixtureDef();
+			playerFixtureDef.density = 1.5;
+			playerFixtureDef.friction = 0.9;
+			playerFixtureDef.restitution = 0.2;
+			playerFixtureDef.filter.categoryBits = 0x0004;
+			playerFixtureDef.filter.maskBits = 0x0008 | 0x0010;
+			playerFixtureDef.shape = polygonShape;
 			
 			//body def
 			var playerBodyDef:b2BodyDef = new b2BodyDef();
+			playerBodyDef.type = b2Body.b2_dynamicBody;
 			playerBodyDef.position.Set(location.x / WorldVals.RATIO, location.y / WorldVals.RATIO);
 			//something else
 			
 			//body
 			var playerBody:b2Body = WorldVals.world.CreateBody(playerBodyDef);
 			
-			//shape
-			playerBody.CreateShape(playerShapeDef);
-			playerBody.SetMassFromShapes();
+			//fixture
+			var playerFixture:b2Fixture = playerBody.CreateFixture(playerFixtureDef);
 			
 			super(playerBody, playerSprite);
 			
@@ -71,12 +80,16 @@ package
 		{
 			var Body = this._body;
 			if (UserInput.left) {
-				Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
-				Body.m_linearVelocity.x = -speed;//ADDS TO THE LINEARVELOCITY OF THE BOX.
+				if(Body.GetLinearVelocity().x >= -maxVel){
+				//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+				Body.ApplyImpulse(new b2Vec2(-speed, 0.0), Body.GetWorldCenter());//ADDS TO THE LINEARVELOCITY OF THE BOX.
+			}
 			}
 			if (UserInput.right) {
-				Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
-				Body.m_linearVelocity.x = speed;//ADDS TO THE LINEARVELOCITY OF THE BOX.
+				if(Body.GetLinearVelocity().x <= maxVel){
+				//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+				Body.ApplyImpulse(new b2Vec2(speed, 0.0), Body.GetWorldCenter());//ADDS TO THE LINEARVELOCITY OF THE BOX.
+			}
 			}
 			if (UserInput.up) {
 				if (Body.GetLinearVelocity().y > -1 && !falling) {//Stops player from jumping while falling

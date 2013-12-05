@@ -1,6 +1,6 @@
 package  
 {
-	import Box2D.Collision.b2AABB;
+	//import Box2D.Collision.b2AABB;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2World;
 	import flash.display.Sprite;
@@ -64,7 +64,8 @@ package
 			
 			_player.update();
 			
-			WorldVals.world.Step(1 / 30.0, 10);
+			WorldVals.world.Step(1 / 30.0, 10, 10);
+			WorldVals.world.ClearForces();
 			
 			for each (var actor:Actor in _allActors) {
 				actor.updateNow();
@@ -153,20 +154,21 @@ package
 		
 		private function setupPhysicsWorld():void 
 		{
-			var worldBounds:b2AABB = new b2AABB();
-			worldBounds.lowerBound.Set( -5000 / WorldVals.RATIO, -5000 / WorldVals.RATIO);
-			worldBounds.upperBound.Set(5000 / WorldVals.RATIO, 5000 / WorldVals.RATIO);
+			//var worldBounds:b2AABB = new b2AABB();
+			//worldBounds.lowerBound.Set( -5000 / WorldVals.RATIO, -5000 / WorldVals.RATIO);
+			//worldBounds.upperBound.Set(5000 / WorldVals.RATIO, 5000 / WorldVals.RATIO);
 			
 			var gravity:b2Vec2 = new b2Vec2(0, 9.8);
 			var allowSleep:Boolean = true;
 			
-			WorldVals.world = new b2World(worldBounds, gravity, allowSleep);
+			//WorldVals.world = new b2World(worldBounds, gravity, allowSleep);
+			WorldVals.world = new b2World(gravity, allowSleep);
 			WorldVals.world.SetContactListener(new ContactListener);
 		}
 		
 		private function createLevel():void 
 		{
-			var newGround:Ground = new Ground(this, new Point(0, 400));
+			var newGround:Ground = new Ground(this, new Point(275, 390));
 			_allActors.push(newGround);
 			_player = new Player(this, new Point(100, 200));
 			_player.addEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);

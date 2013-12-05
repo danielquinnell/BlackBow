@@ -1,7 +1,7 @@
 package  
 {
-	import Box2D.Collision.b2ContactPoint;
 	import Box2D.Dynamics.b2ContactListener;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	/**
 	 * ...
 	 * @author Scott Simpson
@@ -18,34 +18,34 @@ package
 			
 		}
 		
-		override public function Add(point:b2ContactPoint):void 
+		override public function BeginContact(contact:b2Contact):void 
 		{
 			trace("Doink!");
-			if (point.shape1.GetBody().GetUserData() is Enemy &&
-				point.shape2.GetBody().GetUserData() is Arrow) {
+			if (contact.GetFixtureA().GetBody().GetUserData() is Enemy &&
+				contact.GetFixtureB().GetBody().GetUserData() is Arrow) {
 				
-				Enemy(point.shape1.GetBody().GetUserData()).hitByArrow();
+				Enemy(contact.GetFixtureA().GetBody().GetUserData()).hitByArrow();
 				
-			} else if(point.shape2.GetBody().GetUserData() is Enemy &&
-				point.shape1.GetBody().GetUserData() is Arrow) {
+			} else if(contact.GetFixtureB().GetBody().GetUserData() is Enemy &&
+				contact.GetFixtureA().GetBody().GetUserData() is Arrow) {
 				
-				Enemy(point.shape2.GetBody().GetUserData()).hitByArrow();
-				
-			}
-			
-			if (point.shape1.GetBody().GetUserData() is Player &&
-				point.shape2.GetBody().GetUserData() is Ground) {
-				
-				Player(point.shape1.GetBody().GetUserData()).falling = false;
-				
-			} else if(point.shape2.GetBody().GetUserData() is Player &&
-				point.shape1.GetBody().GetUserData() is Ground) {
-				
-				Player(point.shape2.GetBody().GetUserData()).falling = false;
+				Enemy(contact.GetFixtureB().GetBody().GetUserData()).hitByArrow();
 				
 			}
 			
-			super.Add(point);
+			if (contact.GetFixtureA().GetBody().GetUserData() is Player &&
+				contact.GetFixtureB().GetBody().GetUserData() is Ground) {
+				
+				Player(contact.GetFixtureA().GetBody().GetUserData()).falling = false;
+				
+			} else if(contact.GetFixtureB().GetBody().GetUserData() is Player &&
+				contact.GetFixtureA().GetBody().GetUserData() is Ground) {
+				
+				Player(contact.GetFixtureB().GetBody().GetUserData()).falling = false;
+				
+			}
+			
+			super.BeginContact(contact);
 		}
 		
 	}
