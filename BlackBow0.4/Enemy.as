@@ -20,8 +20,8 @@ package
 	public class Enemy extends Actor 
 	{
 		private var _beenHit:Boolean;
-		public static const enemyWidth:int = 19;
-		public static const enemyHeight:int = 19;
+		public static const enemyWidth:int = 30;
+		public static const enemyHeight:int = 30;
 		
 		public function Enemy(parent:DisplayObjectContainer, location:Point) 
 		{

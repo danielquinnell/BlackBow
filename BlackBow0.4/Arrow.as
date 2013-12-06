@@ -26,6 +26,8 @@ package
 		private static const ARROW_WIDTH:int = 12;
 		private static const ARROW_HEIGHT:int = 2;
 		
+		public var freeFlight:Boolean = false;
+		
 		public function Arrow(parent:DisplayObjectContainer, location:Point, initVel:Point) 
 		{	
 			//costume
@@ -40,12 +42,19 @@ package
 			
 			//fixture def
 			var arrowFixtureDef:b2FixtureDef = new b2FixtureDef();
-			arrowFixtureDef.density = 1.0;
+			arrowFixtureDef.density = 10.0;
 			arrowFixtureDef.friction = 0.5;
 			arrowFixtureDef.restitution = 0.5;
 			arrowFixtureDef.filter.categoryBits = 0x0002;
 			arrowFixtureDef.filter.maskBits = 0x0002 | 0x0008 | 0x0010;
 			arrowFixtureDef.shape = polygonShape;
+			
+			//other fixture def
+			var sensorFixtureDef:b2FixtureDef = new b2FixtureDef();
+			sensorFixtureDef.isSensor = true;
+			sensorFixtureDef.filter.categoryBits = 0x0002;
+			sensorFixtureDef.filter.maskBits = 0x0002 | 0x0008 | 0x0010;
+			sensorFixtureDef.shape = new b2CircleShape(10 / 2 / WorldVals.RATIO);
 			
 			//body def
 			var arrowBodyDef:b2BodyDef = new b2BodyDef();
@@ -62,6 +71,9 @@ package
 			//fixture
 			var arrowFixture:b2Fixture = arrowBody.CreateFixture(arrowFixtureDef);
 			
+			//other fixture
+			arrowFixture = arrowBody.CreateFixture(sensorFixtureDef);
+			
 			//set the vel to patch param
 			var velocityVector:b2Vec2 = new b2Vec2(initVel.x / WorldVals.RATIO, initVel.y / WorldVals.RATIO);
 			arrowBody.SetLinearVelocity(velocityVector);
@@ -77,7 +89,16 @@ package
 				
 				
 			}else {
-				
+				var body:b2Body = this._body;
+				if (body.GetType()==b2Body.b2_dynamicBody) {
+                    if (! body.GetUserData().freeFlight) {
+                        var flyingAngle:Number = Math.atan2(body.GetLinearVelocity().y, body.GetLinearVelocity().x);
+                        body.SetAngle(flyingAngle);
+                    }
+                }
+                else {
+                    body.SetBullet(false);
+                }
 			}
 			
 			super.childSpecificUpdating();
