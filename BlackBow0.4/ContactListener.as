@@ -58,6 +58,7 @@ package
 				Player(contact.GetFixtureB().GetBody().GetUserData()).falling = false;
 				
 			}
+			
 			if (objA is Arrow &&
 				contact.GetFixtureA().IsSensor() &&
 				objB is Ground) 
@@ -65,12 +66,25 @@ package
 				trace(contact.GetFixtureA().IsSensor());
 				objA.freeFlight = true;
 			}
-			if (objB is Arrow &&
+			else if (objB is Arrow &&
 				contact.GetFixtureB().IsSensor() &&
 				objA is Ground)
 			{
 				trace(contact.GetFixtureB().IsSensor());
 				objB.freeFlight = true;
+			}
+			
+			if (objA is Arrow && objB is Player) 
+			{
+				if (objA.freeFlight) {
+					objA.pickedUp = true;
+				}
+			}
+			else if (objB is Arrow && objA is Player)
+			{
+				if (objB.freeFlight) {
+					objB.pickedUp = true;
+				}
 			}
 			
 			super.BeginContact(contact);

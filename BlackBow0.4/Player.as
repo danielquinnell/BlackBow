@@ -47,7 +47,7 @@ package
 			playerFixtureDef.friction = 0.9;
 			playerFixtureDef.restitution = 0.2;
 			playerFixtureDef.filter.categoryBits = 0x0004;
-			playerFixtureDef.filter.maskBits = 0x0008 | 0x0010;
+			playerFixtureDef.filter.maskBits = 0x0002 | 0x0008 | 0x0010;
 			playerFixtureDef.shape = polygonShape;
 			
 			//body def

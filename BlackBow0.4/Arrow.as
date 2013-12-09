@@ -27,6 +27,7 @@ package
 		private static const ARROW_HEIGHT:int = 2;
 		
 		public var freeFlight:Boolean = false;
+		public var pickedUp:Boolean = false;
 		
 		public function Arrow(parent:DisplayObjectContainer, location:Point, initVel:Point) 
 		{	
@@ -53,7 +54,7 @@ package
 			var sensorFixtureDef:b2FixtureDef = new b2FixtureDef();
 			sensorFixtureDef.isSensor = true;
 			sensorFixtureDef.filter.categoryBits = 0x0002;
-			sensorFixtureDef.filter.maskBits = 0x0002 | 0x0008 | 0x0010;
+			sensorFixtureDef.filter.maskBits = 0x0002 | 0x0004 | 0x0008 | 0x0010;
 			sensorFixtureDef.shape = new b2CircleShape(10 / 2 / WorldVals.RATIO);
 			
 			//body def
@@ -87,6 +88,8 @@ package
 			if (_costume.y > _costume.stage.stageHeight) {
 				dispatchEvent(new ArrowEvent(ArrowEvent.ARROW_OFF_SCREEN));
 				
+			}else if (pickedUp){
+				dispatchEvent(new ArrowEvent(ArrowEvent.ARROW_OFF_SCREEN));
 				
 			}else {
 				var body:b2Body = this._body;

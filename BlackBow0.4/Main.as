@@ -137,6 +137,9 @@ package
 		{
 			trace("Arrow Off Screen");
 			var arrowToRemove:Arrow = Arrow(e.currentTarget);
+			if (arrowToRemove.pickedUp) {
+				_inventory++;
+			}
 			arrowToRemove.removeEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
 			safelyRemoveActor(arrowToRemove);
 		}
