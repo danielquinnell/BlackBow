@@ -59,30 +59,28 @@ package
 				
 			}
 			
-			if (objA is Arrow &&
-				contact.GetFixtureA().IsSensor() &&
-				objB is Ground) 
+			if (objA is Arrow && contact.GetFixtureA().IsSensor() && objB is Ground)
 			{
 				trace(contact.GetFixtureA().IsSensor());
 				objA.freeFlight = true;
 			}
-			else if (objB is Arrow &&
-				contact.GetFixtureB().IsSensor() &&
-				objA is Ground)
+			else if (objB is Arrow && contact.GetFixtureB().IsSensor() && objA is Ground)
 			{
 				trace(contact.GetFixtureB().IsSensor());
 				objB.freeFlight = true;
 			}
 			
-			if (objA is Arrow && objB is Player) 
+			if (objA is Arrow && objB is Player)
 			{
-				if (objA.freeFlight) {
+				if (objA.freeFlight)
+				{
 					objA.pickedUp = true;
 				}
 			}
 			else if (objB is Arrow && objA is Player)
 			{
-				if (objB.freeFlight) {
+				if (objB.freeFlight)
+				{
 					objB.pickedUp = true;
 				}
 			}
@@ -114,12 +112,13 @@ package
 				if (objA is Ground && objB is Arrow)
 				{
 					if (!objB.freeFlight)
-					{	
+					{
 						//contactPoint = contact.GetManifold().m_normal;
 						//trace(contact.GetManifold().m_pointCount);
 						weldJointDef = new b2WeldJointDef();
 						weldJointDef.Initialize(bodyB, bodyA, bodyA.GetWorldCenter());
 						bodyB.GetWorld().CreateJoint(weldJointDef);
+						objB.attach();
 					}
 				}
 				if (objB is Ground && objA is Arrow)
@@ -131,6 +130,7 @@ package
 						weldJointDef = new b2WeldJointDef();
 						weldJointDef.Initialize(bodyA, bodyB, bodyB.GetWorldCenter());
 						bodyA.GetWorld().CreateJoint(weldJointDef);
+						objA.attach();
 					}
 				}
 				if (objA is Enemy && objB is Arrow)

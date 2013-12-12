@@ -1,7 +1,10 @@
 package  
 {
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Joints.b2DistanceJoint;
+	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -31,6 +34,9 @@ package
 		//private const LAUNCH_POINT:Point = new Point(323, 10);
 		private const LAUNCH_VELOCITY:Number = 300.0;
 		private var menu:Menu; //MENU
+		private var arrowIndicator:ArrowIndicator;
+		private var isHooked:Boolean = false;
+		private var distanceJoint:b2DistanceJoint;
 		
 		
 		public function Main() 
@@ -62,6 +68,8 @@ package
 			processUserInput();
 			
 			_player.update();
+			
+			manageRope();
 			
 			WorldVals.world.Step(1 / 30.0, 10, 10);
 			WorldVals.world.ClearForces();
@@ -115,6 +123,21 @@ package
 			} else if (_arrowReady) {
 				fireArrow();
 			}
+			
+			if (UserInput.shift) {
+				UserInput.shift = false;
+				arrowIndicator.switchType();
+			}
+			
+			if (_player.getFacing() == "Left" && mouseX > _player.getLocation().x)
+			{
+				_player.aboutFace();
+				trace("About Face");
+			} else if (_player.getFacing() == "Right" && mouseX < _player.getLocation().x) 
+			{
+				_player.aboutFace();
+				trace("About Face");
+			}
 		}
 		
 		private function fireArrow():void 
@@ -125,13 +148,42 @@ package
 			var direction:Point = new Point(mouseX, mouseY).subtract(shootingPoint);
 			direction.normalize(LAUNCH_VELOCITY);
 			
-			var newArrow:Arrow = new Arrow(this, shootingPoint, direction);
+			var newArrow:Arrow = new Arrow(this, shootingPoint, direction, arrowIndicator.arrowType);
 			newArrow.addEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
+			newArrow.addEventListener(ArrowEvent.ARROW_ATTACHED, handleArrowAttached);
 			_allActors.push(newArrow);
 			
 			trace(_inventory + " arrows left");
 			
 		}
+		
+		private function handleArrowAttached(e:ArrowEvent):void
+		{
+			trace("MAKING ROPE");
+			var arrowAttached:Arrow = Arrow(e.currentTarget);
+			arrowAttached.removeEventListener(ArrowEvent.ARROW_ATTACHED, handleArrowAttached);
+			
+			var distanceJointDef:b2DistanceJointDef = new b2DistanceJointDef();
+			var playerBody:b2Body = _player.getBody();
+            distanceJointDef.Initialize(playerBody, arrowAttached.getBody(), playerBody.GetWorldCenter(), new b2Vec2(arrowAttached.getLocation().x / WorldVals.RATIO, arrowAttached.getLocation().x / WorldVals.RATIO));
+            distanceJointDef.collideConnected = true;
+            distanceJoint = WorldVals.world.CreateJoint(distanceJointDef) as b2DistanceJoint;
+            isHooked = true;
+		}
+		
+		private function manageRope():void
+		{
+            if (isHooked) {
+                if (UserInput.up)
+				{
+					distanceJoint.SetLength(distanceJoint.GetLength()*0.99);
+				}
+				if (UserInput.down)
+				{
+					distanceJoint.SetLength(distanceJoint.GetLength()*1.01);
+				}
+            }
+        }
 		
 		private function handleArrowOffScreen(e:ArrowEvent):void 
 		{
@@ -170,7 +222,10 @@ package
 		
 		private function createLevel():void 
 		{
-			var newGround:Ground = new Ground(this, new Point(275, 390));
+			//var newGround:Ground = new Ground(this, new Point(275, 390));
+			var newGround:Ground = new Ground(this, new Point(275, 300));
+			_allActors.push(newGround);
+			newGround = new Ground(this, new Point(275, 100));
 			_allActors.push(newGround);
 			_player = new Player(this, new Point(100, 200));
 			_player.addEventListener(PlayerEvent.PLAYER_OFF_SCREEN, handlePlayerOffScreen);
@@ -178,6 +233,8 @@ package
 			var newEnemy:Enemy = new Enemy(this, new Point(300, 200));
 			newEnemy.addEventListener(EnemyEvent.ENEMY_HIT, handleEnemyHit);
 			_allActors.push(newEnemy);
+			arrowIndicator = new ArrowIndicator(this, new Point(68, 34));
+			stage.addChild(arrowIndicator);
 		}
 		
 		private function handlePlayerOffScreen(e:PlayerEvent):void 

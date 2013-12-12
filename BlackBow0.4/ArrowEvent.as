@@ -9,6 +9,7 @@ package
 	public class ArrowEvent extends Event 
 	{
 		public static const ARROW_OFF_SCREEN:String = "ArrowOffScreen";
+		public static const ARROW_ATTACHED:String = "ArrowAttached";
 		
 		public function ArrowEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 

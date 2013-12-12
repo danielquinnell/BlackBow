@@ -29,8 +29,14 @@ package
 		public var freeFlight:Boolean = false;
 		public var pickedUp:Boolean = false;
 		
-		public function Arrow(parent:DisplayObjectContainer, location:Point, initVel:Point) 
+		private var type:String;
+		private var myParent:DisplayObjectContainer;
+		
+		public function Arrow(parent:DisplayObjectContainer, location:Point, initVel:Point, arrowType:String) 
 		{	
+			type = arrowType;
+			myParent = parent;
+			
 			//costume
 			var arrowSprite:Sprite = new ArrowSprite();
 			arrowSprite.scaleX = ARROW_WIDTH / arrowSprite.width;
@@ -105,6 +111,21 @@ package
 			}
 			
 			super.childSpecificUpdating();
+		}
+		
+		public function attach():void
+		{
+			trace("ATTACHING");
+			if (type == "Hook")
+			{
+				dispatchEvent(new ArrowEvent(ArrowEvent.ARROW_ATTACHED));
+			}
+		}
+		
+		public function getLocation():Point
+		{
+			var myLocation:Point = new Point(this._costume.x, this._costume.y);
+			return myLocation;
 		}
 		
 	}

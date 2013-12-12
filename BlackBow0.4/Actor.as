@@ -15,6 +15,7 @@ package
 		
 		protected var _body:b2Body;
 		protected var _costume:DisplayObject;
+		protected var _facing:String = "Left";
 		
 		public function Actor(myBody:b2Body, myCostume:DisplayObject) 
 		{
@@ -71,6 +72,29 @@ package
 			_costume.y = _body.GetPosition().y * WorldVals.RATIO;
 			_costume.rotation = _body.GetAngle() * 180 / Math.PI;
 			
+		}
+		
+		public function getBody():b2Body
+		{
+			return _body;
+		}
+		
+		public function getFacing():String
+		{
+			return _facing;
+		}
+		
+		public function aboutFace():void
+		{
+			if (_facing == "Left") 
+			{
+				_facing = "Right";
+				_costume.scaleX = Math.abs(_costume.scaleX);
+			} else if (_facing == "Right") 
+			{
+				_facing = "Left";
+				_costume.scaleX = -Math.abs(_costume.scaleX);
+			}
 		}
 		
 	}

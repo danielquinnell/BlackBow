@@ -36,7 +36,7 @@ package
 			//fixture def
 			var groundFixtureDef:b2FixtureDef = new b2FixtureDef();
 			groundFixtureDef.density = 0;
-			groundFixtureDef.friction = 0.2;
+			groundFixtureDef.friction = 0.5;
 			groundFixtureDef.restitution = 0.3;
 			groundFixtureDef.filter.categoryBits = 0x0008;
 			groundFixtureDef.filter.maskBits = 0x0002 | 0x0004 | 0x0010;

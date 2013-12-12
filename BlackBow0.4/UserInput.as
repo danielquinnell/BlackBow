@@ -17,6 +17,7 @@ package
 		public static var left:Boolean = false; //FLAG FOR DOWN
 		public static var right:Boolean = false; //FLAG FOR RIGHT
 		public static var leftClick:Boolean = false; //FLAG FOR LEFT CLICK
+		public static var shift:Boolean = false; //FLAG FOR SHIFT
 		
 		
 		public function UserInput(stageRef:Stage) 
@@ -72,6 +73,10 @@ package
 				case 39: 					//"RIGHT"
 					right = true;
 					break;
+					
+				case 16:					//"SHIFT"
+					shift = true;
+					break;
 			}
 		}
 		
@@ -116,6 +121,10 @@ package
 					
 				case 39: 					//"RIGHT"
 					right = false;
+					break;
+					
+				case 16:					//"SHIFT"
+					shift = false;
 					break;
 			}
 		}

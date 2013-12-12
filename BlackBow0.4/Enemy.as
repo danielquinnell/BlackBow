@@ -40,7 +40,7 @@ package
 			//fixture def
 			var enemyFixtureDef:b2FixtureDef = new b2FixtureDef();
 			enemyFixtureDef.density = 1.5;
-			enemyFixtureDef.friction = 0.7;
+			enemyFixtureDef.friction = 0.5;
 			enemyFixtureDef.restitution = 0.2;
 			enemyFixtureDef.filter.categoryBits = 0x0010;
 			enemyFixtureDef.filter.maskBits = 0x0002 | 0x0004 | 0x0008 | 0x0010;
