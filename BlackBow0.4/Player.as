@@ -62,7 +62,6 @@ package
 			var playerFixture:b2Fixture = playerBody.CreateFixture(playerFixtureDef);
 			
 			super(playerBody, playerSprite);
-		
 		}
 		
 		override protected function childSpecificUpdating():void
@@ -70,15 +69,9 @@ package
 			if (_costume.y > _costume.stage.stageHeight)
 			{
 				dispatchEvent(new PlayerEvent(PlayerEvent.PLAYER_OFF_SCREEN));
-				
 			}
 			
 			super.childSpecificUpdating();
-		}
-		
-		public function update():void
-		{
-			
 		}
 		
 		public function getLocation():Point

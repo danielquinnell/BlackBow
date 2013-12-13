@@ -1,4 +1,4 @@
-package  
+package
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
@@ -8,18 +8,18 @@ package
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
+	
 	/**
 	 * ...
 	 * @author Scott Simpson
-	 * 
+	 *
 	 * This runs everything.
 	 * This will probably be worked on by everyone
-	 * for different things. 
-	 * Mostly needs to have the game loop and create 
+	 * for different things.
+	 * Mostly needs to have the game loop and create
 	 * the levels and the player.
-	 * 
+	 *
 	 */
 	public class Main extends Sprite
 	{
@@ -33,7 +33,7 @@ package
 		
 		private const STARTING_POINT:Point = new Point(323, 10);
 		//private const LAUNCH_POINT:Point = new Point(323, 10);
-		private const LAUNCH_VELOCITY:Number = 300.0;
+		private const LAUNCH_VELOCITY:Number = 400.0;
 		private var menu:Menu; //MENU
 		private var arrowIndicator:ArrowIndicator;
 		private var isHooked:Boolean = false;
@@ -42,12 +42,11 @@ package
 		//player
 		private static const speed:Number = 2 / WorldVals.RATIO;
 		private static const maxVel:Number = 3;
-		private static const jumpHeight:int = 1;
+		private static const jumpHeight:Number = 1.5;
 		public static var falling:Boolean = true;
 		
-		
-		public function Main() 
-		{	
+		public function Main()
+		{
 			//SETUP ARRAYS
 			_allActors = [];
 			_actorsToRemove = [];
@@ -72,41 +71,45 @@ package
 			debugDraw();
 		}
 		
-		private function newFrameListener(e:Event):void 
+		private function newFrameListener(e:Event):void
 		{
 			processUserInput();
 			
 			WorldVals.world.Step(1 / 30.0, 10, 10);
 			WorldVals.world.ClearForces();
 			
-			for each (var actor:Actor in _allActors) {
+			for each (var actor:Actor in _allActors)
+			{
 				actor.updateNow();
 			}
 			
 			reallyRemoveActors();
 			
 			WorldVals.world.DrawDebugData();
-			
+		
 		}
 		
-		public function safelyRemoveActor(actorToRemove:Actor):void 
+		public function safelyRemoveActor(actorToRemove:Actor):void
 		{
 			//mark actor to be removed later
-			if (_actorsToRemove.indexOf(actorToRemove) < 0) {
+			if (_actorsToRemove.indexOf(actorToRemove) < 0)
+			{
 				_actorsToRemove.push(actorToRemove);
 			}
-			
+		
 		}
 		
-		private function reallyRemoveActors():void 
+		private function reallyRemoveActors():void
 		{
 			//ACTUALLY REMOVE ACTORS THAT HAVE BEEN MARKED
-			for each (var removeMe:Actor in _actorsToRemove) {
+			for each (var removeMe:Actor in _actorsToRemove)
+			{
 				removeMe.destroy();
 				
 				//REMOVE IT FROM MAIN LIST OF ACTORS
 				var actorIndex:int = _allActors.indexOf(removeMe);
-				if (actorIndex > -1) {
+				if (actorIndex > -1)
+				{
 					_allActors.splice(actorIndex, 1);
 				}
 				
@@ -125,23 +128,28 @@ package
 			}
 		}
 		
-		private function processUserInput():void 
+		private function processUserInput():void
 		{
 			//CHECK FLAGS IN USERINPUT AND DO STUFF WITH THAT
 			
 			//TOGGLE THE MENU ON AND OFF
-			if (UserInput.toggleMenu) {
+			if (UserInput.toggleMenu)
+			{
 				UserInput.toggleMenu = false;
 				menu.toggleMenu();
 			}
 			
-			if (UserInput.leftClick) {
+			if (UserInput.leftClick)
+			{
 				readyArrow();
-			} else if (_arrowReady) {
+			}
+			else if (_arrowReady)
+			{
 				fireArrow();
 			}
 			
-			if (UserInput.shift) {
+			if (UserInput.shift)
+			{
 				UserInput.shift = false;
 				arrowIndicator.switchType();
 				destroyRope();
@@ -151,7 +159,8 @@ package
 			{
 				_player.aboutFace();
 				trace("About Face");
-			} else if (_player.getFacing() == "Right" && mouseX < _player.getLocation().x) 
+			}
+			else if (_player.getFacing() == "Right" && mouseX < _player.getLocation().x)
 			{
 				_player.aboutFace();
 				trace("About Face");
@@ -164,7 +173,7 @@ package
 				if (body.GetLinearVelocity().x >= -maxVel)
 				{
 					//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
-					body.ApplyImpulse(new b2Vec2( -speed, 0.0), body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
+					body.ApplyImpulse(new b2Vec2(-speed, 0.0), body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
 				}
 			}
 			if (UserInput.right)
@@ -179,8 +188,9 @@ package
 			{
 				if (!isHooked)
 				{
-					if (body.GetLinearVelocity().y > -1 && !falling)
+					if (!falling)
 					{ //Stops player from jumping while falling
+						body.SetLinearVelocity(new b2Vec2(body.GetLinearVelocity().x, 0));
 						
 						//change this so if player's feet are touching anything, allow jump
 						//set falling to true in ContactListener
@@ -190,14 +200,22 @@ package
 						body.ApplyImpulse(new b2Vec2(0.0, -jumpHeight), body.GetWorldCenter()); //Applys and impuls to the player. (Makes it jump)
 						
 					}
-				}else if (isHooked)
+				}
+				else if (isHooked)
+				{
+					manageRope();
+				}
+			}
+			if (UserInput.down)
+			{
+				if (isHooked)
 				{
 					manageRope();
 				}
 			}
 		}
 		
-		private function fireArrow():void 
+		private function fireArrow():void
 		{
 			_arrowReady = false;
 			
@@ -213,7 +231,7 @@ package
 			_allActors.push(newArrow);
 			
 			trace(_inventory + " arrows left");
-			
+		
 		}
 		
 		private function handleArrowAttached(e:ArrowEvent):void
@@ -221,52 +239,66 @@ package
 			trace("MAKING ROPE");
 			var arrowAttached:Arrow = Arrow(e.currentTarget);
 			arrowAttached.removeEventListener(ArrowEvent.ARROW_ATTACHED, handleArrowAttached);
-			arrowAttached.removeEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
+			//arrowAttached.removeEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
 			
 			var distanceJointDef:b2DistanceJointDef = new b2DistanceJointDef();
 			var playerBody:b2Body = _player.getBody();
-            distanceJointDef.Initialize(playerBody, arrowAttached.getBody(), playerBody.GetWorldCenter(), new b2Vec2(arrowAttached.getLocation().x / WorldVals.RATIO, arrowAttached.getLocation().x / WorldVals.RATIO));
-            distanceJointDef.collideConnected = true;
-            distanceJoint = WorldVals.world.CreateJoint(distanceJointDef) as b2DistanceJoint;
-            isHooked = true;
+			distanceJointDef.Initialize(playerBody, arrowAttached.getBody(), playerBody.GetWorldCenter(), new b2Vec2(arrowAttached.getLocation().x / WorldVals.RATIO, arrowAttached.getLocation().y / WorldVals.RATIO));
+			distanceJointDef.collideConnected = true;
+			
+			destroyRope();
+			distanceJoint = WorldVals.world.CreateJoint(distanceJointDef) as b2DistanceJoint;
+			isHooked = true;
 		}
 		
 		private function manageRope():void
 		{
-            if (isHooked) {
-                if (UserInput.up)
-				{
-					distanceJoint.SetLength(distanceJoint.GetLength()*0.99);
-				}
-				if (UserInput.down)
-				{
-					distanceJoint.SetLength(distanceJoint.GetLength()*1.01);
-				}
-            }
-        }
+			_player.getBody().SetAwake(true);
+			if (UserInput.up)
+			{
+				distanceJoint.SetLength(distanceJoint.GetLength() * 0.99);
+			}
+			if (UserInput.down)
+			{
+				distanceJoint.SetLength(distanceJoint.GetLength() * 1.01);
+			}
+		}
 		
-		private function handleArrowOffScreen(e:ArrowEvent):void 
+		private function handleArrowOffScreen(e:ArrowEvent):void
 		{
 			trace("Arrow Off Screen");
 			var arrowToRemove:Arrow = Arrow(e.currentTarget);
-			if (arrowToRemove.pickedUp) {
+			if (arrowToRemove.pickedUp)
+			{
 				_inventory++;
+			}
+			if (isHooked)
+			{
+				var arrowVec:b2Vec2 = new b2Vec2(arrowToRemove.getLocation().x / WorldVals.RATIO, arrowToRemove.getLocation().y / WorldVals.RATIO);
+				var anc1:b2Vec2 = distanceJoint.GetAnchorA();
+				var anc2:b2Vec2 = distanceJoint.GetAnchorB();
+				if (anc1 == arrowVec || anc2 == arrowVec)
+				{
+					isHooked = false;
+				}
 			}
 			arrowToRemove.removeEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
 			safelyRemoveActor(arrowToRemove);
 		}
 		
-		private function readyArrow():void 
+		private function readyArrow():void
 		{
-			if (!_arrowReady) {
-				if (_inventory >= 1) {
+			if (!_arrowReady)
+			{
+				if (_inventory >= 1)
+				{
 					_arrowReady = true;
 					_inventory--;
 				}
 			}
 		}
 		
-		private function setupPhysicsWorld():void 
+		private function setupPhysicsWorld():void
 		{
 			//var worldBounds:b2AABB = new b2AABB();
 			//worldBounds.lowerBound.Set( -5000 / WorldVals.RATIO, -5000 / WorldVals.RATIO);
@@ -280,7 +312,7 @@ package
 			WorldVals.world.SetContactListener(new ContactListener);
 		}
 		
-		private function createLevel():void 
+		private function createLevel():void
 		{
 			//var newGround:Ground = new Ground(this, new Point(275, 390));
 			var newGround:Ground = new Ground(this, new Point(275, 300));
@@ -297,7 +329,7 @@ package
 			stage.addChild(arrowIndicator);
 		}
 		
-		private function handlePlayerOffScreen(e:PlayerEvent):void 
+		private function handlePlayerOffScreen(e:PlayerEvent):void
 		{
 			trace("Player Off Screen");
 			var playerToRemove:Player = Player(e.currentTarget);
@@ -305,27 +337,29 @@ package
 			safelyRemoveActor(playerToRemove);
 		}
 		
-		private function handleEnemyHit(e:EnemyEvent):void 
+		private function handleEnemyHit(e:EnemyEvent):void
 		{
 			//RECORD THAT THE ENEMY HAS BEEN HIT
 			var enemy:Enemy = Enemy(e.currentTarget);
 			enemy.removeEventListener(EnemyEvent.ENEMY_HIT, handleEnemyHit);
-			if (_enemiesHit.indexOf(enemy) < 0) {
+			if (_enemiesHit.indexOf(enemy) < 0)
+			{
 				_enemiesHit.push(enemy);
 			}
 		}
 		
-		 private function debugDraw():void {
-            var debugDraw:b2DebugDraw=new b2DebugDraw();
-            var debugSprite:Sprite=new Sprite();
-            addChild(debugSprite);
-            debugDraw.SetSprite(debugSprite);
-            debugDraw.SetDrawScale(WorldVals.RATIO);
-            debugDraw.SetFlags(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
-            debugDraw.SetFillAlpha(0.5);
-            WorldVals.world.SetDebugDraw(debugDraw);
-        }
-		
+		private function debugDraw():void
+		{
+			var debugDraw:b2DebugDraw = new b2DebugDraw();
+			var debugSprite:Sprite = new Sprite();
+			addChild(debugSprite);
+			debugDraw.SetSprite(debugSprite);
+			debugDraw.SetDrawScale(WorldVals.RATIO);
+			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+			debugDraw.SetFillAlpha(0.5);
+			WorldVals.world.SetDebugDraw(debugDraw);
+		}
+	
 	}
 
 }
