@@ -25,10 +25,7 @@ package
 		
 		private static const playerWidth:int = 15;
 		private static const playerHeight:int = 20;
-		private static const speed:Number = 2 / WorldVals.RATIO;
-		private static const maxVel:Number = 3;
-		private static const jumpHeight:int = 1;
-		public var falling:Boolean = true;
+		
 		
 		public function Player(parent:DisplayObjectContainer, location:Point)
 		{
@@ -81,38 +78,7 @@ package
 		
 		public function update():void
 		{
-			var Body = this._body;
 			
-			if (UserInput.left)
-			{
-				if (Body.GetLinearVelocity().x >= -maxVel)
-				{
-					//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
-					Body.ApplyImpulse(new b2Vec2( -speed, 0.0), Body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
-				}
-			}
-			if (UserInput.right)
-			{
-				if (Body.GetLinearVelocity().x <= maxVel)
-				{
-					//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
-					Body.ApplyImpulse(new b2Vec2(speed, 0.0), Body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
-				}
-			}
-			if (UserInput.up)
-			{
-				if (Body.GetLinearVelocity().y > -1 && !falling)
-				{ //Stops player from jumping while falling
-					
-					//change this so if player's feet are touching anything, allow jump
-					//set falling to true in ContactListener
-					
-					falling = true;
-					
-					Body.ApplyImpulse(new b2Vec2(0.0, -jumpHeight), Body.GetWorldCenter()); //Applys and impuls to the player. (Makes it jump)
-					
-				}
-			}
 		}
 		
 		public function getLocation():Point

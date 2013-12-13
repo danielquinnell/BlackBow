@@ -2,6 +2,7 @@ package
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
 	import Box2D.Dynamics.Joints.b2DistanceJoint;
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
@@ -38,6 +39,12 @@ package
 		private var isHooked:Boolean = false;
 		private var distanceJoint:b2DistanceJoint;
 		
+		//player
+		private static const speed:Number = 2 / WorldVals.RATIO;
+		private static const maxVel:Number = 3;
+		private static const jumpHeight:int = 1;
+		public static var falling:Boolean = true;
+		
 		
 		public function Main() 
 		{	
@@ -61,15 +68,13 @@ package
 			
 			//ENTER FRAME LISTENER
 			addEventListener(Event.ENTER_FRAME, newFrameListener);
+			
+			debugDraw();
 		}
 		
 		private function newFrameListener(e:Event):void 
 		{
 			processUserInput();
-			
-			_player.update();
-			
-			manageRope();
 			
 			WorldVals.world.Step(1 / 30.0, 10, 10);
 			WorldVals.world.ClearForces();
@@ -79,6 +84,8 @@ package
 			}
 			
 			reallyRemoveActors();
+			
+			WorldVals.world.DrawDebugData();
 			
 		}
 		
@@ -108,6 +115,16 @@ package
 			_actorsToRemove = [];
 		}
 		
+		private function destroyRope():void
+		{
+			if (distanceJoint)
+			{
+				WorldVals.world.DestroyJoint(distanceJoint);
+				trace("DESTROY");
+				isHooked = false;
+			}
+		}
+		
 		private function processUserInput():void 
 		{
 			//CHECK FLAGS IN USERINPUT AND DO STUFF WITH THAT
@@ -127,6 +144,7 @@ package
 			if (UserInput.shift) {
 				UserInput.shift = false;
 				arrowIndicator.switchType();
+				destroyRope();
 			}
 			
 			if (_player.getFacing() == "Left" && mouseX > _player.getLocation().x)
@@ -138,11 +156,52 @@ package
 				_player.aboutFace();
 				trace("About Face");
 			}
+			
+			var body = _player.getBody();
+			
+			if (UserInput.left)
+			{
+				if (body.GetLinearVelocity().x >= -maxVel)
+				{
+					//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+					body.ApplyImpulse(new b2Vec2( -speed, 0.0), body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
+				}
+			}
+			if (UserInput.right)
+			{
+				if (body.GetLinearVelocity().x <= maxVel)
+				{
+					//Body.WakeUp();//WAKES BODY UP IF IT IS SLEEPING
+					body.ApplyImpulse(new b2Vec2(speed, 0.0), body.GetWorldCenter()); //ADDS TO THE LINEARVELOCITY OF THE BOX.
+				}
+			}
+			if (UserInput.up)
+			{
+				if (!isHooked)
+				{
+					if (body.GetLinearVelocity().y > -1 && !falling)
+					{ //Stops player from jumping while falling
+						
+						//change this so if player's feet are touching anything, allow jump
+						//set falling to true in ContactListener
+						
+						falling = true;
+						
+						body.ApplyImpulse(new b2Vec2(0.0, -jumpHeight), body.GetWorldCenter()); //Applys and impuls to the player. (Makes it jump)
+						
+					}
+				}else if (isHooked)
+				{
+					manageRope();
+				}
+			}
 		}
 		
 		private function fireArrow():void 
 		{
 			_arrowReady = false;
+			
+			destroyRope();
 			
 			var shootingPoint:Point = _player.getLocation();
 			var direction:Point = new Point(mouseX, mouseY).subtract(shootingPoint);
@@ -162,6 +221,7 @@ package
 			trace("MAKING ROPE");
 			var arrowAttached:Arrow = Arrow(e.currentTarget);
 			arrowAttached.removeEventListener(ArrowEvent.ARROW_ATTACHED, handleArrowAttached);
+			arrowAttached.removeEventListener(ArrowEvent.ARROW_OFF_SCREEN, handleArrowOffScreen);
 			
 			var distanceJointDef:b2DistanceJointDef = new b2DistanceJointDef();
 			var playerBody:b2Body = _player.getBody();
@@ -254,6 +314,17 @@ package
 				_enemiesHit.push(enemy);
 			}
 		}
+		
+		 private function debugDraw():void {
+            var debugDraw:b2DebugDraw=new b2DebugDraw();
+            var debugSprite:Sprite=new Sprite();
+            addChild(debugSprite);
+            debugDraw.SetSprite(debugSprite);
+            debugDraw.SetDrawScale(WorldVals.RATIO);
+            debugDraw.SetFlags(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
+            debugDraw.SetFillAlpha(0.5);
+            WorldVals.world.SetDebugDraw(debugDraw);
+        }
 		
 	}
 

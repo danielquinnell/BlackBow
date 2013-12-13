@@ -40,7 +40,7 @@ package
 		
 		private function keyDownHandler(e:KeyboardEvent):void 
 		{
-			trace("Key code = " + e.keyCode);
+			//trace("Key code = " + e.keyCode);
 			switch(e.keyCode) {
 				case 87: 					//"W"
 					up = true;

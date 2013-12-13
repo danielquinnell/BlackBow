@@ -27,7 +27,7 @@ package
 		
 		override public function BeginContact(contact:b2Contact):void
 		{
-			trace("Doink!");
+			//trace("Doink!");
 			var bodyA:b2Body = contact.GetFixtureA().GetBody();
 			var bodyB:b2Body = contact.GetFixtureB().GetBody();
 			var objA:Object = bodyA.GetUserData();
@@ -49,13 +49,13 @@ package
 			if (contact.GetFixtureA().GetBody().GetUserData() is Player && contact.GetFixtureB().GetBody().GetUserData() is Ground)
 			{
 				
-				Player(contact.GetFixtureA().GetBody().GetUserData()).falling = false;
+				Main.falling = false;
 				
 			}
 			else if (contact.GetFixtureB().GetBody().GetUserData() is Player && contact.GetFixtureA().GetBody().GetUserData() is Ground)
 			{
 				
-				Player(contact.GetFixtureB().GetBody().GetUserData()).falling = false;
+				Main.falling = false;
 				
 			}
 			
