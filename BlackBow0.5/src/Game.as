@@ -10,7 +10,7 @@ package
 	 */
 	public class Game 
 	{
-		private var currentGameState:IGameState;
+		public var StateManager:GameStateManager;
 		private var lastUpdate:int;
 		private var updateTicks:int;
 		
@@ -20,20 +20,14 @@ package
 		
 		public function Game(updateRate:int = 33) //Default Update Rate is 33 milliseconds (30 updates per second) 
 		{
-			UpdateRate = updateRate;
-			currentGameState = null;
+			StateManager = new GameStateManager();
 			lastUpdate = getTimer();
+			UpdateRate = updateRate;
 		}
 		
-		public function SetGameState(gamestate:IGameState):void
+		public function SetFrontGameState(gamestate:IGameState):void
 		{
-			if (currentGameState != null)
-			{
-				currentGameState.RemovedFromMainState(this);
-			}
-			
-			currentGameState = gamestate;
-			currentGameState.AddedToMainState(this);
+			StateManager.AddStateToFront(gamestate);
 		}
 		
 		public function Update(event:Event):void
@@ -44,10 +38,7 @@ package
 			
 			for (; updateTicks >= UpdateRate; updateTicks -= UpdateRate)
 			{
-				if (currentGameState != null)
-				{
-					currentGameState.Update(UpdateRate);
-				}
+				StateManager.UpdateAllStates(UpdateRate);
 			}
 		}
 	}

@@ -15,11 +15,14 @@ package GameStates
 		private var updateRateText:TextField;
 		private var updateRateCounter:int;
 		
-		public function TestState(maindisplay:DisplayObjectContainer) 
+		public function TestState(maindisplay:DisplayObjectContainer, x:int = 0, y:int = 0) 
 		{
 			mainDisplayContainer = maindisplay;
 			updateRateText = new TextField();
 			updateRateCounter = 0;
+			
+			updateRateText.x = x;
+			updateRateText.y = y;
 			
 			mainDisplayContainer.addChild(updateRateText);
 		}
@@ -40,12 +43,12 @@ package GameStates
 			//Do Nothing for now in this test
 		}
 		
-		public function AddedToMainState(game:Game):void
+		public function AddedToStateStack(manager:GameStateManager):void
 		{
 			//Do Nothing for now in this test
 		}
 		
-		public function RemovedFromMainState(game:Game):void
+		public function RemovedFromStateStack(manager:GameStateManager):void
 		{
 			//Do Nothing for now in this test
 		}

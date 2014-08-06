@@ -23,7 +23,9 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			var game:Game = new Game();
-			game.SetGameState(new TestState(this));
+			game.SetFrontGameState(new TestState(this, 100, 100));
+			game.StateManager.AddStateToBack(new TestState(this, 20, 20));
+			
 			addEventListener(Event.ENTER_FRAME, game.Update);
 		}
 	}

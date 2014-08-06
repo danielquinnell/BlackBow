@@ -11,8 +11,8 @@ package
 		function Unpause():void;
 		function Pause():void;
 		
-		function AddedToMainState(game:Game):void;
-		function RemovedFromMainState(game:Game):void;
+		function AddedToStateStack(statemanager:GameStateManager):void;
+		function RemovedFromStateStack(statemanager:GameStateManager):void;
 	}
 	
 }
