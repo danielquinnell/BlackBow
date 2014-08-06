@@ -1,2 +1,4 @@
 *.swf
 bin/
+flex_sdk_4.6/
+*.doc
