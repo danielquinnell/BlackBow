@@ -7,16 +7,21 @@ package GameSystems
 	 * ...
 	 * @author Austin Shindlecker
 	 */
-	public class MovementSystem implements IGameSystem
+	public class MovementSystem extends GameSystem
 	{
-		private var gameObjects:Array;
+		var gameObjects:Array;
 		
-		public function MovementSystem(gameobjects:Array) 
+		public function MovementSystem() 
 		{
-				gameObjects = gameobjects;
 		}
 		
-		public function Update(deltaTime:Number):void
+		override public function Initialize(gameobjects:Array):void 
+		{
+			super.Initialize(gameobjects);
+			gameObjects = gameobjects;
+		}
+		
+		override public function Update(deltaTime:Number):void
 		{
 			for each (var gameobject:GameObject in gameObjects)
 			{
@@ -28,17 +33,6 @@ package GameSystems
 				position.X += velocity.X * deltaTime;
 				position.Y += velocity.Y * deltaTime;
 			}
-		}
-		
-		
-		public function AddEventListeners(dispatcher:EventDispatcher):void
-		{
-			//Movement works on it's own as of now
-		}
-		
-		public function RemoveEventListeners(dispatcher:EventDispatcher):void
-		{
-			//Movement works on it's own as of now
 		}
 	}
 

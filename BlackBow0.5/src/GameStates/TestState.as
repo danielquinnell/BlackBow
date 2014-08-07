@@ -10,6 +10,7 @@ package GameStates
 	import GameComponents.VelocityComponent;
 	import GameSystems.MovementSystem;
 	import GameSystems.RenderingSystem;
+	import Math;
 	/**
 	 * ...
 	 * @author Austin Shindlecker
@@ -17,35 +18,61 @@ package GameStates
 	public class TestState implements IGameState
 	{
 		private var mainDisplayContainer:DisplayObjectContainer;
-		private var gameObjectManager:GameObjectManager;
+		private var gameScene:GameScene;
+		
 		private var rendering:RenderingSystem;
 		private var movement:MovementSystem;
-		private var gameObjects:Array;
 		
+		private var counterToRemove:Number;
+		
+		private var testPlayer:GameObject;
 		
 		public function TestState(maindisplay:DisplayObjectContainer, x:int = 0, y:int = 0) 
 		{
 			mainDisplayContainer = maindisplay;
-			gameObjects = new Array();
-			gameObjectManager = new GameObjectManager(gameObjects);
-			rendering = new RenderingSystem(maindisplay, gameObjects);
-			movement = new MovementSystem(gameObjects);
+			gameScene = new GameScene();
 			
-			rendering.AddEventListeners(gameObjectManager);
+			rendering = new RenderingSystem(maindisplay);
+			movement = new MovementSystem();
+			gameScene.AddGameSystem(rendering);
+			gameScene.AddGameSystem(movement);
 			
-			var testPlayer:GameObject = new GameObject();
+			testPlayer = gameScene.CreateGameObject();
 			
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
 			testPlayer.AddComponent(new PositionComponent(100,100));
-			testPlayer.AddComponent(new VelocityComponent(30,30));
+			testPlayer.AddComponent(new VelocityComponent(30, 30));
 			
-			gameObjectManager.AddGameObject(testPlayer);
+			for (var i:int = 0; i < 10; i++)
+			{
+				var add:GameObject = gameScene.CreateGameObject();
+				add.AddComponent(new RendererComponent(new PlayerSprite()));
+				add.AddComponent(new PositionComponent(100,100));
+				add.AddComponent(new VelocityComponent(Math.random() * 50, Math.random() * 50));
+				trace(add.Id);
+			}
+			
+			counterToRemove = 0;
 		}
 		
 		public function Update(deltaTime:Number):void
 		{
 			movement.Update(deltaTime);
 			rendering.Update(deltaTime);
+			
+			counterToRemove += deltaTime;
+			if (counterToRemove >= 1)
+			{
+				counterToRemove = 0;
+				testPlayer.RemoveFromScene();
+				
+				PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).X = 100;
+				PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).Y = 100;
+				
+				gameScene.AddGameObject(testPlayer);
+				
+				trace(testPlayer.Id);
+			}
 		}
 		
 		public function Pause():void

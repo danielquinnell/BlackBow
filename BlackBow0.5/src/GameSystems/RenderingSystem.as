@@ -11,18 +11,66 @@ package GameSystems
 	 * ...
 	 * @author Austin Shindlecker
 	 */
-	public class RenderingSystem implements IGameSystem
+	public class RenderingSystem extends GameSystem
 	{
 		private var displayContainer:DisplayObjectContainer;
 		private var gameObjects:Array;
 		
-		public function RenderingSystem(displaycontainer:DisplayObjectContainer, gameobjectArray:Array) 
+		public function RenderingSystem(displaycontainer:DisplayObjectContainer) 
 		{
 			displayContainer = displaycontainer;
-			gameObjects = gameobjectArray;
 		}
 		
-		public function Update(deltaTime:Number):void
+		override public function Initialize(gameobjects:Array):void 
+		{
+			super.Initialize(gameobjects);
+			gameObjects = gameobjects;
+		}
+		
+		override public function GameObjectRemoved(gameObj:GameObject):void
+		{
+			super.GameObjectRemoved(gameObj);
+			
+			if (gameObj.HasComponent(GameComponent.RENDERER) == false)
+				return;
+				
+			GameObjectComponentRemoved(gameObj.Id, gameObj.GetComponent(GameComponent.RENDERER));
+		}
+		
+		override public function GameObjectAdded(gameObj:GameObject):void 
+		{
+			super.GameObjectAdded(gameObj);
+			if (gameObj.HasComponent(GameComponent.RENDERER) == false)
+				return;
+				
+			GameObjectComponentAdded(gameObj.Id, gameObj.GetComponent(GameComponent.RENDERER));
+		}
+		
+		override public function GameObjectComponentAdded(gameObjId:uint, component:GameComponent) 
+		{
+			super.GameObjectComponentAdded(gameObjId, component);
+			if (component.Type != GameComponent.RENDERER)
+			{
+				return;
+			}
+			
+			var renderer:RendererComponent = component as RendererComponent;
+			displayContainer.addChild(renderer.Display);
+		}
+		
+		override public function GameObjectComponentRemoved(gameObjId:uint, component:GameComponent) 
+		{
+			super.GameObjectComponentRemoved(gameObjId, component);
+			if (component.Type != GameComponent.RENDERER)
+			{
+				return;
+			}
+			
+			var renderer:RendererComponent = component as RendererComponent;
+			displayContainer.removeChild(renderer.Display);
+		}
+		
+		override public function Update(deltaTime:Number):void
 		{
 			for each (var gameobject:GameObject in gameObjects)
 			{
@@ -35,47 +83,6 @@ package GameSystems
 				renderer.Display.x = position.X;
 				renderer.Display.y = position.Y;
 			}
-		}
-		
-		public function AddEventListeners(dispatcher:EventDispatcher):void
-		{
-			dispatcher.addEventListener(GameEventTypes.GAMEOBJECT_ADDED, onGameObjectAdded);
-			dispatcher.addEventListener(GameEventTypes.GAMEOBJECT_REMOVED, onGameObjectRemoved);
-		}
-		
-		public function RemoveEventListeners(dispatcher:EventDispatcher):void
-		{
-			dispatcher.removeEventListener(GameEventTypes.GAMEOBJECT_ADDED, onGameObjectAdded);
-			dispatcher.removeEventListener(GameEventTypes.GAMEOBJECT_REMOVED, onGameObjectRemoved);
-		}
-		
-		private function onGameObjectAdded(event:Event):void
-		{
-			if (event is GameObjectAddedEvent == false)
-				return;
-			
-			var addEvent:GameObjectAddedEvent = event as GameObjectAddedEvent;	
-			
-			if (addEvent.ObjectAdded.HasComponent(GameComponent.RENDERER) == false)
-				return;
-				
-			var renderer:RendererComponent = addEvent.ObjectAdded.GetComponent(GameComponent.RENDERER) as RendererComponent;
-			
-			displayContainer.addChild(renderer.Display);
-		}
-		
-		private function onGameObjectRemoved(event:Event):void
-		{
-			if (event is GameObjectRemovedEvent == false)
-				return;
-			
-			var removedEvent:GameObjectRemovedEvent = event as GameObjectRemovedEvent;
-			
-			if (removedEvent.ObjectRemoved.HasComponent(GameComponent.RENDERER) == false)
-				return;
-				
-			var renderer:RendererComponent = removedEvent.ObjectRemoved.GetComponent(GameComponent.RENDERER) as RendererComponent;
-			displayContainer.removeChild(renderer.Display);
 		}
 	}
 

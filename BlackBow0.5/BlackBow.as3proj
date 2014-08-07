@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\BlackBow.swf" />
-    <movie fps="30" />
+    <movie fps="50" />
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
