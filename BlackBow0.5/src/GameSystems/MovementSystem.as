@@ -9,29 +9,20 @@ package GameSystems
 	 */
 	public class MovementSystem extends GameSystem
 	{
-		var gameObjects:Array;
 		
 		public function MovementSystem() 
 		{
-		}
-		
-		override public function Initialize(gameobjects:Array):void 
-		{
-			super.Initialize(gameobjects);
-			gameObjects = gameobjects;
 		}
 		
 		override public function Update(deltaTime:Number):void
 		{
 			for each (var gameobject:GameObject in gameObjects)
 			{
-				if (!gameobject.HasComponent(GameComponent.POSITION) || !gameobject.HasComponent(GameComponent.VELOCITY))
+				if (!gameobject.Position || !gameobject.Velocity)
 					continue;
-				var velocity:VelocityComponent = gameobject.GetComponent(GameComponent.VELOCITY) as VelocityComponent;
-				var position:PositionComponent = gameobject.GetComponent(GameComponent.POSITION) as PositionComponent;
-				
-				position.X += velocity.X * deltaTime;
-				position.Y += velocity.Y * deltaTime;
+					
+				gameobject.Position.X += gameobject.Velocity.X * deltaTime;
+				gameobject.Position.Y += gameobject.Velocity.Y * deltaTime;
 			}
 		}
 	}

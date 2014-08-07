@@ -29,8 +29,6 @@ package GameStates
 			mainDisplayContainer = maindisplay;
 			gameScene = new GameScene();
 			
-			gameScene.AddGameSystem(new RenderingSystem(maindisplay));
-			gameScene.AddGameSystem(new MovementSystem());
 			
 			testPlayer = gameScene.CreateGameObject();
 			
@@ -47,6 +45,9 @@ package GameStates
 			}
 			
 			counterToRemove = 0;
+			
+			gameScene.AddGameSystem(new MovementSystem());
+			gameScene.AddGameSystem(new RenderingSystem(maindisplay));
 		}
 		
 		public function Update(deltaTime:Number):void

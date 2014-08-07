@@ -17,6 +17,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="lib\CollisionDetectionKit_v15\com\coreyoneil\collision" />
   </classpaths>
   <!-- Build options -->
   <build>

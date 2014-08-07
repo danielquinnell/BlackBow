@@ -14,17 +14,10 @@ package GameSystems
 	public class RenderingSystem extends GameSystem
 	{
 		private var displayContainer:DisplayObjectContainer;
-		private var gameObjects:Array;
 		
 		public function RenderingSystem(displaycontainer:DisplayObjectContainer) 
 		{
 			displayContainer = displaycontainer;
-		}
-		
-		override public function Initialize(gameobjects:Array):void 
-		{
-			super.Initialize(gameobjects);
-			gameObjects = gameobjects;
 		}
 		
 		override public function GameObjectRemoved(gameObj:GameObject):void
@@ -40,10 +33,10 @@ package GameSystems
 		override public function GameObjectAdded(gameObj:GameObject):void 
 		{
 			super.GameObjectAdded(gameObj);
-			if (gameObj.HasComponent(GameComponent.RENDERER) == false)
+			if (!gameObj.Rendering)
 				return;
 				
-			GameObjectComponentAdded(gameObj.Id, gameObj.GetComponent(GameComponent.RENDERER));
+			GameObjectComponentAdded(gameObj.Id, gameObj.Rendering);
 		}
 		
 		override public function GameObjectComponentAdded(gameObjId:uint, component:GameComponent) 
@@ -74,14 +67,11 @@ package GameSystems
 		{
 			for each (var gameobject:GameObject in gameObjects)
 			{
-				if (!gameobject.HasComponent(GameComponent.RENDERER) || !gameobject.HasComponent(GameComponent.POSITION))
+				if (!gameobject.Rendering || !gameobject.Rendering)
 					continue;
 					
-				var renderer:RendererComponent = gameobject.GetComponent(GameComponent.RENDERER) as RendererComponent;
-				var position:PositionComponent = gameobject.GetComponent(GameComponent.POSITION) as PositionComponent;
-				
-				renderer.Display.x = position.X;
-				renderer.Display.y = position.Y;
+				gameobject.Rendering.Display.x = gameobject.Position.X;
+				gameobject.Rendering.Display.y = gameobject.Position.Y;
 			}
 		}
 	}

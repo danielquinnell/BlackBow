@@ -33,6 +33,7 @@
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
       <path-element>C:\Users\Austin\Documents\GitHub\BlackBow\BlackBow0.5\src</path-element>
+      <path-element>C:\Users\Austin\Documents\GitHub\BlackBow\BlackBow0.5\lib\CollisionDetectionKit_v15\com\coreyoneil\collision</path-element>
       <path-element>C:\Users\Austin\Documents\FlashDevelop-4.6.2\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
