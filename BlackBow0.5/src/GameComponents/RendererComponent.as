@@ -9,9 +9,10 @@ package GameComponents
 	{
 		public var Display:DisplayObject;
 		
-		public function RendererComponent() 
+		public function RendererComponent(display:DisplayObject = null) 
 		{
 			Type = GameComponent.RENDERER;
+			Display = display;
 		}
 	}
 

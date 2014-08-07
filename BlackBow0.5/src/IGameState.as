@@ -7,7 +7,7 @@ package
 	 */
 	public interface IGameState 
 	{
-		function Update(deltaTime: int):void;
+		function Update(deltaTime: Number):void;
 		function Unpause():void;
 		function Pause():void;
 		

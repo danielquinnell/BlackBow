@@ -22,7 +22,7 @@ package GameSystems
 			gameObjects = gameobjectArray;
 		}
 		
-		public function Update(deltaTime:int):void
+		public function Update(deltaTime:Number):void
 		{
 			for each (var gameobject:GameObject in gameObjects)
 			{
@@ -55,7 +55,12 @@ package GameSystems
 				return;
 			
 			var addEvent:GameObjectAddedEvent = event as GameObjectAddedEvent;	
+			
+			if (addEvent.ObjectAdded.HasComponent(GameComponent.RENDERER) == false)
+				return;
+				
 			var renderer:RendererComponent = addEvent.ObjectAdded.GetComponent(GameComponent.RENDERER) as RendererComponent;
+			
 			displayContainer.addChild(renderer.Display);
 		}
 		
@@ -65,6 +70,10 @@ package GameSystems
 				return;
 			
 			var removedEvent:GameObjectRemovedEvent = event as GameObjectRemovedEvent;
+			
+			if (removedEvent.ObjectRemoved.HasComponent(GameComponent.RENDERER) == false)
+				return;
+				
 			var renderer:RendererComponent = removedEvent.ObjectRemoved.GetComponent(GameComponent.RENDERER) as RendererComponent;
 			displayContainer.removeChild(renderer.Display);
 		}

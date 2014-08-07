@@ -16,9 +16,9 @@ package
 		
 		//Time (in milliseconds) of how delay per each game update
 		//This is not directly tied to the frame rate but can (and mostly like will) be the same
-		public var UpdateRate:int;
+		public var UpdateRate:Number;
 		
-		public function Game(updateRate:int = 33) //Default Update Rate is 33 milliseconds (30 updates per second) 
+		public function Game(updateRate:Number = 33) //Default Update Rate is 33 milliseconds (30 updates per second) 
 		{
 			StateManager = new GameStateManager();
 			lastUpdate = getTimer();
@@ -38,7 +38,7 @@ package
 			
 			for (; updateTicks >= UpdateRate; updateTicks -= UpdateRate)
 			{
-				StateManager.UpdateAllStates(UpdateRate);
+				StateManager.UpdateAllStates(UpdateRate/ 1000);
 			}
 		}
 	}

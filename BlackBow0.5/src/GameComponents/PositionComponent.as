@@ -9,11 +9,11 @@ package GameComponents
 		public var X:Number;
 		public var Y:Number;
 		
-		public function PositionComponent() 
+		public function PositionComponent(x:Number = 0, y:Number = 0) 
 		{
 			Type = GameComponent.POSITION;
-			X = 0;
-			Y = 0;
+			X = x;
+			Y = y;
 		}
 	}
 

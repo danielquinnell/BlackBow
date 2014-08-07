@@ -7,6 +7,8 @@ package GameStates
 	import flash.text.TextField;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
+	import GameComponents.VelocityComponent;
+	import GameSystems.MovementSystem;
 	import GameSystems.RenderingSystem;
 	/**
 	 * ...
@@ -17,6 +19,7 @@ package GameStates
 		private var mainDisplayContainer:DisplayObjectContainer;
 		private var gameObjectManager:GameObjectManager;
 		private var rendering:RenderingSystem;
+		private var movement:MovementSystem;
 		private var gameObjects:Array;
 		
 		
@@ -26,21 +29,22 @@ package GameStates
 			gameObjects = new Array();
 			gameObjectManager = new GameObjectManager(gameObjects);
 			rendering = new RenderingSystem(maindisplay, gameObjects);
+			movement = new MovementSystem(gameObjects);
 			
 			rendering.AddEventListeners(gameObjectManager);
 			
 			var testPlayer:GameObject = new GameObject();
-			testPlayer.AddComponent(new RendererComponent());
-			testPlayer.AddComponent(new PositionComponent());
-			RendererComponent(testPlayer.GetComponent(GameComponent.RENDERER)).Display = new PlayerSprite();
-			PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).X = 100;
-			PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).Y = 100;
+			
+			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
+			testPlayer.AddComponent(new PositionComponent(100,100));
+			testPlayer.AddComponent(new VelocityComponent(30,30));
 			
 			gameObjectManager.AddGameObject(testPlayer);
 		}
 		
-		public function Update(deltaTime:int):void
+		public function Update(deltaTime:Number):void
 		{
+			movement.Update(deltaTime);
 			rendering.Update(deltaTime);
 		}
 		

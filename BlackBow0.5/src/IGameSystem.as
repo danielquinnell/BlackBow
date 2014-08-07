@@ -8,7 +8,7 @@ package
 	 */
 	public interface IGameSystem 
 	{
-		function Update(deltaTime:int):void;
+		function Update(deltaTime:Number):void;
 		
 		//Some systems listen to events made from other parts of the game (like other systems!)
 		//This function lets the system listen for the events it cares about

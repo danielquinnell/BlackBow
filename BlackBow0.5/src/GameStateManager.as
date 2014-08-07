@@ -62,7 +62,7 @@ package
 				stateStack.splice(toId, 0, stateStack[stateStack.indexOf(fromId)]);
 		}
 		
-		public function UpdateAllStates(deltaTime:int):void
+		public function UpdateAllStates(deltaTime:Number):void
 		{
 			for each (var state:IGameState in stateStack)
 			{
