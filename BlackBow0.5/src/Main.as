@@ -1,10 +1,15 @@
 package 
 {
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.*;
+	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
+	import GameEvents.GameObjectAddedEvent;
+	import GameEvents.GameObjectRemovedEvent;
 	import GameStates.TestState;
+	import GameSystems.RenderingSystem;
 	
 	/**
 	 * ...

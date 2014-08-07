@@ -4,7 +4,7 @@ package
 	 * Handles the GameState Stack for updating multiple states and shifting around states at a time
 	 * @author Austin Shindlecker
 	 */
-	public class GameStateManager 
+	public class GameStateManager
 	{
 		private var stateStack:Array;
 		
