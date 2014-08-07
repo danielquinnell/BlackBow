@@ -20,9 +20,6 @@ package GameStates
 		private var mainDisplayContainer:DisplayObjectContainer;
 		private var gameScene:GameScene;
 		
-		private var rendering:RenderingSystem;
-		private var movement:MovementSystem;
-		
 		private var counterToRemove:Number;
 		
 		private var testPlayer:GameObject;
@@ -32,10 +29,8 @@ package GameStates
 			mainDisplayContainer = maindisplay;
 			gameScene = new GameScene();
 			
-			rendering = new RenderingSystem(maindisplay);
-			movement = new MovementSystem();
-			gameScene.AddGameSystem(rendering);
-			gameScene.AddGameSystem(movement);
+			gameScene.AddGameSystem(new RenderingSystem(maindisplay));
+			gameScene.AddGameSystem(new MovementSystem());
 			
 			testPlayer = gameScene.CreateGameObject();
 			
@@ -49,7 +44,6 @@ package GameStates
 				add.AddComponent(new RendererComponent(new PlayerSprite()));
 				add.AddComponent(new PositionComponent(100,100));
 				add.AddComponent(new VelocityComponent(Math.random() * 50, Math.random() * 50));
-				trace(add.Id);
 			}
 			
 			counterToRemove = 0;
@@ -57,8 +51,7 @@ package GameStates
 		
 		public function Update(deltaTime:Number):void
 		{
-			movement.Update(deltaTime);
-			rendering.Update(deltaTime);
+			gameScene.UpdateSystems(deltaTime);
 			
 			counterToRemove += deltaTime;
 			if (counterToRemove >= 1)
@@ -70,8 +63,6 @@ package GameStates
 				PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).Y = 100;
 				
 				gameScene.AddGameObject(testPlayer);
-				
-				trace(testPlayer.Id);
 			}
 		}
 		

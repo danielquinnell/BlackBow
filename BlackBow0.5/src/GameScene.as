@@ -1,5 +1,6 @@
 package  
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import GameEvents.GameObjectAddedEvent;
 	import GameEvents.GameObjectRemovedEvent;
@@ -95,6 +96,19 @@ package
 			
 			delete gameObjects[gameobject.Id];
 			freedIds.push(gameobject.Id);	//there's a free spot where this entity used to be to be taken
+		}
+		
+		public function UpdateSystems(delta:Number)
+		{
+			for each(var system:IGameSystem in gameSystems)
+			{
+				system.Update(delta);
+			}
+		}
+		
+		public function BroadcastEvent(event:Event)
+		{
+			dispatchEvent(event);
 		}
 	}
 

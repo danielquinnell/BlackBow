@@ -37,6 +37,7 @@
     </source-path>
     <library-path append="true">
       <path-element>C:\Users\Austin\Documents\GitHub\BlackBow\BlackBow0.5\lib\Resources.swc</path-element>
+      <path-element>C:\Users\Austin\Documents\GitHub\BlackBow\BlackBow0.5\lib\MoreResources.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
