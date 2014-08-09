@@ -35,10 +35,9 @@ package
 			var currentTime:int = getTimer();
 			updateTicks += (currentTime - lastUpdate);
 			lastUpdate = currentTime;
-			
 			for (; updateTicks >= UpdateRate; updateTicks -= UpdateRate)
 			{
-				StateManager.UpdateAllStates(UpdateRate/ 1000);
+				StateManager.UpdateAllStates(UpdateRate / 1000);
 			}
 		}
 	}

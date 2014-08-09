@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\BlackBow.swf" />
-    <movie fps="50" />
+    <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
@@ -17,7 +17,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="lib\CollisionDetectionKit_v15\com\coreyoneil\collision" />
+    <class path="lib\CollisionDetectionKit_v15" />
   </classpaths>
   <!-- Build options -->
   <build>
