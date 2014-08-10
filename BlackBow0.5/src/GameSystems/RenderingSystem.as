@@ -1,6 +1,7 @@
 package GameSystems 
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import GameComponents.PositionComponent;
@@ -15,9 +16,17 @@ package GameSystems
 	{
 		private var displayContainer:DisplayObjectContainer;
 		
-		public function RenderingSystem(displaycontainer:DisplayObjectContainer) 
+		public var DebugDraw:Boolean;
+		
+		private var debugRender:Shape;
+		
+		public function RenderingSystem(displaycontainer:DisplayObjectContainer, debug:Boolean = false) 
 		{
 			displayContainer = displaycontainer;
+			DebugDraw = debug;
+			debugRender = new Shape();
+			
+			displayContainer.addChild(debugRender);
 		}
 		
 		override public function GameObjectRemoved(gameObj:GameObject):void
@@ -65,14 +74,29 @@ package GameSystems
 		
 		override public function Update(deltaTime:Number):void
 		{
+			if (DebugDraw)
+				debugRender.graphics.clear();
+				
 			for each (var gameobject:GameObject in gameObjects)
 			{
-				if (!gameobject.Rendering || !gameobject.Rendering)
+				if (!gameobject.Rendering || !gameobject.Position)
 					continue;
 					
 				gameobject.Rendering.Display.x = gameobject.Position.X;
 				gameobject.Rendering.Display.y = gameobject.Position.Y;
+				
+				if (!DebugDraw)
+					continue;
+				
+				if (!gameobject.Collision)
+					continue;
+
+				debugRender.graphics.beginFill(0xFF0000, 0.5);
+				debugRender.graphics.drawRect(gameobject.Position.X - (gameobject.Collision.Width/2), gameobject.Position.Y - (gameobject.Collision.Height/2), gameobject.Collision.Width, gameobject.Collision.Height);
 			}
+			
+			if (DebugDraw)
+				debugRender.graphics.endFill();
 		}
 	}
 

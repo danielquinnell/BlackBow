@@ -12,6 +12,7 @@ package
 	 */
 	public class GameObject 
 	{
+		public var ChildrenObjects:Array;
 		public var Id:uint;
 		
 		private var components:Dictionary;
@@ -29,11 +30,12 @@ package
 			Id = id;
 			gameScene = gamescene;
 			components = new Dictionary();
+			ChildrenObjects = new Array();
 			
 			Rendering = null;
+			Collision = null;
 			Position = null;
 			Velocity = null;
-			Collision = null;
 		}
 		
 		public function HasComponent(componenttype:String):Boolean

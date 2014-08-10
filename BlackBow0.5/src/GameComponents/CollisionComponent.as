@@ -1,26 +1,21 @@
 package GameComponents 
 {
 	/**
-	 * ...
+	 * Bounding Box Collision Component
 	 * @author Austin Shindlecker
 	 */
 	public class CollisionComponent extends GameComponent
 	{
-		//If true the systems should use it's rendering component for pixel perfect (This is a lot slower than the default Bounding Box collision detection)
-		public var DisplayObjectPixelPerfect:Boolean;
-		public var Width:Number, Height:Number;
+		public var Width:int, Height:int;
 		
-		//Called when a collision occurs between two objects 
-		public var CollisionCallBack:Function;
+		public var CollisionCallback:Function;	//Called when a collision occurs
 		
-		public function CollisionComponent(pixelPerfect:Boolean, width:Number = 32, height:Number = 32) 
+		public function CollisionComponent(width:int = 32, height:int = 32, callback:Function = null)
 		{
-			Type = GameComponent.COLLISION;
-			DisplayObjectPixelPerfect = pixelPerfect;
 			Width = width;
 			Height = height;
-			
-			CollisionCallBack = null;
+			CollisionCallback = callback;
+			Type = GameComponent.COLLISION;
 		}
 	}
 

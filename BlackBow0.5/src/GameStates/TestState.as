@@ -36,23 +36,15 @@ package GameStates
 			testPlayer = gameScene.CreateGameObject();
 			
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
-			testPlayer.AddComponent(new PositionComponent(365,120));
-			testPlayer.AddComponent(new VelocityComponent(30, 30));
-			testPlayer.AddComponent(new CollisionComponent(true));
+			testPlayer.AddComponent(new PositionComponent(100,100));
+			testPlayer.AddComponent(new CollisionComponent(testPlayer.Rendering.Display.width, testPlayer.Rendering.Display.height));
+			trace(testPlayer.Collision.Width);trace(testPlayer.Collision.Height);
 			for (var i:int = 0; i < 1; i++)
 			{
 				var add:GameObject = gameScene.CreateGameObject();
-				add.AddComponent(new RendererComponent(new a1bg1()));
-				add.AddComponent(new PositionComponent(0 + i * 20, 0));
-				add.AddComponent(new CollisionComponent(true));
-				//add.AddComponent(new VelocityComponent(11,11));
-			}
-			
-			for (var i:int = 0; i < 2; i++)
-			{
-				var add:GameObject = gameScene.CreateGameObject();
 				add.AddComponent(new RendererComponent(new PlayerSprite()));
-				add.AddComponent(new PositionComponent(0 + i*50, 400));
+				add.AddComponent(new PositionComponent(100, 163));
+				add.AddComponent(new CollisionComponent(add.Rendering.Display.width, add.Rendering.Display.height));
 				//add.AddComponent(new VelocityComponent(11,11));
 			}
 			
