@@ -41,52 +41,69 @@ package GameSystems
 		{
 			super.Update(deltaTime);
 			
-			for (var i:int = 0; i < gameObjects.length; i++)
+			for each(var gObject:GameObject in gameObjects)
 			{
-				if (!gameObjects[i] || !gameObjects[i].Rendering)
+				if (!gObject || !gObject.Collision)
 					continue;
-					
-				var collisionList:CollisionList = new CollisionList(gameObjects[i].Rendering.Display);
-				collisionList.returnAngle = true;
-				for (var j:int = 0; j < gameObjects.length; j++)
-				{
-					if (j == i || !gameObjects[j] || !gameObjects[j].Rendering)	//j can't equal i because it will check collisions against itself (Which will most likely be true always)
-						continue;
-					collisionList.addItem(gameObjects[j].Rendering.Display);
-				}
 				
-				var collisions:Array = collisionList.checkCollisions();
-				
-				for each(var collisionobject:Object in collisions)
+				if (gObject.Collision.DisplayObjectPixelPerfect)
 				{
-					var objectCollidedWith:GameObject = null;
-					if (collisionobject.object1 == gameObjects[i].Rendering.Display)
-					{
-						for each(var gameobject:GameObject in gameObjects)
-						{
-							if (gameobject.Rendering.Display == collisionobject.object2)
-							{
-								objectCollidedWith = gameobject;
-								break;
-							}
-						}
-					}
-					else if (collisionobject.object2 == gameObjects[i].Rendering.Display)
-					{
-						for each(var gameobject:GameObject in gameObjects)
-						{
-							if (gameobject.Rendering.Display == collisionobject.object1)
-							{
-								objectCollidedWith = gameobject;
-								break;
-							}
-						}
-					}
-					
-					gameScene.BroadcastEvent(new CollisionEvent(gameObjects[i], objectCollidedWith));
+					pixelPerfectDetection(gObject);
 				}
 			}
+		}
+		
+		private function pixelPerfectDetection(gObject:GameObject):void 
+		{
+			if (!gObject.Rendering)
+				return;
+					
+			var collisionList:CollisionList = new CollisionList(gObject.Rendering.Display);
+			collisionList.returnAngle = true;
 			
+			for (var j:int = 0; j < gameObjects.length; j++)
+			{
+				if (gameObjects[j].Id == gObject.Id || !gameObjects[j] || !gameObjects[j].Rendering || !gameObjects[j].Collision)	//j can't equal i because it will check collisions against itself (Which will most likely be true always)
+					continue;
+				if (gameObjects[j].Collision.DisplayObjectPixelPerfect == false)
+					continue;
+				collisionList.addItem(gameObjects[j].Rendering.Display);
+			}
+				
+			var collisions:Array = collisionList.checkCollisions();
+			
+			for each(var collisionobject:Object in collisions)
+			{
+				var objectCollidedWith:GameObject = null;
+				if (collisionobject.object1 == gObject.Rendering.Display)
+				{
+					for each(var gameobject:GameObject in gameObjects)
+					{
+						if (gameobject.Rendering.Display == collisionobject.object2)
+						{
+							objectCollidedWith = gameobject;
+							break;
+						}
+					}
+				}
+				else if (collisionobject.object2 == gObject.Rendering.Display)
+				{
+					for each(var gameobject:GameObject in gameObjects)
+					{
+						if (gameobject.Rendering.Display == collisionobject.object1)
+						{
+							objectCollidedWith = gameobject;
+							break;
+						}
+					}
+				}
+				
+				gameScene.BroadcastEvent(new CollisionEvent(gObject, objectCollidedWith));
+				if (gObject.Collision.CollisionCallBack)
+				{
+					gObject.Collision.CollisionCallBack(gObject, objectCollidedWith);
+				}
+			}
 		}
 	}
 

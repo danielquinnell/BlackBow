@@ -5,6 +5,7 @@ package GameStates
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
+	import GameComponents.CollisionComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	import GameComponents.VelocityComponent;
@@ -37,12 +38,13 @@ package GameStates
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
 			testPlayer.AddComponent(new PositionComponent(365,120));
 			testPlayer.AddComponent(new VelocityComponent(30, 30));
-			
+			testPlayer.AddComponent(new CollisionComponent(true));
 			for (var i:int = 0; i < 1; i++)
 			{
 				var add:GameObject = gameScene.CreateGameObject();
 				add.AddComponent(new RendererComponent(new a1bg1()));
-				add.AddComponent(new PositionComponent(0 + i*20, 0));
+				add.AddComponent(new PositionComponent(0 + i * 20, 0));
+				add.AddComponent(new CollisionComponent(true));
 				//add.AddComponent(new VelocityComponent(11,11));
 			}
 			

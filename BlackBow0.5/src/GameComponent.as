@@ -16,6 +16,7 @@ package
 		public static const POSITION:String = "position";
 		public static const VELOCITY:String = "velocity";
 		public static const RENDERER:String = "renderer";
+		public static const COLLISION:String = "collision";
 	}
 
 }
