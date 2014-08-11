@@ -77,7 +77,6 @@ package GameSystems
 			if (DebugDraw)
 				debugRender.graphics.clear();
 			
-			var debugTrace:String = "";
 			for each (var gameobject:GameObject in gameObjects)
 			{
 				if (!gameobject.Rendering || !gameobject.Position)
@@ -92,13 +91,10 @@ package GameSystems
 				if (!gameobject.Collision)
 					continue;
 				
-				debugTrace += "[" + gameobject.Id + "] " + gameobject.Position.X + ":" + gameobject.Position.Y + " | ";
-				
 				debugRender.graphics.beginFill(0xFF0000, 0.5);
 				debugRender.graphics.drawRect(gameobject.Position.X - (gameobject.Collision.Width/2), gameobject.Position.Y - (gameobject.Collision.Height/2), gameobject.Collision.Width, gameobject.Collision.Height);
 			}
 			
-			//trace(debugTrace);
 			
 			if (DebugDraw)
 				debugRender.graphics.endFill();
