@@ -17,6 +17,7 @@ package
 		public static const VELOCITY:String = "velocity";
 		public static const RENDERER:String = "renderer";
 		public static const COLLISION:String = "collision";
+		public static const PHYSICS:String = "physics";
 	}
 
 }

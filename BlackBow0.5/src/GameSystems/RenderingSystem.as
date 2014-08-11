@@ -84,15 +84,10 @@ package GameSystems
 					
 				gameobject.Rendering.Display.x = gameobject.Position.X;
 				gameobject.Rendering.Display.y = gameobject.Position.Y;
+				gameobject.Rendering.Display.rotation = gameobject.Position.Rotation;
 				
 				if (!DebugDraw)
 					continue;
-				
-				if (!gameobject.Collision)
-					continue;
-				
-				debugRender.graphics.beginFill(0xFF0000, 0.5);
-				debugRender.graphics.drawRect(gameobject.Position.X - (gameobject.Collision.Width/2), gameobject.Position.Y - (gameobject.Collision.Height/2), gameobject.Collision.Width, gameobject.Collision.Height);
 			}
 			
 			

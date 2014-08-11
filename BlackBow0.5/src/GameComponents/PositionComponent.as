@@ -13,6 +13,8 @@ package GameComponents
 		public var LocalX:Number;
 		public var LocalY:Number;
 		
+		public var Rotation;
+		
 		public function PositionComponent(x:Number = 0, y:Number = 0) 
 		{
 			Type = GameComponent.POSITION;
@@ -20,6 +22,8 @@ package GameComponents
 			Y = y;
 			LocalX = X;
 			LocalY = Y;
+			
+			Rotation = 0;
 		}
 	}
 

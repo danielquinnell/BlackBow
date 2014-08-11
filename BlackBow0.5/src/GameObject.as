@@ -2,7 +2,7 @@ package
 {
 	import flash.text.engine.RenderingMode;
 	import flash.utils.Dictionary;
-	import GameComponents.CollisionComponent;
+	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	import GameComponents.VelocityComponent;
@@ -26,7 +26,7 @@ package
 		public var Rendering:RendererComponent;
 		public var Position:PositionComponent;
 		public var Velocity:VelocityComponent;
-		public var Collision:CollisionComponent;
+		public var Physics:PhysicsComponent;
 		
 		public function GameObject(gamescene:GameScene, id:uint = 0) 
 		{
@@ -39,9 +39,9 @@ package
 			childrenObjects = new Array();
 			
 			Rendering = null;
-			Collision = null;
 			Position = null;
 			Velocity = null;
+			Physics = null;
 		}
 		
 		public function HasComponent(componenttype:String):Boolean
@@ -102,8 +102,8 @@ package
 				case GameComponent.VELOCITY:
 					Velocity = component as VelocityComponent;
 					break;
-				case GameComponent.COLLISION:
-					Collision = component as CollisionComponent;
+				case GameComponent.PHYSICS:
+					Physics = component as PhysicsComponent;
 					break;
 			}
 		}
