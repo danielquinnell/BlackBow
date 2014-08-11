@@ -12,10 +12,13 @@ package
 	 */
 	public class GameObject 
 	{
-		public var ChildrenObjects:Array;
-		public var Id:uint;
+		protected var childrenObjects:Array
+		protected var components:Dictionary;
 		
-		private var components:Dictionary;
+		public var Id:uint;
+		public var IsChild:Boolean;
+		public var ParentId:uint;
+		
 		public var gameScene:GameScene;
 		
 		//Common Components that can be easily grabbed from the GameObject
@@ -28,9 +31,12 @@ package
 		public function GameObject(gamescene:GameScene, id:uint = 0) 
 		{
 			Id = id;
+			ParentId = 0;
+			IsChild = false;
+			
 			gameScene = gamescene;
 			components = new Dictionary();
-			ChildrenObjects = new Array();
+			childrenObjects = new Array();
 			
 			Rendering = null;
 			Collision = null;
@@ -63,7 +69,25 @@ package
 			gameScene.RemoveGameObject(this);
 		}
 		
-		public function PushComponentToDictionary(component:GameComponent):void
+		public function AddChild(gameObject:GameObject)
+		{
+			gameObject.IsChild = true;
+			gameObject.ParentId = Id;
+			childrenObjects.push(gameObject);
+		}
+		
+		public function RemoveChild(gameObject:GameObject)
+		{
+			if(childrenObjects[childrenObjects.indexOf(gameObject)] != null)
+				delete childrenObjects[childrenObjects.indexOf(gameObject)];
+		}
+		
+		public function GetChildren():Array
+		{
+			return childrenObjects;
+		}
+		
+		public function _scenePushComponentToDictionary(component:GameComponent):void
 		{
 			components[component.Type] = component; 
 			
@@ -84,7 +108,7 @@ package
 			}
 		}
 		
-		public function RemoveComponentFromDictionary(component:GameComponent):void
+		public function _sceneRemoveComponentFromDictionary(component:GameComponent):void
 		{
 			delete components[component.Type];
 		}

@@ -23,6 +23,11 @@ package
 			gameSystems = new Array();
 		}
 		
+		public function GameObjectCount():int
+		{
+			return gameObjects.length;
+		}
+		
 		public function AddGameSystem(system:IGameSystem)
 		{
 			gameSystems.push(system);
@@ -37,7 +42,7 @@ package
 		
 		public function AddComponent(objectId:uint, component:GameComponent):void
 		{
-			gameObjects[objectId].PushComponentToDictionary(component);
+			gameObjects[objectId]._scenePushComponentToDictionary(component);
 			for each(var system:IGameSystem in gameSystems)
 			{
 				system.GameObjectComponentAdded(objectId, component);
@@ -46,7 +51,7 @@ package
 		
 		public function RemoveComponent(objectId:uint, component:GameComponent):void
 		{
-			gameObjects[objectId].RemoveComponentFromDictionary(component);
+			gameObjects[objectId]._sceneRemoveComponentFromDictionary(component);
 			for each(var system:IGameSystem in gameSystems)
 			{
 				system.GameObjectComponentRemoved(objectId, component);
@@ -92,6 +97,22 @@ package
 			for each(var system:IGameSystem in gameSystems)
 			{
 				system.GameObjectRemoved(gameObjects[gameobject.Id]);
+			}
+			
+			if (gameobject.IsChild)
+			{
+				if (gameObjects[gameobject.ParentId] != null)
+				{
+					gameObjects[gameobject.ParentId].RemoveChild(gameobject);
+				}
+			}
+			
+			for each(var child:GameObject in gameobject.GetChildren())
+			{
+				if (child)
+				{
+					RemoveGameObject(child);
+				}
 			}
 			
 			delete gameObjects[gameobject.Id];

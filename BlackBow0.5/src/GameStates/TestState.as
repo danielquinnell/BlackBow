@@ -13,6 +13,7 @@ package GameStates
 	import GameSystems.CollisionSystem;
 	import GameSystems.MovementSystem;
 	import GameSystems.RenderingSystem;
+	import GameSystems.TransformSystem;
 	import Math;
 	/**
 	 * ...
@@ -37,22 +38,24 @@ package GameStates
 			
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
 			testPlayer.AddComponent(new PositionComponent(100,100));
+			//testPlayer.AddComponent(new VelocityComponent(5,1));
 			testPlayer.AddComponent(new CollisionComponent(testPlayer.Rendering.Display.width, testPlayer.Rendering.Display.height));
 			trace(testPlayer.Collision.Width);trace(testPlayer.Collision.Height);
-			for (var i:int = 0; i < 1; i++)
+			for (var i:int = 0; i < 10; i++)
 			{
 				var add:GameObject = gameScene.CreateGameObject();
 				add.AddComponent(new RendererComponent(new PlayerSprite()));
-				add.AddComponent(new PositionComponent(100, 163));
+				add.AddComponent(new PositionComponent(10 + (i * 30), 10 + (i*30)));
 				add.AddComponent(new CollisionComponent(add.Rendering.Display.width, add.Rendering.Display.height));
-				//add.AddComponent(new VelocityComponent(11,11));
+				testPlayer.AddChild(add);
 			}
 			
 			counterToRemove = 0;
 			
 			gameScene.AddGameSystem(new MovementSystem());
-			gameScene.AddGameSystem(new RenderingSystem(maindisplay));
+			gameScene.AddGameSystem(new RenderingSystem(maindisplay, true));
 			gameScene.AddGameSystem(new CollisionSystem());
+			gameScene.AddGameSystem(new TransformSystem());
 			
 			gameScene.addEventListener(GameEventTypes.COLLISION, debugCollisionOutput);
 		}
@@ -60,7 +63,7 @@ package GameStates
 		private function debugCollisionOutput(ev:Event)
 		{
 			var collisionEvent:CollisionEvent = ev as CollisionEvent;
-			trace(collisionEvent.Object1.Id + " " + collisionEvent.Object2.Id);
+			//trace(collisionEvent.Object1.Id + " " + collisionEvent.Object2.Id);
 		}
 		
 		public function Update(deltaTime:Number):void
@@ -68,15 +71,25 @@ package GameStates
 			gameScene.UpdateSystems(deltaTime);
 			
 			counterToRemove += deltaTime;
-			if (counterToRemove >= 1.5)
+			if (counterToRemove >= .1)
 			{
 				counterToRemove = 0;
-				//testPlayer.RemoveFromScene();
+				testPlayer.RemoveFromScene();
 				
-				//PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).X = 100;
-				//PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).Y = 100;
+				PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).X = 100;
+				PositionComponent(testPlayer.GetComponent(GameComponent.POSITION)).Y = 100;
 				
-				//gameScene.AddGameObject(testPlayer);
+				gameScene.AddGameObject(testPlayer);
+				
+				for (var i:int = 0; i < 5; i++)
+				{
+					var add:GameObject = gameScene.CreateGameObject();
+					add.AddComponent(new RendererComponent(new PlayerSprite()));
+					add.AddComponent(new PositionComponent(30 + (i * 30), 30 + (i*30)));
+					add.AddComponent(new CollisionComponent(add.Rendering.Display.width, add.Rendering.Display.height));
+					testPlayer.AddChild(add);
+				}
+				
 			}
 		}
 		
