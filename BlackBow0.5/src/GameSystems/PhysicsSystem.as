@@ -110,6 +110,8 @@ package GameSystems
 			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit | b2DebugDraw.e_centerOfMassBit);
 			box2dWorld.SetDebugDraw(debugDraw);
 		}
+		
+		public static function GetPixelsToMeters(pixels:Number):Number { return pixels * 0.5; }
 	}
 
 }

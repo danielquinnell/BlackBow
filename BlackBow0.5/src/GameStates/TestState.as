@@ -47,13 +47,14 @@ package GameStates
 			testPlayer = gameScene.CreateGameObject();
 			testPlayer.AddComponent(new PositionComponent(170, 100));
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
-			testPlayer.AddComponent(new PhysicsComponent(b2Body.b2_dynamicBody));
+			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)));
 			
 			var ground:GameObject = gameScene.CreateGameObject();
 			ground.AddComponent(new RendererComponent(new GroundSprite()));
-			ground.AddComponent(new PositionComponent(100, 300));
-			ground.AddComponent(new PhysicsComponent(b2Body.b2_staticBody));
+			ground.AddComponent(new PositionComponent(400, 300));
+			ground.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.height), b2Body.b2_staticBody));
 			ground.Physics.BodyDefinition.type = b2Body.b2_staticBody;
+			
 		}
 		
 		private function debugCollisionOutput(ev:Event)
@@ -70,7 +71,7 @@ package GameStates
 			
 			if (counterToRemove > 1)
 			{
-				testPlayer.RemoveFromScene();
+				//testPlayer.RemoveFromScene();
 			}
 		}
 		
