@@ -51,11 +51,13 @@ package
 		
 		public function AddComponent(component:GameComponent):void
 		{
+			component.ParentGameObject = this;
 			gameScene.AddComponent(Id, component);
 		}
 		
 		public function RemoveComponent(component:GameComponent):void
 		{
+			component.ParentGameObject = null;
 			gameScene.RemoveComponent(Id, component);
 		}
 		
@@ -89,6 +91,7 @@ package
 		
 		public function _scenePushComponentToDictionary(component:GameComponent):void
 		{
+			component.ParentGameObject = this;
 			components[component.Type] = component; 
 			
 			switch(component.Type)
@@ -110,6 +113,7 @@ package
 		
 		public function _sceneRemoveComponentFromDictionary(component:GameComponent):void
 		{
+			component.ParentGameObject = this;
 			delete components[component.Type];
 		}
 	}

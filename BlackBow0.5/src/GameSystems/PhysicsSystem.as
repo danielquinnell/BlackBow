@@ -21,6 +21,10 @@ package GameSystems
 	{
 		private var box2dWorld:b2World;
 		
+		private var worldIsStepping:Boolean;
+		private var cleanupBodies:Array;
+		private var componentsToAdd:Array;
+		
 		protected var gameScene:GameScene;
 		protected var gameObjects:Array;
 		
@@ -30,6 +34,9 @@ package GameSystems
 		{
 			box2dWorld = new b2World(new b2Vec2(0, 100), true);
 			box2dWorld.SetContactListener(this);
+			cleanupBodies =  new Array();
+			componentsToAdd = new Array();
+			worldIsStepping = false;
 			if (debugContainer)
 				SetDebugDrawing(debugContainer);
 		}
@@ -59,19 +66,26 @@ package GameSystems
 			if (component is PhysicsComponent == false)
 				return;
 				
+			componentsToAdd.push(component);
+		}
+		
+		private function addComponentToBox2dWorld(component:GameComponent)
+		{
+			if (component is PhysicsComponent == false)
+				return;
+								
 			var physicsComponent:PhysicsComponent = component as PhysicsComponent;
-			if (gameObjects[gameObjId] && gameObjects[gameObjId].Position)
+			if (gameObjects[component.ParentGameObject.Id] && gameObjects[component.ParentGameObject.Id].Position)
 			{
-				physicsComponent.BodyDefinition.position.x = gameObjects[gameObjId].Position.X;
-				physicsComponent.BodyDefinition.position.y = gameObjects[gameObjId].Position.Y;
+				physicsComponent.BodyDefinition.position.x = gameObjects[component.ParentGameObject.Id].Position.X;
+				physicsComponent.BodyDefinition.position.y = gameObjects[component.ParentGameObject.Id].Position.Y;
 			}
 			physicsComponent.Body = box2dWorld.CreateBody(physicsComponent.BodyDefinition);
 			
-			if (gameObjects[gameObjId])
-				physicsComponent.Body.SetUserData(gameObjects[gameObjId]);
+			if (gameObjects[component.ParentGameObject.Id])
+				physicsComponent.Body.SetUserData(gameObjects[component.ParentGameObject.Id]);	
 				
 			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition);
-			
 		}
 		
 		public function GameObjectComponentRemoved(gameObjId:uint, component:GameComponent) 
@@ -83,7 +97,7 @@ package GameSystems
 			
 			if (physicsComponent.Body)
 			{
-				box2dWorld.DestroyBody(physicsComponent.Body);
+				cleanupBodies.push(physicsComponent.Body);
 				physicsComponent.Body = null;
 			}
 		}
@@ -98,16 +112,31 @@ package GameSystems
 		
 		public function Update(deltaTime:Number):void 
 		{
+			while (componentsToAdd.length > 0)
+			{
+				var component:GameComponent = componentsToAdd.pop();
+				addComponentToBox2dWorld(component);
+			}
+			
+			worldIsStepping = true;
 			box2dWorld.Step(1.0 / 30.0, 6, 2);
+			worldIsStepping = false;
+			
 			for each(var gObject:GameObject in gameObjects)
 			{
-				if (!gObject || !gObject.Physics || !gObject.Position)
+				if (!gObject || !gObject.Physics || !gObject.Position || !gObject.Physics.Body)
 					continue;
 				
 				gObject.Position.X = gObject.Physics.Body.GetPosition().x;
 				gObject.Position.Y = gObject.Physics.Body.GetPosition().y;
 				
 				gObject.Position.Rotation = gObject.Physics.Body.GetAngle() * DegreePerRadian;
+			}
+			
+			while (cleanupBodies.length > 0)
+			{
+				var body:b2Body = cleanupBodies.pop();
+				box2dWorld.DestroyBody(body);
 			}
 			
 			box2dWorld.DrawDebugData();

@@ -45,7 +45,7 @@ package GameComponents
 		
 		private function DebugCollision(gameObject:GameObject)
 		{
-			//trace("COLLIDED WITH: " + gameObject.Id);
+			trace("I [" + ParentGameObject.Id + "] COLLIDED WITH: " + gameObject.Id);
 		}
 	}
 

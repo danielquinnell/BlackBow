@@ -7,9 +7,12 @@ package
 	public class GameComponent 
 	{
 		public var Type:String;
+		public var ParentGameObject:GameObject; //The game object this component is in
+		
 		public function GameComponent() 
 		{
 			Type = "";
+			ParentGameObject = null;
 		}
 		
 		//Declare GameComponent Type constants here
