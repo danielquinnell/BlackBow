@@ -51,7 +51,7 @@ package GameStates
 			
 			var ground:GameObject = gameScene.CreateGameObject();
 			ground.AddComponent(new RendererComponent(new GroundSprite()));
-			ground.AddComponent(new PositionComponent(400, 300));
+			ground.AddComponent(new PositionComponent(450, 300));
 			ground.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.height), b2Body.b2_staticBody));
 			ground.Physics.BodyDefinition.type = b2Body.b2_staticBody;
 			
@@ -60,7 +60,7 @@ package GameStates
 		private function debugCollisionOutput(ev:Event)
 		{
 			var collisionEvent:CollisionEvent = ev as CollisionEvent;
-			//trace(collisionEvent.Object1.Id + " " + collisionEvent.Object2.Id);
+			trace("TEST STATE LISTENER: " + collisionEvent.Object1.Id + " " + collisionEvent.Object2.Id);
 		}
 		
 		public function Update(deltaTime:Number):void

@@ -16,6 +16,9 @@ package GameComponents
 		
 		public var Body:b2Body;	//This is set in the physics system, is null by default
 		
+		public var CollisionEnterCallback:Function;	//This is called when colliding with another object
+		public var CollisionExitCallback:Function;	//This is called when exiting out of another object
+		
 		public function PhysicsComponent(width:Number = 32, height:Number = 32, type:uint = 2) 
 		{
 			Type = GameComponent.PHYSICS;
@@ -26,6 +29,9 @@ package GameComponents
 			FixtureDefinition.friction = 1;
 			FixtureDefinition.density = 1;
 			
+			CollisionEnterCallback = DebugCollision;
+			CollisionExitCallback = null;
+			
 			if(width > 0 && height > 0)
 				CreateRect(width, height);
 		}
@@ -35,6 +41,11 @@ package GameComponents
 			var polygon:b2PolygonShape = new b2PolygonShape();
 			polygon.SetAsBox(width, height);
 			FixtureDefinition.shape = polygon;
+		}
+		
+		private function DebugCollision(gameObject:GameObject)
+		{
+			//trace("COLLIDED WITH: " + gameObject.Id);
 		}
 	}
 
