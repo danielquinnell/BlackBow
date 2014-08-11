@@ -29,7 +29,7 @@ package GameComponents
 			FixtureDefinition.friction = 1;
 			FixtureDefinition.density = 1;
 			
-			CollisionEnterCallback = DebugCollision;
+			CollisionEnterCallback = null;
 			CollisionExitCallback = null;
 			
 			if(width > 0 && height > 0)
@@ -41,11 +41,6 @@ package GameComponents
 			var polygon:b2PolygonShape = new b2PolygonShape();
 			polygon.SetAsBox(width, height);
 			FixtureDefinition.shape = polygon;
-		}
-		
-		private function DebugCollision(gameObject:GameObject)
-		{
-			trace("I [" + ParentGameObject.Id + "] COLLIDED WITH: " + gameObject.Id);
 		}
 	}
 
