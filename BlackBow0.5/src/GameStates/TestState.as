@@ -60,7 +60,7 @@ package GameStates
 			
 			var ground:GameObject = gameScene.CreateGameObject();
 			ground.AddComponent(new RendererComponent(new GroundSprite()));
-			ground.AddComponent(new PositionComponent(0, 100));
+			ground.AddComponent(new PositionComponent(0, 300));
 			ground.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.height), b2Body.b2_staticBody));
 			ground.Physics.BodyDefinition.type = b2Body.b2_staticBody;
 			

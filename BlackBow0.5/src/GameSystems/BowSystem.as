@@ -54,7 +54,8 @@ package GameSystems
 							
 							var physics:PhysicsComponent = new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.width)));
 							physics.FixtureDefinition.isSensor = true;
-							physics.BodyDefinition.linearVelocity = new b2Vec2(1, 0);
+							physics.BodyDefinition.linearVelocity = new b2Vec2(character.Facing == CharacterComponent.LEFT ? -bow.CurrentPower * ArrowPowerMultiplier : bow.CurrentPower * ArrowPowerMultiplier, 0);
+							
 							arrow.AddComponent(physics);
 						}
 					}

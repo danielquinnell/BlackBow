@@ -12,7 +12,7 @@ package GameComponents {
 		public var IsPulling:Boolean;
 		public var CurrentPower:Number;
 		
-		public function BowComponent(powerInc:Number = 10) 
+		public function BowComponent(powerInc:Number = 0.5) 
 		{
 			Type = GameComponent.BOW;
 			PowerIncrement = powerInc;

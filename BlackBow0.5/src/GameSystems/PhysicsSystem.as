@@ -91,7 +91,6 @@ package GameSystems
 			if (gameObjects[component.ParentGameObject.Id])
 				physicsComponent.Body.SetUserData(gameObjects[component.ParentGameObject.Id]);	
 				
-			trace(physicsComponent.BodyDefinition.linearVelocity.x);
 			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition);
 		}
 		
