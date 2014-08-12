@@ -30,9 +30,12 @@ package GameSystems
 		
 		public static var DegreePerRadian:Number = 57.2957795;
 		
+		//How to scale the world down and up to meters and pixels
+		public static const PixelPerMeter:Number = 50;
+		
 		public function PhysicsSystem(debugContainer:DisplayObjectContainer= null) 
 		{
-			box2dWorld = new b2World(new b2Vec2(0, 100), true);
+			box2dWorld = new b2World(new b2Vec2(0, 1), true);
 			box2dWorld.SetContactListener(this);
 			cleanupBodies =  new Array();
 			componentsToAdd = new Array();
@@ -65,8 +68,11 @@ package GameSystems
 		{
 			if (component is PhysicsComponent == false)
 				return;
-				
-			componentsToAdd.push(component);
+			
+			if(worldIsStepping)
+				componentsToAdd.push(component);
+			else
+				addComponentToBox2dWorld(component);
 		}
 		
 		private function addComponentToBox2dWorld(component:GameComponent)
@@ -77,14 +83,15 @@ package GameSystems
 			var physicsComponent:PhysicsComponent = component as PhysicsComponent;
 			if (gameObjects[component.ParentGameObject.Id] && gameObjects[component.ParentGameObject.Id].Position)
 			{
-				physicsComponent.BodyDefinition.position.x = gameObjects[component.ParentGameObject.Id].Position.X;
-				physicsComponent.BodyDefinition.position.y = gameObjects[component.ParentGameObject.Id].Position.Y;
+				physicsComponent.BodyDefinition.position.x = gameObjects[component.ParentGameObject.Id].Position.X / PixelPerMeter;
+				physicsComponent.BodyDefinition.position.y = gameObjects[component.ParentGameObject.Id].Position.Y / PixelPerMeter;
 			}
 			physicsComponent.Body = box2dWorld.CreateBody(physicsComponent.BodyDefinition);
 			
 			if (gameObjects[component.ParentGameObject.Id])
 				physicsComponent.Body.SetUserData(gameObjects[component.ParentGameObject.Id]);	
 				
+			trace(physicsComponent.BodyDefinition.linearVelocity.x);
 			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition);
 		}
 		
@@ -127,10 +134,11 @@ package GameSystems
 				if (!gObject || !gObject.Physics || !gObject.Position || !gObject.Physics.Body)
 					continue;
 				
-				gObject.Position.X = gObject.Physics.Body.GetPosition().x;
-				gObject.Position.Y = gObject.Physics.Body.GetPosition().y;
+				gObject.Position.X = gObject.Physics.Body.GetPosition().x * PixelPerMeter;
+				gObject.Position.Y = gObject.Physics.Body.GetPosition().y * PixelPerMeter;
 				
 				gObject.Position.Rotation = gObject.Physics.Body.GetAngle() * DegreePerRadian;
+				
 			}
 			
 			while (cleanupBodies.length > 0)
@@ -179,12 +187,12 @@ package GameSystems
 			var debugDraw:b2DebugDraw = new b2DebugDraw();
 			
 			debugDraw.SetSprite(debugSprite);
-			debugDraw.SetDrawScale(1);
+			debugDraw.SetDrawScale(PixelPerMeter);
 			debugDraw.SetFillAlpha(.5);
 			debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit | b2DebugDraw.e_centerOfMassBit);
 			box2dWorld.SetDebugDraw(debugDraw);
 		}
 		
-		public static function GetPixelsToMeters(pixels:Number):Number { return pixels * 0.5; }
+		public static function GetPixelsToMeters(pixels:Number):Number { return (pixels / PixelPerMeter) / 2; }
 	}
 }

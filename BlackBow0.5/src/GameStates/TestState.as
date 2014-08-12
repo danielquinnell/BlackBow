@@ -8,15 +8,21 @@ package GameStates
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import flash.ui.Keyboard;
+	import GameComponents.CharacterComponent;
 	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
-	import GameComponents.VelocityComponent;
 	import GameEvents.CollisionEvent;
+	import GameSystems.BowSystem;
+	import GameSystems.CharacterSystem;
 	import GameSystems.PhysicsSystem;
 	import GameSystems.RenderingSystem;
 	import GameSystems.TransformSystem;
 	import Math;
+	import flash.events.KeyboardEvent;
+	import GameComponents.BowComponent;
+	
 	/**
 	 * ...
 	 * @author Austin Shindlecker
@@ -38,54 +44,56 @@ package GameStates
 			counterToRemove = 0;
 			
 			gameScene = new GameScene();
-			gameScene.addEventListener(GameEventTypes.COLLISION, debugCollisionOutput);
 
 			gameScene.AddGameSystem(new TransformSystem());
 			gameScene.AddGameSystem(new RenderingSystem(mainDisplayContainer, true));
 			gameScene.AddGameSystem(new PhysicsSystem(mainDisplayContainer as Sprite));
+			gameScene.AddGameSystem(new CharacterSystem());
+			gameScene.AddGameSystem(new BowSystem());
 			
 			testPlayer = gameScene.CreateGameObject();
-			testPlayer.AddComponent(new PositionComponent(170, 100));
+			testPlayer.AddComponent(new PositionComponent(0, 0));
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
 			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)));
+			testPlayer.AddComponent(new CharacterComponent(1, true));
+			testPlayer.AddComponent(new BowComponent());
 			
 			var ground:GameObject = gameScene.CreateGameObject();
 			ground.AddComponent(new RendererComponent(new GroundSprite()));
-			ground.AddComponent(new PositionComponent(450, 300));
+			ground.AddComponent(new PositionComponent(0, 100));
 			ground.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.height), b2Body.b2_staticBody));
 			ground.Physics.BodyDefinition.type = b2Body.b2_staticBody;
 			
-			testPlayer.Rendering.Display.addEventListener(MouseEvent.CLICK, onMouseClick);
-		}
-		
-		private function debugCollisionOutput(ev:Event)
-		{
-			var collisionEvent:CollisionEvent = ev as CollisionEvent;
-			trace("TEST STATE LISTENER: " + collisionEvent.Object1.Id + " " + collisionEvent.Object2.Id);
-			collisionEvent.Object1.RemoveFromScene();
 			
-			if (counterToRemove < 1)
-			{
-				return;
-			}
-			counterToRemove = 0
-			for (var i = 0; i < 1; i++)
-			{
-			var add:GameObject = gameScene.CreateGameObject();
-			add.AddComponent(new PositionComponent(170 + (i * 50), 100));
-			add.AddComponent(new RendererComponent(new PlayerSprite()));
-			add.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(add.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(add.Rendering.Display.height)));
-			}
+			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
+			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
+			mainDisplayContainer.scaleX = 1;
+			mainDisplayContainer.scaleY = 1;
 		}
-		
+				
 		public function Update(deltaTime:Number):void
 		{
 			gameScene.UpdateSystems(deltaTime);
 			counterToRemove += deltaTime;
 		}
 		
-		private function onMouseClick(event:Event)
-		{	
+		public function onKeyDown(event:KeyboardEvent)
+		{
+			if (event.keyCode != Keyboard.SPACE)
+				return;
+			
+			var character:CharacterComponent = testPlayer.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
+			character.PrimaryActionState = true;
+		}
+		
+		public function onKeyUp(event:KeyboardEvent)
+		{
+			if (event.keyCode != Keyboard.SPACE)
+				return;
+				
+			var character:CharacterComponent = testPlayer.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
+			character.PrimaryActionState = false;
 		}
 		
 		public function Pause():void

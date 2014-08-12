@@ -5,7 +5,6 @@ package
 	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
-	import GameComponents.VelocityComponent;
 	/**
 	 * ...
 	 * @author Austin Shindlecker
@@ -25,7 +24,6 @@ package
 		//NOTE: It's not required for gameobjects to use any or all of these default components. The default value is null
 		public var Rendering:RendererComponent;
 		public var Position:PositionComponent;
-		public var Velocity:VelocityComponent;
 		public var Physics:PhysicsComponent;
 		
 		public function GameObject(gamescene:GameScene, id:uint = 0) 
@@ -40,7 +38,6 @@ package
 			
 			Rendering = null;
 			Position = null;
-			Velocity = null;
 			Physics = null;
 		}
 		
@@ -101,9 +98,6 @@ package
 					break;
 				case GameComponent.RENDERER:
 					Rendering = component as RendererComponent;
-					break;
-				case GameComponent.VELOCITY:
-					Velocity = component as VelocityComponent;
 					break;
 				case GameComponent.PHYSICS:
 					Physics = component as PhysicsComponent;

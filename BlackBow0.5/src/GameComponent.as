@@ -21,6 +21,9 @@ package
 		public static const RENDERER:String = "renderer";
 		public static const COLLISION:String = "collision";
 		public static const PHYSICS:String = "physics";
+		public static const CHARACTER:String = "character";
+		public static const INVENTORY:String = "inventory";
+		public static const BOW:String = "bow";
 	}
 
 }

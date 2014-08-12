@@ -10,6 +10,7 @@ package
 	import GameEvents.GameObjectRemovedEvent;
 	import GameStates.TestState;
 	import GameSystems.RenderingSystem;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * ...
@@ -19,6 +20,7 @@ package
 	{
 		public function Main():void 
 		{
+			
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);  
 		}
