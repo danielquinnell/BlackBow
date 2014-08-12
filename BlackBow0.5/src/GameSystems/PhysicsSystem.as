@@ -1,9 +1,12 @@
 package GameSystems 
 {
+	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2DebugDraw;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import flash.display.DisplayObjectContainer;
@@ -35,7 +38,7 @@ package GameSystems
 		
 		public function PhysicsSystem(debugContainer:DisplayObjectContainer= null) 
 		{
-			box2dWorld = new b2World(new b2Vec2(0, 1), true);
+			box2dWorld = new b2World(new b2Vec2(0, 2), false);
 			box2dWorld.SetContactListener(this);
 			cleanupBodies =  new Array();
 			componentsToAdd = new Array();
@@ -91,7 +94,16 @@ package GameSystems
 			if (gameObjects[component.ParentGameObject.Id])
 				physicsComponent.Body.SetUserData(gameObjects[component.ParentGameObject.Id]);	
 				
-			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition);
+			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition).SetUserData(CollisionEvent.NOTFOOT);
+			
+			//Create a foot fixture to send responses to detect whether or not things are "on the ground"
+			var footFixture:b2FixtureDef = new b2FixtureDef();
+			var footPoly:b2PolygonShape = new b2PolygonShape();
+			
+			footFixture.isSensor = true;
+			footPoly.SetAsOrientedBox(.2, .2, new b2Vec2(0,.5));
+			footFixture.shape = footPoly;
+			physicsComponent.Body.CreateFixture(footFixture).SetUserData(CollisionEvent.FOOT);
 		}
 		
 		public function GameObjectComponentRemoved(gameObjId:uint, component:GameComponent) 
@@ -137,7 +149,6 @@ package GameSystems
 				gObject.Position.Y = gObject.Physics.Body.GetPosition().y * PixelPerMeter;
 				
 				gObject.Position.Rotation = gObject.Physics.Body.GetAngle() * DegreePerRadian;
-				
 			}
 			
 			while (cleanupBodies.length > 0)
@@ -157,7 +168,10 @@ package GameSystems
 			var gameObject1:GameObject = contact.GetFixtureA().GetBody().GetUserData();
 			var gameObject2:GameObject = contact.GetFixtureB().GetBody().GetUserData();
 			
-			gameScene.BroadcastEvent(new CollisionEvent(gameObject1, gameObject2));
+			var type1:String = contact.GetFixtureA().GetUserData();
+			var type2:String = contact.GetFixtureB().GetUserData();
+			
+			gameScene.BroadcastEvent(new CollisionEvent(gameObject1, gameObject2, CollisionEvent.ENTER, type1, type2));
 			
 			if (gameObject1.Physics.CollisionEnterCallback)
 				gameObject1.Physics.CollisionEnterCallback(gameObject2);
@@ -171,6 +185,11 @@ package GameSystems
 			
 			var gameObject1:GameObject = contact.GetFixtureA().GetBody().GetUserData();
 			var gameObject2:GameObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			var type1:String = contact.GetFixtureA().GetUserData();
+			var type2:String = contact.GetFixtureB().GetUserData();
+			
+			gameScene.BroadcastEvent(new CollisionEvent(gameObject1, gameObject2, CollisionEvent.EXIT, type1, type2));
 			
 			if (gameObject1.Physics.CollisionExitCallback)
 				gameObject1.Physics.CollisionExitCallback(gameObject2);

@@ -4,6 +4,7 @@ package
 	import flash.events.EventDispatcher;
 	import GameEvents.GameObjectAddedEvent;
 	import GameEvents.GameObjectRemovedEvent;
+	import flash.events.KeyboardEvent;
 	
 	/**
 	 * Manages all GameObjects and GameSystems
@@ -28,15 +29,29 @@ package
 			return gameObjects.length;
 		}
 		
+		public function RegisterEvents(dispatcher:EventDispatcher)
+		{
+			dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, BroadcastEvent);
+			dispatcher.addEventListener(KeyboardEvent.KEY_UP, BroadcastEvent);
+		}
+		
+		public function RemoveEvents(dispatcher:EventDispatcher)
+		{
+			dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, BroadcastEvent);
+			dispatcher.removeEventListener(KeyboardEvent.KEY_UP, BroadcastEvent);
+		}
+		
 		public function AddGameSystem(system:IGameSystem)
 		{
 			gameSystems.push(system);
 			system.SetGameScene(this);
 			system.Initialize(gameObjects);
+			system.AddEventListeners(this);
 		}
 		
 		public function RemoveGameSystem(system:IGameSystem)
 		{
+			system.RemoveEventListeners(this);
 			delete gameSystems[gameSystems.indexOf(system)];
 		}
 		

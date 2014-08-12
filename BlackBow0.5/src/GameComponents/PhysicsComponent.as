@@ -26,7 +26,7 @@ package GameComponents
 			FixtureDefinition = new b2FixtureDef();
 			Body = null;			
 			BodyDefinition.type = type;
-			FixtureDefinition.friction = 1;
+			FixtureDefinition.friction = 0;
 			FixtureDefinition.density = 1;
 			
 			CollisionEnterCallback = null;

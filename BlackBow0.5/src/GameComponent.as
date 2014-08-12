@@ -24,6 +24,7 @@ package
 		public static const CHARACTER:String = "character";
 		public static const INVENTORY:String = "inventory";
 		public static const BOW:String = "bow";
+		public static const INPUT:String = "input";
 	}
 
 }
