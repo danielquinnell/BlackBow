@@ -34,7 +34,7 @@ package GameSystems
 		public static var DegreePerRadian:Number = 57.2957795;
 		
 		//How to scale the world down and up to meters and pixels
-		public static const PixelPerMeter:Number = 50;
+		public static const PixelPerMeter:Number = 32;
 		
 		public function PhysicsSystem(debugContainer:DisplayObjectContainer= null) 
 		{
@@ -93,15 +93,16 @@ package GameSystems
 			
 			if (gameObjects[component.ParentGameObject.Id])
 				physicsComponent.Body.SetUserData(gameObjects[component.ParentGameObject.Id]);	
-				
-			physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinition).SetUserData(CollisionEvent.NOTFOOT);
+			
+			for (var i = 0; i < physicsComponent.FixtureDefinitions.length; i++)
+				physicsComponent.Body.CreateFixture(physicsComponent.FixtureDefinitions[i]).SetUserData(CollisionEvent.NOTFOOT);
 			
 			//Create a foot fixture to send responses to detect whether or not things are "on the ground"
 			var footFixture:b2FixtureDef = new b2FixtureDef();
 			var footPoly:b2PolygonShape = new b2PolygonShape();
-			
+		
 			footFixture.isSensor = true;
-			footPoly.SetAsOrientedBox(.2, .2, new b2Vec2(0,.5));
+			footPoly.SetAsOrientedBox(.2, .2, new b2Vec2(0,.8));
 			footFixture.shape = footPoly;
 			physicsComponent.Body.CreateFixture(footFixture).SetUserData(CollisionEvent.FOOT);
 		}
@@ -135,7 +136,6 @@ package GameSystems
 				var component:GameComponent = componentsToAdd.pop();
 				addComponentToBox2dWorld(component);
 			}
-			
 			worldIsStepping = true;
 			box2dWorld.Step(1.0 / 30.0, 6, 2);
 			worldIsStepping = false;

@@ -12,7 +12,7 @@ package GameComponents
 	public class PhysicsComponent extends GameComponent
 	{
 		public var BodyDefinition:b2BodyDef;
-		public var FixtureDefinition:b2FixtureDef;
+		public var FixtureDefinitions:Array;
 		
 		public var Body:b2Body;	//This is set in the physics system, is null by default
 		
@@ -23,11 +23,9 @@ package GameComponents
 		{
 			Type = GameComponent.PHYSICS;
 			BodyDefinition = new b2BodyDef();
-			FixtureDefinition = new b2FixtureDef();
+			FixtureDefinitions = new Array();
 			Body = null;			
 			BodyDefinition.type = type;
-			FixtureDefinition.friction = 0;
-			FixtureDefinition.density = 1;
 			
 			CollisionEnterCallback = null;
 			CollisionExitCallback = null;
@@ -39,8 +37,13 @@ package GameComponents
 		public function CreateRect(width:Number, height:Number)
 		{
 			var polygon:b2PolygonShape = new b2PolygonShape();
+			var fixDef:b2FixtureDef = new b2FixtureDef();
+			fixDef.density = 1;
+			fixDef.friction = 0;
 			polygon.SetAsBox(width, height);
-			FixtureDefinition.shape = polygon;
+			fixDef.shape = polygon;
+			
+			FixtureDefinitions.push(fixDef);
 		}
 	}
 

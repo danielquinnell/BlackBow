@@ -24,6 +24,7 @@ package GameStates
 	import Math;
 	import flash.events.KeyboardEvent;
 	import GameComponents.BowComponent;
+	import PhysicsData;
 	
 	/**
 	 * ...
@@ -56,20 +57,19 @@ package GameStates
 			gameScene.AddGameSystem(new InputSystem());
 			
 			testPlayer = gameScene.CreateGameObject();
-			testPlayer.AddComponent(new PositionComponent(0, 0));
+			testPlayer.AddComponent(new PositionComponent(100, 100));
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
 			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)));
+			
 			testPlayer.AddComponent(new CharacterComponent(1, false));
-			testPlayer.AddComponent(new BowComponent());
 			testPlayer.AddComponent(new InputCharacterComponent());
+			testPlayer.AddComponent(new BowComponent());
 			testPlayer.Physics.Body.SetFixedRotation(true);
+		
 			
-			var ground:GameObject = gameScene.CreateGameObject();
-			ground.AddComponent(new RendererComponent(new GroundSprite()));
-			ground.AddComponent(new PositionComponent(0, 300));
-			ground.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(ground.Rendering.Display.height), b2Body.b2_staticBody));
-			ground.Physics.BodyDefinition.type = b2Body.b2_staticBody;
-			
+			var level:GameObject = gameScene.CreateGameObject();
+			level.AddComponent(new PositionComponent(0, 0));
+			level.AddComponent(new PhysicsData().createComponent("a6"));
 			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
