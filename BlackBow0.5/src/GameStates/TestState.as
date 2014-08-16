@@ -57,9 +57,11 @@ package GameStates
 			gameScene.AddGameSystem(new InputSystem());
 			
 			testPlayer = gameScene.CreateGameObject();
-			testPlayer.AddComponent(new PositionComponent(100, 100));
+			testPlayer.AddComponent(new PositionComponent(100, 300));
 			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
-			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width), PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)));
+			testPlayer.Rendering.Display.scaleX *= 2/3;
+			testPlayer.Rendering.Display.scaleY *= 2/3;
+			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width) * testPlayer.Rendering.Display.scaleX, PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)* testPlayer.Rendering.Display.scaleY));
 			
 			testPlayer.AddComponent(new CharacterComponent(1, false));
 			testPlayer.AddComponent(new InputCharacterComponent());
@@ -69,7 +71,7 @@ package GameStates
 			
 			var level:GameObject = gameScene.CreateGameObject();
 			level.AddComponent(new PositionComponent(0, 0));
-			level.AddComponent(new PhysicsData().createComponent("a6"));
+			level.AddComponent(new PhysicsData().createComponent("d7"));
 			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);

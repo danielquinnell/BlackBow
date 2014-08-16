@@ -56,6 +56,8 @@
   <libraryPaths>
     <element path="lib\Resources.swc" />
     <element path="lib\MoreResources.swc" />
+    <element path="resources\MoreResources.swc" />
+    <element path="resources\Resources.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

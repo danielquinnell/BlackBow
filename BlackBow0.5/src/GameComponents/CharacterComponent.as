@@ -21,6 +21,8 @@ package GameComponents
 		public var IsJumping:Boolean;
 		public var JumpForce:Number;
 		
+		public var GroundCount:Number; //Number of floors the character is on top
+		
 		//If true the character is performing a primary action, if false the character is not
 		public var PrimaryActionState:Boolean;
 		
@@ -35,6 +37,7 @@ package GameComponents
 			CanJump = false;
 			CurrentTool = null;
 			IsJumping = false;
+			GroundCount = 0;
 		}
 	}
 

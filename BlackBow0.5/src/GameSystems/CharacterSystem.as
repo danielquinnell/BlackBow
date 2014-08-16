@@ -2,6 +2,7 @@ package GameSystems
 {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.events.EventDispatcher;
+	import flash.utils.Dictionary;
 	import GameComponents.CharacterComponent;
 	import GameComponents.PhysicsComponent;
 	import GameEvents.CollisionEvent;
@@ -11,10 +12,8 @@ package GameSystems
 	 */
 	public class CharacterSystem extends GameSystem
 	{
-		
 		public function CharacterSystem() 
 		{
-			
 		}
 		
 		override public function AddEventListeners(dispatcher:EventDispatcher):void 
@@ -44,11 +43,11 @@ package GameSystems
 				
 				if (event.CollisionType == CollisionEvent.ENTER)
 				{
-					character.CanJump = true;
+					character.GroundCount++;
 				}
 				else
 				{
-					character.CanJump = false;
+					character.GroundCount--;
 				}
 			}
 		}
@@ -63,6 +62,7 @@ package GameSystems
 					continue;
 				
 				var character:CharacterComponent = gObject.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
+				character.CanJump = character.GroundCount > 0;
 				
 				if (gObject.HasComponent(GameComponent.PHYSICS))
 				{
