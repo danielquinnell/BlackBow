@@ -38,7 +38,7 @@ package GameSystems
 		
 		public function PhysicsSystem(debugContainer:DisplayObjectContainer= null) 
 		{
-			box2dWorld = new b2World(new b2Vec2(0, 2), false);
+			box2dWorld = new b2World(new b2Vec2(0, 5), false);
 			box2dWorld.SetContactListener(this);
 			cleanupBodies =  new Array();
 			componentsToAdd = new Array();
@@ -102,7 +102,7 @@ package GameSystems
 			var footPoly:b2PolygonShape = new b2PolygonShape();
 		
 			footFixture.isSensor = true;
-			footPoly.SetAsOrientedBox(.2, .2, new b2Vec2(0,.8));
+			footPoly.SetAsOrientedBox(.3, .2, new b2Vec2(0,.35));
 			footFixture.shape = footPoly;
 			physicsComponent.Body.CreateFixture(footFixture).SetUserData(CollisionEvent.FOOT);
 		}

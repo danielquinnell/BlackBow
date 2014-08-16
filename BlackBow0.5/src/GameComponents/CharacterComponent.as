@@ -29,7 +29,7 @@ package GameComponents
 		public function CharacterComponent(speed:int = 10, moving:Boolean = false) 
 		{
 			Type = GameComponent.CHARACTER;
-			JumpForce = 2;
+			JumpForce = 4;
 			Facing = RIGHT;
 			IsMoving = moving;
 			PrimaryActionState = false;

@@ -47,7 +47,8 @@ package GameSystems
 				}
 				else
 				{
-					character.GroundCount--;
+					if(character.GroundCount > 0)
+						character.GroundCount--;
 				}
 			}
 		}
@@ -83,8 +84,10 @@ package GameSystems
 					if (character.CanJump && character.IsJumping)
 					{
 						character.CanJump = false;
-						
-						physics.Body.SetLinearVelocity(new b2Vec2(physics.Body.GetLinearVelocity().x, -character.JumpForce));
+						if (physics.Body.GetLinearVelocity().y >= 0)
+						{
+							physics.Body.SetLinearVelocity(new b2Vec2(physics.Body.GetLinearVelocity().x, -character.JumpForce));
+						}
 					}
 				}
 			}
