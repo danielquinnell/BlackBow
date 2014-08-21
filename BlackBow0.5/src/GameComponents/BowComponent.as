@@ -19,6 +19,11 @@ package GameComponents {
 			IsPulling = false;
 			CurrentPower = 0;
 		}
+		
+		override public function Clone():GameComponent 
+		{
+			return new BowComponent(PowerIncrement);
+		}
 	}
 
 }

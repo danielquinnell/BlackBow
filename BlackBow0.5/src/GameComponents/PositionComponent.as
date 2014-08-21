@@ -25,6 +25,15 @@ package GameComponents
 			
 			Rotation = 0;
 		}
+		
+		override public function Clone():GameComponent 
+		{
+			var clone:PositionComponent = new PositionComponent(X, Y);
+			clone.LocalX = LocalX;
+			clone.LocalY = LocalY;
+			clone.Rotation = Rotation;
+			return clone;
+		}
 	}
 
 }

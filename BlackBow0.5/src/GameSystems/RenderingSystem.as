@@ -1,5 +1,6 @@
 package GameSystems 
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
 	import flash.events.Event;
@@ -57,6 +58,7 @@ package GameSystems
 			}
 			
 			var renderer:RendererComponent = component as RendererComponent;
+			renderer.Display = DisplayObjectFactory(renderer.DisplayType);
 			displayContainer.addChild(renderer.Display);
 		}
 		
@@ -93,6 +95,24 @@ package GameSystems
 			
 			if (DebugDraw)
 				debugRender.graphics.endFill();
+		}
+		
+		public static const PLAYER:String = "player";
+		public static const ARROW:String = "arrow";
+		
+		//Takes a String and returns a DisplayObject accordingly. String is most likely the DisplayType member of a RenderingComponent
+		public static function DisplayObjectFactory(displayType:String):DisplayObject
+		{
+			switch(displayType)
+			{
+				case PLAYER:
+					return new PlayerSprite();
+					break;
+				case ARROW:
+					return new ArrowSprite();
+					break;
+			}
+			return null;
 		}
 	}
 

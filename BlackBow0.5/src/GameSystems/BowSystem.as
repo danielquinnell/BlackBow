@@ -49,7 +49,7 @@ package GameSystems
 						if (character)
 						{
 							var arrow:GameObject = gameScene.CreateGameObject();
-							arrow.AddComponent(new RendererComponent(new ArrowSprite()));
+							arrow.AddComponent(new RendererComponent(RenderingSystem.ARROW));
 							arrow.AddComponent(new PositionComponent(gObject.Position.X, gObject.Position.Y));
 							
 							var physics:PhysicsComponent = new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.width ), PhysicsSystem.GetPixelsToMeters(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.height * 50)));

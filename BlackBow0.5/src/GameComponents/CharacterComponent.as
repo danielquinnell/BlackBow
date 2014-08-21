@@ -39,6 +39,15 @@ package GameComponents
 			IsJumping = false;
 			GroundCount = 0;
 		}
+		
+		override public function Clone():GameComponent 
+		{
+			var clone:CharacterComponent = new CharacterComponent(Speed, IsMoving);
+			clone.JumpForce = JumpForce;
+			clone.Facing = Facing;
+			clone.CanJump = CanJump;
+			return clone;
+		}
 	}
 
 }

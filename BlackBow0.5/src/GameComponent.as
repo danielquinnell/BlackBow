@@ -15,6 +15,12 @@ package
 			ParentGameObject = null;
 		}
 		
+		//Should create a new instance of the GameComponent with the same exact data
+		public function Clone():GameComponent
+		{
+			return null;
+		}
+		
 		//Declare GameComponent Type constants here
 		public static const POSITION:String = "position";
 		public static const VELOCITY:String = "velocity";
@@ -26,6 +32,7 @@ package
 		public static const BOW:String = "bow";
 		public static const INPUT:String = "input";
 		public static const HEALTH:String = "health";
+		public static const ANIMATION:String = "animation";
 	}
 
 }

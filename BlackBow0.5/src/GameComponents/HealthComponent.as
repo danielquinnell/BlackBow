@@ -17,6 +17,14 @@ package GameComponents
 			MaxHealth = maxHP;
 			Health = MaxHealth;
 		}
+		
+		override public function Clone():GameComponent 
+		{
+			var clone:HealthComponent = new HealthComponent();
+			clone.Health = Health;
+			clone.MaxHealth = MaxHealth;
+			return clone;
+		}
 	}
 
 }

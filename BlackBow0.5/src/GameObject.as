@@ -49,13 +49,19 @@ package
 		public function AddComponent(component:GameComponent):void
 		{
 			component.ParentGameObject = this;
-			gameScene.AddComponent(Id, component);
+			if(gameScene)
+				gameScene.AddComponent(Id, component);
+			else
+				_scenePushComponentToDictionary(component);
 		}
 		
 		public function RemoveComponent(component:GameComponent):void
 		{
 			component.ParentGameObject = null;
-			gameScene.RemoveComponent(Id, component);
+			if(gameScene)
+				gameScene.RemoveComponent(Id, component);
+			else
+				_sceneRemoveComponentFromDictionary(component);
 		}
 		
 		public function GetComponent(componenttype:String):GameComponent

@@ -17,6 +17,10 @@ package GameComponents
 			Down = d;
 		}
 		
+		override public function Clone():GameComponent 
+		{
+			return new InputCharacterComponent(Left, Right, Up, Down);
+		}
 	}
 
 }

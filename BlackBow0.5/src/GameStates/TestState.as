@@ -7,6 +7,9 @@ package GameStates
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.BlurFilter;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import GameComponents.CharacterComponent;
@@ -41,6 +44,8 @@ package GameStates
 		
 		private var testRemoveChild:GameObject;
 		
+		private var loader:URLLoader;
+		
 		public function TestState(maindisplay:DisplayObjectContainer, x:int = 0, y:int = 0) 
 		{
 			mainDisplayContainer = maindisplay;
@@ -58,7 +63,7 @@ package GameStates
 			
 			testPlayer = gameScene.CreateGameObject();
 			testPlayer.AddComponent(new PositionComponent(100, 300));
-			testPlayer.AddComponent(new RendererComponent(new PlayerSprite()));
+			testPlayer.AddComponent(new RendererComponent(RenderingSystem.PLAYER));
 			testPlayer.Rendering.Display.scaleX *= 2/3;
 			testPlayer.Rendering.Display.scaleY *= 2/3;
 			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width) * testPlayer.Rendering.Display.scaleX, PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)* testPlayer.Rendering.Display.scaleY));
@@ -67,7 +72,6 @@ package GameStates
 			testPlayer.AddComponent(new InputCharacterComponent());
 			testPlayer.AddComponent(new BowComponent());
 			testPlayer.Physics.Body.SetFixedRotation(true);
-		
 			
 			var level:GameObject = gameScene.CreateGameObject();
 			level.AddComponent(new PositionComponent(0, 0));
@@ -78,19 +82,29 @@ package GameStates
 			
 			mainDisplayContainer.scaleX = 1;
 			mainDisplayContainer.scaleY = 1;
+			
+			loader = new URLLoader(new URLRequest("./resources/Data/GameObjects.xml"));
+			loader.addEventListener(Event.COMPLETE, onXmlLoad);
+		}
+		
+		private function onXmlLoad(event:Event)
+		{
+			//var xml:XML = new XML(loader.data);
+			//var gameObject:GameObject = XmlCache.CreateGameObject(xml);
+			//trace(gameObject);
 		}
 				
 		public function Update(deltaTime:Number):void
 		{
 			gameScene.UpdateSystems(deltaTime);
 			counterToRemove += deltaTime;
-		}
+		} 
 		
 		public function onKeyDown(event:KeyboardEvent)
 		{
 			if (event.keyCode != Keyboard.SPACE)
 				return;
-			
+				
 			var character:CharacterComponent = testPlayer.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
 			character.PrimaryActionState = true;
 		}
