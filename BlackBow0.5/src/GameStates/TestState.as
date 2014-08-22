@@ -91,6 +91,8 @@ package GameStates
 		{
 			var xml:XML = new XML(loader.data);
 			XmlCache.LoadXML(xml);
+			
+			XmlCache.CreateGameObject("player", gameScene);
 		}
 				
 		public function Update(deltaTime:Number):void

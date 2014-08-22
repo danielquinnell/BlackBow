@@ -4,6 +4,7 @@ package
 	import flash.xml.XMLNode;
 	import GameComponents.BowComponent;
 	import GameComponents.HealthComponent;
+	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	
 	/**
@@ -15,37 +16,16 @@ package
 	{
 		private static var gameObjectCache:Dictionary = new Dictionary(); //<name, object>
 		
-		public static function CreateGameObject(xml:XML, scene:GameScene = null):GameObject
+		public static function CreateGameObject(name:String, scene:GameScene):GameObject
 		{
-			var gameObject:GameObject = new GameObject(scene);
+			var gameObject:GameObject = scene.CreateGameObject();
 			
-			for each(var xmlComponent:XML in xml.component)
+			for each(var cachedComponent:Object in gameObjectCache[name])
 			{
-				var component:GameComponent = CreateComponent(xmlComponent);
-				if(component != null)
-					gameObject.AddComponent(component);
+				gameObject.AddComponent(cachedComponent["Component"].Clone());
 			}
+			
 			return gameObject;
-		}
-		
-		public static function CreateComponent(xml:XML):GameComponent
-		{
-			var type:String = xml.@type;
-			
-			switch(type)
-			{
-				case GameComponent.HEALTH:
-					var health:HealthComponent = new HealthComponent(Number(xml.MaxHealth));
-					health.Health = Number(xml.Health); 
-					return health;
-					break;
-					
-				case GameComponent.BOW:
-					var bow:BowComponent = new BowComponent(Number(xml.PullingPower));
-					break;
-			}
-			
-			return null;
 		}
 		
 		public static function LoadXML(xml:XML)
@@ -68,7 +48,6 @@ package
 		{
 			var returnObject = new Object();
 			returnObject.Type = xml.@type.toString();
-			trace(returnObject.Type);
 			
 			switch(returnObject.Type)
 			{
@@ -80,7 +59,10 @@ package
 				case GameComponent.RENDERER:
 					var rendering:RendererComponent = new RendererComponent(xml.displaytype);
 					returnObject.Component = rendering;
-					
+					break;
+				case GameComponent.POSITION:
+					var position:PositionComponent = new PositionComponent(Number(xml.x), Number(xml.y));
+					returnObject.Component = position;
 					break;
 			}
 			
