@@ -1,9 +1,11 @@
 package  
 {
+	import Box2D.Dynamics.b2Body;
 	import flash.utils.Dictionary;
 	import flash.xml.XMLNode;
 	import GameComponents.BowComponent;
 	import GameComponents.HealthComponent;
+	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	
@@ -37,7 +39,11 @@ package
 				
 				for each (var xmlGameComponent:XML in xmlGameObject.component)
 				{
-					componentList.push(cacheComponent(xmlGameComponent));
+					var cached = cacheComponent(xmlGameComponent);
+					if(cached.Component)
+						componentList.push(cached);
+					else
+						trace("Unknown component type: " + cached.Type);
 				}
 				
 				gameObjectCache[gameObjectName] = componentList;
@@ -63,6 +69,10 @@ package
 				case GameComponent.POSITION:
 					var position:PositionComponent = new PositionComponent(Number(xml.x), Number(xml.y));
 					returnObject.Component = position;
+					break;
+				case GameComponent.PHYSICS:
+					var physics:PhysicsComponent = new PhysicsComponent(Number(xml.width), Number(xml.height), b2Body.b2_dynamicBody);
+					returnObject.Component = physics;
 					break;
 			}
 			

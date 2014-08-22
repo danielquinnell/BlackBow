@@ -19,6 +19,8 @@ package GameComponents
 		public var CollisionEnterCallback:Function;	//This is called when colliding with another object
 		public var CollisionExitCallback:Function;	//This is called when exiting out of another object
 		
+		public var Width, Height;
+		
 		public function PhysicsComponent(width:Number = 32, height:Number = 32, type:uint = 2) 
 		{
 			Type = GameComponent.PHYSICS;
@@ -26,6 +28,9 @@ package GameComponents
 			FixtureDefinitions = new Array();
 			Body = null;			
 			BodyDefinition.type = type;
+			
+			Width = width;
+			Height = height;
 			
 			CollisionEnterCallback = null;
 			CollisionExitCallback = null;
@@ -44,6 +49,11 @@ package GameComponents
 			fixDef.shape = polygon;
 			
 			FixtureDefinitions.push(fixDef);
+		}
+		
+		override public function Clone():GameComponent 
+		{
+			return new PhysicsComponent(Width, Height, BodyDefinition.type);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package GameSystems 
 {
+	import Box2D.Collision.b2AABB;
 	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2ContactListener;
@@ -100,9 +102,14 @@ package GameSystems
 			//Create a foot fixture to send responses to detect whether or not things are "on the ground"
 			var footFixture:b2FixtureDef = new b2FixtureDef();
 			var footPoly:b2PolygonShape = new b2PolygonShape();
-		
+			
+			var aabb:b2AABB = new b2AABB();
+			(physicsComponent.FixtureDefinitions[0] as b2FixtureDef).shape.ComputeAABB(aabb, new b2Transform());
+			
+			var width:Number = aabb.upperBound.x - aabb.lowerBound.x;
+			var height:Number = aabb.lowerBound.x - aabb.upperBound.y;
 			footFixture.isSensor = true;
-			footPoly.SetAsOrientedBox(.3, .2, new b2Vec2(0,.35));
+			footPoly.SetAsOrientedBox(width/2.5, height/2, new b2Vec2(0,.1));
 			footFixture.shape = footPoly;
 			physicsComponent.Body.CreateFixture(footFixture).SetUserData(CollisionEvent.FOOT);
 		}
