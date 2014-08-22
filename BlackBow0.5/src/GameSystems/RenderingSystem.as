@@ -87,7 +87,8 @@ package GameSystems
 				gameobject.Rendering.Display.x = gameobject.Position.X;
 				gameobject.Rendering.Display.y = gameobject.Position.Y;
 				gameobject.Rendering.Display.rotation = gameobject.Position.Rotation;
-				
+				gameobject.Rendering.Display.scaleX = gameobject.Rendering.ScaleX;
+				gameobject.Rendering.Display.scaleY = gameobject.Rendering.ScaleX;
 				if (!DebugDraw)
 					continue;
 			}

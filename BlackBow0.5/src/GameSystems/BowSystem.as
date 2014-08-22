@@ -48,15 +48,10 @@ package GameSystems
 						//Fire Arrow
 						if (character)
 						{
-							var arrow:GameObject = gameScene.CreateGameObject();
-							arrow.AddComponent(new RendererComponent(RenderingSystem.ARROW));
-							arrow.AddComponent(new PositionComponent(gObject.Position.X, gObject.Position.Y));
-							
-							var physics:PhysicsComponent = new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.width ), PhysicsSystem.GetPixelsToMeters(PhysicsSystem.GetPixelsToMeters(arrow.Rendering.Display.height * 50)));
-							physics.FixtureDefinitions[0].isSensor = true;
-							physics.BodyDefinition.linearVelocity = new b2Vec2(character.Facing == CharacterComponent.LEFT ? -bow.CurrentPower * ArrowPowerMultiplier : bow.CurrentPower * ArrowPowerMultiplier, 0);
-							
-							arrow.AddComponent(physics);
+							var arrow:GameObject = XmlCache.CreateGameObject("arrow", gameScene, true, gObject.Position.X, gObject.Position.Y);							
+							var physics:PhysicsComponent = arrow.Physics;
+							physics.Body.SetLinearVelocity(new b2Vec2(character.Facing == CharacterComponent.LEFT ? -bow.CurrentPower * ArrowPowerMultiplier : bow.CurrentPower * ArrowPowerMultiplier, 0));	
+							arrow.Rendering.ScaleX *= character.Facing == CharacterComponent.LEFT ? -1 : 1;
 						}
 					}
 					

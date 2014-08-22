@@ -4,6 +4,7 @@ package
 	import flash.utils.Dictionary;
 	import flash.xml.XMLNode;
 	import GameComponents.BowComponent;
+	import GameComponents.CharacterComponent;
 	import GameComponents.HealthComponent;
 	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
@@ -18,13 +19,18 @@ package
 	{
 		private static var gameObjectCache:Dictionary = new Dictionary(); //<name, object>
 		
-		public static function CreateGameObject(name:String, scene:GameScene):GameObject
+		public static function CreateGameObject(name:String, scene:GameScene, setPosition:Boolean = false, x:Number = 0, y:Number = 0):GameObject
 		{
 			var gameObject:GameObject = scene.CreateGameObject();
 			
 			for each(var cachedComponent:Object in gameObjectCache[name])
 			{
-				gameObject.AddComponent(cachedComponent["Component"].Clone());
+				if (cachedComponent["Type"] == GameComponent.POSITION && setPosition)
+				{
+					gameObject.AddComponent(new PositionComponent(x, y));
+				}
+				else
+					gameObject.AddComponent(cachedComponent["Component"].Clone());
 			}
 			
 			return gameObject;
@@ -64,6 +70,8 @@ package
 					break;
 				case GameComponent.RENDERER:
 					var rendering:RendererComponent = new RendererComponent(xml.displaytype);
+					rendering.ScaleX = xml.scalex != undefined ? Number(xml.scalex) : 1;
+					rendering.ScaleY = xml.scaley != undefined ? Number(xml.scaley) : 1;
 					returnObject.Component = rendering;
 					break;
 				case GameComponent.POSITION:
@@ -72,7 +80,13 @@ package
 					break;
 				case GameComponent.PHYSICS:
 					var physics:PhysicsComponent = new PhysicsComponent(Number(xml.width), Number(xml.height), b2Body.b2_dynamicBody);
+					physics.BodyDefinition.fixedRotation = xml.fixedrotation.toString() == "true" ? true : false;
+					physics.FixtureDefinitions[0].isSensor = xml.sensor.toString() == "true" ? true : false;
 					returnObject.Component = physics;
+					break;
+				case GameComponent.CHARACTER:
+					var character:CharacterComponent = new CharacterComponent(Number(xml.speed), false);
+					returnObject.Component = character;
 					break;
 			}
 			

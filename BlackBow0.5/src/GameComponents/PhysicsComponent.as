@@ -53,7 +53,13 @@ package GameComponents
 		
 		override public function Clone():GameComponent 
 		{
-			return new PhysicsComponent(Width, Height, BodyDefinition.type);
+			var clone:PhysicsComponent = new PhysicsComponent(0,0);
+			clone.BodyDefinition = BodyDefinition;
+			clone.FixtureDefinitions = FixtureDefinitions;
+			clone.Width = Width;
+			clone.Height = Height;
+			
+			return clone;
 		}
 	}
 

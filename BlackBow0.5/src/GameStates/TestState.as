@@ -61,22 +61,6 @@ package GameStates
 			gameScene.AddGameSystem(new BowSystem());
 			gameScene.AddGameSystem(new InputSystem());
 			
-			testPlayer = gameScene.CreateGameObject();
-			testPlayer.AddComponent(new PositionComponent(100, 300));
-			testPlayer.AddComponent(new RendererComponent(RenderingSystem.PLAYER));
-			testPlayer.Rendering.Display.scaleX *= 2/3;
-			testPlayer.Rendering.Display.scaleY *= 2/3;
-			testPlayer.AddComponent(new PhysicsComponent(PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.width) * testPlayer.Rendering.Display.scaleX, PhysicsSystem.GetPixelsToMeters(testPlayer.Rendering.Display.height)* testPlayer.Rendering.Display.scaleY));
-			
-			testPlayer.AddComponent(new CharacterComponent(1, false));
-			testPlayer.AddComponent(new InputCharacterComponent());
-			testPlayer.AddComponent(new BowComponent());
-			testPlayer.Physics.Body.SetFixedRotation(true);
-			
-			var level:GameObject = gameScene.CreateGameObject();
-			level.AddComponent(new PositionComponent(0, 0));
-			level.AddComponent(new PhysicsData().createComponent("d7"));
-			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
@@ -92,7 +76,13 @@ package GameStates
 			var xml:XML = new XML(loader.data);
 			XmlCache.LoadXML(xml);
 			
-			XmlCache.CreateGameObject("player", gameScene);
+			testPlayer = XmlCache.CreateGameObject("player", gameScene);
+			testPlayer.AddComponent(new InputCharacterComponent());
+			testPlayer.AddComponent(new BowComponent());
+			
+			var level:GameObject = gameScene.CreateGameObject();
+			level.AddComponent(new PositionComponent(0, 0));
+			level.AddComponent(new PhysicsData().createComponent("d7"));
 		}
 				
 		public function Update(deltaTime:Number):void
