@@ -13,11 +13,7 @@ package
 	
 	public class XmlCache 
 	{
-		private static var gameObjectCache:Dictionary; //<name, object>
-		public function XmlCache() 
-		{
-			gameObjectCache = new Dictionary();
-		}
+		private static var gameObjectCache:Dictionary = new Dictionary(); //<name, object>
 		
 		public static function CreateGameObject(xml:XML, scene:GameScene = null):GameObject
 		{
@@ -52,41 +48,27 @@ package
 			return null;
 		}
 		
-		//Loads and xml file and places data into the cache
-		/*
-		 * Cache looks like this:
-			 * -Game Object
-			 * 		-Name
-			 *		-Component
-			 * 			-Type
-			 * 			-Data
-			 * 			-Data
-			 * 		-Component
-			 * 			-Type
-			 * 			-Data
-			 * -Game Object
-			 * 		-Name
-		 */
 		public static function LoadXML(xml:XML)
 		{
-			for each (var xmlGameObject:XML in xml.objects)
+			for each (var xmlGameObject:XML in xml.gameobject)
 			{
-				var gameObjectName:String = xmlGameObject.@name;
+				var gameObjectName:String = xmlGameObject.@name.toString();
 				var componentList:Array = new Array();
 				
 				for each (var xmlGameComponent:XML in xmlGameObject.component)
 				{
-					componentList.push(cacheComponent(xmlGameComponent, componentCache));
+					componentList.push(cacheComponent(xmlGameComponent));
 				}
 				
-				gameObjectCache[gameObjectName] = componentCache;
+				gameObjectCache[gameObjectName] = componentList;
 			}
 		}
 		
 		private static function cacheComponent(xml:XML):Object
 		{
 			var returnObject = new Object();
-			returnObject.Type = xml.@type;
+			returnObject.Type = xml.@type.toString();
+			trace(returnObject.Type);
 			
 			switch(returnObject.Type)
 			{
@@ -96,13 +78,9 @@ package
 					returnObject.Component = health;
 					break;
 				case GameComponent.RENDERER:
-					var rendering:RendererComponent = new RendererComponent();
-					switch(xml.sprite)
-					{
-						case "player":
-							rendering.Display = new PlayerSprite();
-							break;
-					}
+					var rendering:RendererComponent = new RendererComponent(xml.displaytype);
+					returnObject.Component = rendering;
+					
 					break;
 			}
 			

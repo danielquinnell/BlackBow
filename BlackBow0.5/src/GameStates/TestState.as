@@ -89,9 +89,8 @@ package GameStates
 		
 		private function onXmlLoad(event:Event)
 		{
-			//var xml:XML = new XML(loader.data);
-			//var gameObject:GameObject = XmlCache.CreateGameObject(xml);
-			//trace(gameObject);
+			var xml:XML = new XML(loader.data);
+			XmlCache.LoadXML(xml);
 		}
 				
 		public function Update(deltaTime:Number):void

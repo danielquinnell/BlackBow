@@ -20,9 +20,8 @@ package GameComponents
 		
 		override public function Clone():GameComponent 
 		{
-			var clone:HealthComponent = new HealthComponent();
+			var clone:HealthComponent = new HealthComponent(MaxHealth);
 			clone.Health = Health;
-			clone.MaxHealth = MaxHealth;
 			return clone;
 		}
 	}
