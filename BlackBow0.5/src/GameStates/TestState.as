@@ -30,7 +30,8 @@ package GameStates
 	import PhysicsData;
 	
 	/**
-	 * ...
+	 * Test State for trying out new things
+	 * A lot of messy code can be thrown in here!
 	 * @author Austin Shindlecker
 	 */
 	public class TestState implements IGameState
@@ -45,6 +46,9 @@ package GameStates
 		private var testRemoveChild:GameObject;
 		
 		private var loader:URLLoader;
+		private var levelLoader:URLLoader;
+		
+		private var level:XMLLevel;
 		
 		public function TestState(maindisplay:DisplayObjectContainer, x:int = 0, y:int = 0) 
 		{
@@ -68,7 +72,9 @@ package GameStates
 			mainDisplayContainer.scaleY = 1;
 			
 			loader = new URLLoader(new URLRequest("./resources/Data/GameObjects.xml"));
+			levelLoader = new URLLoader(new URLRequest("./resources/Level/Level.tmx"));
 			loader.addEventListener(Event.COMPLETE, onXmlLoad);
+			levelLoader.addEventListener(Event.COMPLETE, onLevelLoad);
 		}
 		
 		private function onXmlLoad(event:Event)
@@ -84,7 +90,16 @@ package GameStates
 			level.AddComponent(new PositionComponent(0, 0));
 			level.AddComponent(new PhysicsData().createComponent("d7"));
 		}
-				
+		
+		private function onLevelLoad(event:Event)
+		{
+			var xml:XML = new XML(levelLoader.data);
+			XmlCache.LoadXML(xml);
+			
+			var level:XMLLevel = new XMLLevel();
+			level.Parse(xml);
+		}
+		
 		public function Update(deltaTime:Number):void
 		{
 			gameScene.UpdateSystems(deltaTime);
