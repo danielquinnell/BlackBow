@@ -1,5 +1,8 @@
 BlackBow
 ========
+Black Bow is a 2D, stealth action, cave exploration, archery game.
+
+
 Black Bow is set for release on December 6th, 2014. Currently, we are looking for programmers to join us and help with meeting our goal. We are using AS3 and Box2DFlash for this project and you can check out some of the things we’d like help with over in the Issues section.
 
 Programmers will be rewarded with recognition, a spot in the credits, and a killer portfolio piece for contributing a reasonable amount.
