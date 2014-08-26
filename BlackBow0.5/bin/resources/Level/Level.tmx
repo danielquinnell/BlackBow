@@ -12,11 +12,7 @@
   <image source="levelsimage.png"/>
  </imagelayer>
  <objectgroup name="Object Layer 1" width="32" height="32">
-  <object name="A1 Spawn" gid="1" x="134" y="277">
-   <properties>
-    <property name="spawnid" value="a1"/>
-   </properties>
-  </object>
+  <object gid="1" x="134" y="277"/>
  </objectgroup>
  <layer name="TransportTiles" width="32" height="32">
   <data encoding="base64" compression="zlib">
