@@ -4,4 +4,5 @@ Black Bow is set for release on December 6th, 2014. Currently, we are looking fo
 
 Programmers will be rewarded with recognition, a spot in the credits, and a killer portfolio piece for contributing a reasonable amount.
 For tons more information about the game,  check out www.blackbow.org, as well as our dev blog there.
+
 To start working on the game, email the Project Manager, Daniel Quinnell at dquin385@uwsp.edu or simply fork the repo request a merge after your contribution.
