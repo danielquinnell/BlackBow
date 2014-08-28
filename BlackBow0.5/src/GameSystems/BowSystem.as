@@ -50,14 +50,13 @@ package GameSystems
 						{
 							var arrow:GameObject = XmlCache.CreateGameObject("arrow", gameScene, true, gObject.Position.X, gObject.Position.Y);							
 							var physics:PhysicsComponent = arrow.Physics;
-							physics.Body.SetLinearVelocity(new b2Vec2(character.Facing == CharacterComponent.LEFT ? -bow.CurrentPower * ArrowPowerMultiplier : bow.CurrentPower * ArrowPowerMultiplier, 0));	
-							arrow.Rendering.ScaleX *= character.Facing == CharacterComponent.LEFT ? -1 : 1;
+							
+							physics.Body.SetLinearVelocity(new b2Vec2(Math.cos(bow.Angle) * bow.CurrentPower * ArrowPowerMultiplier, -Math.sin(bow.Angle) *  bow.CurrentPower * ArrowPowerMultiplier));	
 						}
 					}
 					
 					bow.CurrentPower = 0;
 				}
-				
 			}
 		}
 	}

@@ -11,6 +11,7 @@ package GameComponents {
 		public var PowerIncrement:Number;
 		public var IsPulling:Boolean;
 		public var CurrentPower:Number;
+		public var Angle:Number; //Angle of shooting in radians
 		
 		public function BowComponent(powerInc:Number = 0.5) 
 		{
@@ -18,6 +19,7 @@ package GameComponents {
 			PowerIncrement = powerInc;
 			IsPulling = false;
 			CurrentPower = 0;
+			Angle = 3.14;
 		}
 		
 		override public function Clone():GameComponent 

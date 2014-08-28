@@ -22,6 +22,7 @@ package GameStates
 	import GameSystems.CharacterSystem;
 	import GameSystems.InputSystem;
 	import GameSystems.PhysicsSystem;
+	import GameSystems.ProjectileSystem;
 	import GameSystems.RenderingSystem;
 	import GameSystems.TransformSystem;
 	import Math;
@@ -64,6 +65,7 @@ package GameStates
 			gameScene.AddGameSystem(new CharacterSystem());
 			gameScene.AddGameSystem(new BowSystem());
 			gameScene.AddGameSystem(new InputSystem());
+			gameScene.AddGameSystem(new ProjectileSystem());
 			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);			
 			mainDisplayContainer.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
