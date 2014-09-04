@@ -5,6 +5,7 @@ package
 	import GameEvents.GameObjectAddedEvent;
 	import GameEvents.GameObjectRemovedEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * Manages all GameObjects and GameSystems
@@ -33,12 +34,18 @@ package
 		{
 			dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, BroadcastEvent);
 			dispatcher.addEventListener(KeyboardEvent.KEY_UP, BroadcastEvent);
+			dispatcher.addEventListener(MouseEvent.MOUSE_DOWN, BroadcastEvent);
+			dispatcher.addEventListener(MouseEvent.MOUSE_UP, BroadcastEvent);
+			dispatcher.addEventListener(MouseEvent.MOUSE_MOVE, BroadcastEvent);
 		}
 		
 		public function RemoveEvents(dispatcher:EventDispatcher)
 		{
 			dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, BroadcastEvent);
 			dispatcher.removeEventListener(KeyboardEvent.KEY_UP, BroadcastEvent);
+			dispatcher.removeEventListener(MouseEvent.MOUSE_DOWN, BroadcastEvent);
+			dispatcher.removeEventListener(MouseEvent.MOUSE_UP, BroadcastEvent);
+			dispatcher.removeEventListener(MouseEvent.MOUSE_MOVE, BroadcastEvent);
 		}
 		
 		public function AddGameSystem(system:IGameSystem)

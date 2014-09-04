@@ -20,7 +20,6 @@ package
 	{
 		public function Main():void 
 		{
-			
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);  
 		}
