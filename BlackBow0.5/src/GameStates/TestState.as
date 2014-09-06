@@ -27,6 +27,8 @@ package GameStates
 	import GameSystems.TransformSystem;
 	import Math;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 	import GameComponents.BowComponent;
 	import PhysicsData;
 	
@@ -35,6 +37,7 @@ package GameStates
 	 * A lot of messy code can be thrown in here!
 	 * @author Austin Shindlecker
 	 */
+	
 	public class TestState implements IGameState
 	{
 		private var mainDisplayContainer:DisplayObjectContainer;
@@ -53,6 +56,7 @@ package GameStates
 		
 		public function TestState(maindisplay:DisplayObjectContainer, x:int = 0, y:int = 0) 
 		{
+			Mouse.hide();
 			mainDisplayContainer = maindisplay;
 			counterToRemove = 0;
 			
