@@ -47,12 +47,13 @@ package GameSystems
 				if (!gObject || !gObject.HasComponent(GameComponent.INPUT) || !gObject.HasComponent(GameComponent.CHARACTER) || !gObject.Position || !gObject.HasComponent(GameComponent.BOW))
 					continue;
 				
+				var input:InputCharacterComponent = gObject.GetComponent(GameComponent.INPUT) as InputCharacterComponent;
 				var character:CharacterComponent = gObject.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
 				var bow:BowComponent = gObject.GetComponent(GameComponent.BOW) as BowComponent;
 				
+				input.AimX = event.localX;
+				input.AimY = event.localY;
 				bow.Angle = Math.atan2(gObject.Position.Y - event.localY, event.localX - gObject.Position.X);
-				
-				character.PrimaryActionState = true;
 			}
 		}
 		

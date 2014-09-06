@@ -5,6 +5,8 @@ package GameSystems
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import GameComponents.BowComponent;
+	import GameComponents.InputCharacterComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	import GameEvents.GameObjectAddedEvent;
@@ -21,13 +23,18 @@ package GameSystems
 		
 		private var debugRender:Shape;
 		
+		private var aimingLine:Shape;
+		
+		
 		public function RenderingSystem(displaycontainer:DisplayObjectContainer, debug:Boolean = false) 
 		{
 			displayContainer = displaycontainer;
 			DebugDraw = debug;
 			debugRender = new Shape();
 			
+			aimingLine = new Shape();
 			displayContainer.addChild(debugRender);
+			displaycontainer.addChild(aimingLine);
 		}
 		
 		override public function GameObjectRemoved(gameObj:GameObject):void
@@ -89,8 +96,62 @@ package GameSystems
 				gameobject.Rendering.Display.rotation = gameobject.Position.Rotation;
 				gameobject.Rendering.Display.scaleX = gameobject.Rendering.ScaleX;
 				gameobject.Rendering.Display.scaleY = gameobject.Rendering.ScaleX;
-				if (!DebugDraw)
+				
+				//Render HUD
+				if (!gameobject.HasComponent(GameComponent.INPUT) || !gameobject.HasComponent(GameComponent.CHARACTER) || !gameobject.HasComponent(GameComponent.BOW))
 					continue;
+				
+				var input:InputCharacterComponent = gameobject.GetComponent(GameComponent.INPUT) as InputCharacterComponent;
+				var bow:BowComponent = gameobject.GetComponent(GameComponent.BOW) as BowComponent;
+				
+				aimingLine.graphics.clear();
+				var moveX:Number = gameobject.Position.X;
+				var moveY:Number = gameobject.Position.Y;
+				var incrementX = Math.cos(bow.Angle);
+				var incrementY = Math.sin(bow.Angle);
+				
+				var distance = Math.abs(input.AimX - gameobject.Position.X) + Math.abs(input.AimY - gameobject.Position.Y);
+				var addedDistance = 0;
+				for (var i:uint = 0; i < 5; i++)
+				{
+					aimingLine.graphics.lineStyle(2);
+					aimingLine.graphics.beginFill(0xFFFFFF,1);
+					aimingLine.graphics.moveTo(moveX, moveY);
+					aimingLine.graphics.lineTo(moveX + incrementX * 15, moveY - incrementY * 15);
+					aimingLine.graphics.endFill();
+					moveX += incrementX * 30;
+					moveY -= incrementY * 30;
+					
+					addedDistance += Math.abs(incrementX * 30);
+					addedDistance += Math.abs(incrementY * 30);
+					
+					if (addedDistance >= distance)
+						break;
+				}
+				
+				//Draw Crosshair
+				const crosshairSize:Number = 10;
+				const crosshairSpace:Number = 5;
+				
+				aimingLine.graphics.beginFill(0xFFFFFF,1);
+				aimingLine.graphics.moveTo(input.AimX, input.AimY - crosshairSpace);
+				aimingLine.graphics.lineTo(input.AimX, input.AimY - crosshairSize);
+				aimingLine.graphics.endFill();
+				
+				aimingLine.graphics.beginFill(0xFFFFFF,1);
+				aimingLine.graphics.moveTo(input.AimX, input.AimY + crosshairSpace);
+				aimingLine.graphics.lineTo(input.AimX, input.AimY + crosshairSize);
+				aimingLine.graphics.endFill();
+				
+				aimingLine.graphics.beginFill(0xFFFFFF,1);
+				aimingLine.graphics.moveTo(input.AimX - crosshairSpace, input.AimY);
+				aimingLine.graphics.lineTo(input.AimX - crosshairSize, input.AimY);
+				aimingLine.graphics.endFill();
+				
+				aimingLine.graphics.beginFill(0xFFFFFF,1);
+				aimingLine.graphics.moveTo(input.AimX + crosshairSpace, input.AimY);
+				aimingLine.graphics.lineTo(input.AimX + crosshairSize, input.AimY);
+				aimingLine.graphics.endFill();
 			}
 			
 			
