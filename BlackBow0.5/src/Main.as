@@ -8,6 +8,7 @@ package
 	import flash.utils.getTimer;
 	import GameEvents.GameObjectAddedEvent;
 	import GameEvents.GameObjectRemovedEvent;
+	import GameStates.MainGameState;
 	import GameStates.TestState;
 	import GameSystems.RenderingSystem;
 	import flash.events.MouseEvent;
@@ -29,7 +30,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			var game:Game = new Game(33);
-			game.SetFrontGameState(new TestState(this, 100, 100));
+			game.SetFrontGameState(new MainGameState(this));
 			
 			addEventListener(Event.ENTER_FRAME, game.Update);
 		}

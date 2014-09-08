@@ -20,6 +20,8 @@ package
 		
 		public var gameScene:GameScene;
 		
+		public var Tag:String;
+		
 		//Common Components that can be easily grabbed from the GameObject
 		//NOTE: It's not required for gameobjects to use any or all of these default components. The default value is null
 		public var Rendering:RendererComponent;
@@ -39,6 +41,8 @@ package
 			Rendering = null;
 			Position = null;
 			Physics = null;
+			
+			Tag = "";
 		}
 		
 		public function HasComponent(componenttype:String):Boolean

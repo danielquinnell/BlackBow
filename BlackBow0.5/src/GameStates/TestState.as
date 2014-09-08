@@ -108,6 +108,7 @@ package GameStates
 		
 		public function Update(deltaTime:Number):void
 		{
+			
 			gameScene.UpdateSystems(deltaTime);
 			counterToRemove += deltaTime;
 		} 

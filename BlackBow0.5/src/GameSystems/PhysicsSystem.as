@@ -152,6 +152,17 @@ package GameSystems
 				if (!gObject || !gObject.Physics || !gObject.Position || !gObject.Physics.Body)
 					continue;
 				
+				if (gObject.Position.ManuallyChangedX)
+				{
+					gObject.Physics.Body.SetPosition(new b2Vec2(gObject.Position.X / PhysicsSystem.PixelPerMeter, gObject.Physics.Body.GetPosition().y));
+					gObject.Position.ManuallyChangedX = false;
+				}
+				if (gObject.Position.ManuallyChangedY)
+				{
+					gObject.Physics.Body.SetPosition(new b2Vec2(gObject.Physics.Body.GetPosition().x, gObject.Position.Y / PhysicsSystem.PixelPerMeter));
+					gObject.Position.ManuallyChangedY = false;
+				}
+				
 				gObject.Position.X = gObject.Physics.Body.GetPosition().x * PixelPerMeter;
 				gObject.Position.Y = gObject.Physics.Body.GetPosition().y * PixelPerMeter;
 				

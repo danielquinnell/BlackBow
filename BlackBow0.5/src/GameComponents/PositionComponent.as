@@ -1,5 +1,6 @@
 package GameComponents 
 {
+	import adobe.utils.ProductManager;
 	/**
 	 * ...
 	 * @author Austin Shindlecker
@@ -15,6 +16,10 @@ package GameComponents
 		
 		public var Rotation;
 		
+		//Mainly used in the Physics system for when setting the positions outside of the physics engine
+		public var ManuallyChangedX:Boolean;
+		public var ManuallyChangedY:Boolean;
+		
 		public function PositionComponent(x:Number = 0, y:Number = 0) 
 		{
 			Type = GameComponent.POSITION;
@@ -22,8 +27,22 @@ package GameComponents
 			Y = y;
 			LocalX = X;
 			LocalY = Y;
-			
 			Rotation = 0;
+			
+			ManuallyChangedX = false;
+			ManuallyChangedY = false;
+		}
+		
+		public function SetX(value:Number)
+		{
+			X = value;
+			ManuallyChangedX = true;
+		}
+		
+		public function SetY(value:Number)
+		{
+			Y = value;
+			ManuallyChangedY = true;
 		}
 		
 		override public function Clone():GameComponent 

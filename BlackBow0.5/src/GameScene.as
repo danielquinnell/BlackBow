@@ -80,6 +80,14 @@ package
 			}
 		}
 		
+		public function ClearScene()
+		{
+			for each(var gObject:GameObject in gameObjects)
+			{
+				RemoveGameObject(gObject);
+			}
+		}
+		
 		public function AddGameObject(gameObject:GameObject):void
 		{
 			gameObject.gameScene = this;
@@ -114,7 +122,7 @@ package
 		{
 			if (gameObjects[gameobject.Id] == null)
 				return;	//Game Object is not associated with this scene
-			
+				
 			dispatchEvent(new GameObjectRemovedEvent(gameObjects[gameobject.Id]));
 			for each(var system:IGameSystem in gameSystems)
 			{

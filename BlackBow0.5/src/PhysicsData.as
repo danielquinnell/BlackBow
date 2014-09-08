@@ -32,8 +32,6 @@ package
             {
                 var fixture:Array = fixtures[f];
 
-                
-
                 if(fixture[7] == "POLYGON")
                 {                    
                     var p:Number;

@@ -50,7 +50,7 @@ package GameSystems
 						{
 							var arrow:GameObject = XmlCache.CreateGameObject("arrow", gameScene, true, gObject.Position.X, gObject.Position.Y);							
 							var physics:PhysicsComponent = arrow.Physics;
-							
+							arrow.Tag = "arrow";
 							physics.Body.SetLinearVelocity(new b2Vec2(Math.cos(bow.Angle) * bow.CurrentPower * ArrowPowerMultiplier, -Math.sin(bow.Angle) *  bow.CurrentPower * ArrowPowerMultiplier));	
 						}
 					}

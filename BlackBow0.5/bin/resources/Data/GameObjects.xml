@@ -39,8 +39,8 @@
 	<component type="position"></component>
 	
 	<component type="physics">
-		<width>.3</width>
-		<height>.3</height>
+		<width>.1</width>
+		<height>.1</height>
 		<sensor>true</sensor>
 	</component>
 	
