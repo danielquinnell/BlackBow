@@ -3,6 +3,7 @@ package GameStates
 	import Box2D.Common.Math.b2Vec2;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.net.FileFilter;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.text.engine.RenderingMode;
@@ -36,15 +37,13 @@ package GameStates
 		
 		private var level:GameObject;
 		
-		private var xmlObjectLoader:URLLoader;
-		
 		public function MainGameState(mainViewContainer:DisplayObjectContainer) 
 		{
 			Mouse.hide();
 			
 			gameScene = new GameScene();
 			gameScene.RegisterEvents(mainViewContainer.stage);
-			
+			 
 			//Add game systems for functionality
 			gameScene.AddGameSystem(new RenderingSystem(mainViewContainer, true));
 			gameScene.AddGameSystem(new PhysicsSystem(mainViewContainer));
@@ -57,9 +56,14 @@ package GameStates
 			levelXId = 0;
 			levelYId = 0;
 			
-			//Load XML Object Data
-			xmlObjectLoader = new URLLoader(new URLRequest("./resources/Data/GameObjects.xml"));
-			xmlObjectLoader.addEventListener(Event.COMPLETE, onXMLObjectLoad);
+			//Create player from XML data loaded and cached
+			XmlCache.LoadXMLEmbed();
+			player = XmlCache.CreateGameObject("player", gameScene, true, 790, 100);
+			player.AddComponent(new BowComponent());
+			//Allow the player to be controllable
+			player.AddComponent(new InputCharacterComponent());
+			
+			setLevel(getLevelString(levelXId,levelYId));
 		}
 		
 		private function setLevel(levelString:String)
@@ -77,19 +81,6 @@ package GameStates
 			y += 97; //'a' in DEC
 			
 			return String.fromCharCode(y) + String.fromCharCode(x);
-		}
-		
-		private function onXMLObjectLoad(event:Event)
-		{
-			XmlCache.LoadXML(new XML(xmlObjectLoader.data));
-			
-			//Create player from XML data loaded and cached
-			player = XmlCache.CreateGameObject("player", gameScene, true, 790, 100);
-			player.AddComponent(new BowComponent());
-			//Allow the player to be controllable
-			player.AddComponent(new InputCharacterComponent());
-			
-			setLevel(getLevelString(levelXId,levelYId));
 		}
 		
 		public function Update(delta:Number):void

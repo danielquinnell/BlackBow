@@ -36,6 +36,59 @@ package
 			return gameObject;
 		}
 		
+		public static function LoadXMLEmbed()
+		{
+			var xml = 
+				<objects>
+					<gameobject name="player">
+						
+						<component type="health">
+							<maxhealth>100</maxhealth>
+							<health>100</health>
+						</component>
+						
+						<component type="renderer">
+							<displaytype>player</displaytype>
+							<scalex>.5</scalex>
+							<scaley>.5</scaley>
+						</component>
+						
+						<component type="position">
+							<x>500</x>
+							<y>100</y>
+						</component>
+						
+						<component type="physics">
+							<width>.3</width>
+							<height>.3</height>
+							<fixedrotation>true</fixedrotation>
+						</component>
+						
+						<component type="character">
+							<speed>1</speed>
+						</component>
+						
+					</gameobject>
+
+					<gameobject name="arrow">
+						
+						<component type="renderer">
+							<displaytype>arrow</displaytype>
+						</component>
+						
+						<component type="position"></component>
+						
+						<component type="physics">
+							<width>.1</width>
+							<height>.1</height>
+							<sensor>true</sensor>
+						</component>
+						
+					</gameobject>
+				</objects>;
+			LoadXML(xml);
+		}
+		
 		public static function LoadXML(xml:XML)
 		{
 			for each (var xmlGameObject:XML in xml.gameobject)
