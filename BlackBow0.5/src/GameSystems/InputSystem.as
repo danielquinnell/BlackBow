@@ -1,5 +1,7 @@
 package GameSystems 
 {
+	import flash.automation.StageCapture;
+	import flash.display.Stage;
 	import flash.events.EventDispatcher;
 	import flash.events.SoftKeyboardEvent;
 	import GameComponents.BowComponent;
@@ -14,8 +16,11 @@ package GameSystems
 	 */
 	public class InputSystem extends GameSystem
 	{
-		public function InputSystem() 
+		private var mainStage:Stage;
+		
+		public function InputSystem(stage:Stage) 
 		{
+			mainStage = stage;
 		}
 		
 		override public function AddEventListeners(dispatcher:EventDispatcher):void 
@@ -51,9 +56,9 @@ package GameSystems
 				var character:CharacterComponent = gObject.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
 				var bow:BowComponent = gObject.GetComponent(GameComponent.BOW) as BowComponent;
 				
-				input.AimX = event.localX;
-				input.AimY = event.localY;
-				bow.Angle = Math.atan2(gObject.Position.Y - event.localY, event.localX - gObject.Position.X);
+				input.AimX = mainStage.mouseX;
+				input.AimY = mainStage.mouseY;
+				bow.Angle = Math.atan2(gObject.Position.Y - input.AimY, input.AimX - gObject.Position.X);
 			}
 		}
 		

@@ -47,7 +47,7 @@ package GameStates
 			//Add game systems for functionality
 			gameScene.AddGameSystem(new RenderingSystem(mainViewContainer, true));
 			gameScene.AddGameSystem(new PhysicsSystem(mainViewContainer));
-			gameScene.AddGameSystem(new InputSystem());
+			gameScene.AddGameSystem(new InputSystem(mainViewContainer.stage));
 			gameScene.AddGameSystem(new CharacterSystem());
 			gameScene.AddGameSystem(new BowSystem());
 			gameScene.AddGameSystem(new ProjectileSystem());

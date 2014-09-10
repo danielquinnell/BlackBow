@@ -10,7 +10,7 @@
     <movie height="600" />
     <movie version="14" />
     <movie minorVersion="0" />
-    <movie platform="AIR" />
+    <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
     <movie preferredSDK="C:\Users\Austin\Documents\flex_sdk_4.6" />
   </output>
@@ -58,6 +58,7 @@
     <element path="lib\MoreResources.swc" />
     <element path="resources\MoreResources.swc" />
     <element path="resources\Resources.swc" />
+    <element path="lib\levels.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -90,7 +91,7 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="Unknown" />
+    <option testMovie="ExternalPlayer" />
     <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
