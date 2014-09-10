@@ -40,6 +40,8 @@ package GameSystems
 				if (bow.IsPulling)
 				{
 					bow.CurrentPower += bow.PowerIncrement + deltaTime;
+					if (bow.CurrentPower > bow.MaxPower)
+						bow.CurrentPower = bow.MaxPower;
 				}
 				else
 				{

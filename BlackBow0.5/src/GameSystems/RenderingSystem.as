@@ -175,6 +175,8 @@ package GameSystems
 				case ARROW:
 					return new ArrowSprite();
 					break;
+				default:
+					break;
 			}
 			return null;
 		}

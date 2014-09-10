@@ -63,7 +63,7 @@ package GameStates
 			//Allow the player to be controllable
 			player.AddComponent(new InputCharacterComponent());
 			
-			setLevel(getLevelString(levelXId,levelYId));
+			setLevel(getLevelString(levelXId, levelYId));
 		}
 		
 		private function setLevel(levelString:String)
@@ -73,6 +73,10 @@ package GameStates
 			level.AddComponent(levelPhysicsData.createComponent(levelString));
 			level.Tag = "level";
 			gameScene.AddGameObject(player);
+			
+			//var background:GameObject = gameScene.CreateGameObject();
+			//background.AddComponent(new RendererComponent("1"));
+			//background.AddComponent(new PositionComponent(0, 0));
 		}
 		
 		private function getLevelString(x:Number, y:Number):String
