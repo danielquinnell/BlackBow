@@ -109,7 +109,7 @@ package GameSystems
 			var width:Number = aabb.upperBound.x - aabb.lowerBound.x;
 			var height:Number = aabb.lowerBound.x - aabb.upperBound.y;
 			footFixture.isSensor = true;
-			footPoly.SetAsOrientedBox(width/2.5, height/2, new b2Vec2(0,.1));
+			footPoly.SetAsOrientedBox(width/2.5, height/2, new b2Vec2(0,.3));
 			footFixture.shape = footPoly;
 			physicsComponent.Body.CreateFixture(footFixture).SetUserData(CollisionEvent.FOOT);
 		}
