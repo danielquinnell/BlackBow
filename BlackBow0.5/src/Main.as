@@ -17,6 +17,7 @@ package
 	 * ...
 	 * @author Austin Shindlecker
 	 */
+	[SWF(backgroundColor="0x999999")]
 	public class Main extends Sprite 
 	{
 		public function Main():void 
@@ -28,9 +29,12 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			// entry point
 			var game:Game = new Game(33);
-			game.SetFrontGameState(new MainGameState(this));
+			
+			//Set second parameter to 'true' for debug drawing, 'false' for non debug drawing
+			game.SetFrontGameState(new MainGameState(this, false));
 			
 			addEventListener(Event.ENTER_FRAME, game.Update);
 		}

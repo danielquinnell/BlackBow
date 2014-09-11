@@ -65,7 +65,7 @@ package
 						</component>
 						
 						<component type="character">
-							<speed>1</speed>
+							<speed>5</speed>
 						</component>
 						
 					</gameobject>
@@ -74,6 +74,8 @@ package
 						
 						<component type="renderer">
 							<displaytype>arrow</displaytype>
+							<scalex>1</scalex>
+							<scaley>1</scaley>
 						</component>
 						
 						<component type="position"></component>

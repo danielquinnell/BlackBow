@@ -5,7 +5,6 @@ package
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
     import flash.utils.Dictionary;
-	import GameComponents.PhysicsComponent;
 
     public class PhysicsData extends Object
 	{
@@ -21,19 +20,36 @@ package
         //  b2_kinematicBody
         //  b2_dynamicBody
 
-        public function createComponent(name:String):PhysicsComponent
+        public function createBody(name:String, world:b2World, bodyType:uint, userData:*):b2Body
         {
-			var component:PhysicsComponent = new PhysicsComponent(0, 0, b2Body.b2_staticBody);
             var fixtures:Array = dict[name];
+
+            var body:b2Body;
             var f:Number;
 
+            // prepare body def
+            var bodyDef:b2BodyDef = new b2BodyDef();
+            bodyDef.type = bodyType;
+            bodyDef.userData = userData;
+
+            // create the body
+            body = world.CreateBody(bodyDef);
+
             // prepare fixtures
-			if (!fixtures)
-				return null;
-			
             for(f=0; f<fixtures.length; f++)
             {
                 var fixture:Array = fixtures[f];
+
+                var fixtureDef:b2FixtureDef = new b2FixtureDef();
+
+                fixtureDef.density=fixture[0];
+                fixtureDef.friction=fixture[1];
+                fixtureDef.restitution=fixture[2];
+
+                fixtureDef.filter.categoryBits = fixture[3];
+                fixtureDef.filter.maskBits = fixture[4];
+                fixtureDef.filter.groupIndex = fixture[5];
+                fixtureDef.isSensor = fixture[6];
 
                 if(fixture[7] == "POLYGON")
                 {                    
@@ -41,45 +57,25 @@ package
                     var polygons:Array = fixture[8];
                     for(p=0; p<polygons.length; p++)
                     {
-						var fixtureDef:b2FixtureDef = new b2FixtureDef();
-
-						fixtureDef.density=fixture[0];
-						fixtureDef.friction=fixture[1];
-						fixtureDef.restitution=fixture[2];
-
-						fixtureDef.filter.categoryBits = fixture[3];
-						fixtureDef.filter.maskBits = fixture[4];
-						fixtureDef.filter.groupIndex = fixture[5];
-						fixtureDef.isSensor = fixture[6];
                         var polygonShape:b2PolygonShape = new b2PolygonShape();
                         polygonShape.SetAsArray(polygons[p], polygons[p].length);
-                        fixtureDef.shape = polygonShape;
-						
-						component.FixtureDefinitions.push(fixtureDef);
+                        fixtureDef.shape=polygonShape;
+
+                        body.CreateFixture(fixtureDef);
                     }
                 }
                 else if(fixture[7] == "CIRCLE")
                 {
-					var fixtureDef:b2FixtureDef = new b2FixtureDef();
-
-					fixtureDef.density=fixture[0];
-					fixtureDef.friction=fixture[1];
-					fixtureDef.restitution=fixture[2];
-
-					fixtureDef.filter.categoryBits = fixture[3];
-					fixtureDef.filter.maskBits = fixture[4];
-					fixtureDef.filter.groupIndex = fixture[5];
-					fixtureDef.isSensor = fixture[6];
                     var circleShape:b2CircleShape = new b2CircleShape(fixture[9]);                    
                     circleShape.SetLocalPosition(fixture[8]);
                     fixtureDef.shape=circleShape;
-					
-					component.FixtureDefinitions.push(fixtureDef);               
+                    body.CreateFixture(fixtureDef);                    
                 }                
             }
-			
-            return component;
+
+            return body;
         }
+
 		
         public function PhysicsData(): void
 		{
@@ -3485,6 +3481,5 @@ package
 									];
 
 		}
-	
 	}
 }

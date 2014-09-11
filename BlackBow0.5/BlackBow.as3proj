@@ -58,6 +58,7 @@
     <element path="lib\MoreResources.swc" />
     <element path="resources\MoreResources.swc" />
     <element path="resources\Resources.swc" />
+    <element path="lib\levels3.swc" />
     <element path="lib\levels.swc" />
   </libraryPaths>
   <!-- External Libraries -->

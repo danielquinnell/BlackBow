@@ -37,7 +37,7 @@ package GameStates
 		
 		private var level:GameObject;
 		
-		public function MainGameState(mainViewContainer:DisplayObjectContainer) 
+		public function MainGameState(mainViewContainer:DisplayObjectContainer, debugMode:Boolean) 
 		{
 			Mouse.hide();
 			
@@ -45,8 +45,12 @@ package GameStates
 			gameScene.RegisterEvents(mainViewContainer.stage);
 			 
 			//Add game systems for functionality
-			gameScene.AddGameSystem(new RenderingSystem(mainViewContainer, true));
-			gameScene.AddGameSystem(new PhysicsSystem(mainViewContainer));
+			gameScene.AddGameSystem(new RenderingSystem(mainViewContainer, debugMode));
+			if(debugMode)
+				gameScene.AddGameSystem(new PhysicsSystem(mainViewContainer));
+			else
+				gameScene.AddGameSystem(new PhysicsSystem());
+				
 			gameScene.AddGameSystem(new InputSystem(mainViewContainer.stage));
 			gameScene.AddGameSystem(new CharacterSystem());
 			gameScene.AddGameSystem(new BowSystem());
@@ -68,15 +72,24 @@ package GameStates
 		
 		private function setLevel(levelString:String)
 		{
+			var physicsComponent = levelPhysicsData.createComponent(levelString); 
+			if (!physicsComponent)
+				return false;
+				
 			gameScene.ClearScene();
 			level = gameScene.CreateGameObject();
-			level.AddComponent(levelPhysicsData.createComponent(levelString));
+			level.AddComponent(physicsComponent);
 			level.Tag = "level";
-			gameScene.AddGameObject(player);
 			
-			//var background:GameObject = gameScene.CreateGameObject();
-			//background.AddComponent(new RendererComponent("1"));
-			//background.AddComponent(new PositionComponent(0, 0));
+			var levelBackground:GameObject = gameScene.CreateGameObject();
+			levelBackground.AddComponent(new RendererComponent(getLevelString(levelXId, levelYId)));
+			levelBackground.AddComponent(new PositionComponent(400, 300));
+			levelBackground.Rendering.ScaleX = 1;
+			levelBackground.Rendering.ScaleY = 1;
+			
+			trace(getLevelString(levelXId, levelYId));
+			gameScene.AddGameObject(player);
+			return true;
 		}
 		
 		private function getLevelString(x:Number, y:Number):String
@@ -95,24 +108,24 @@ package GameStates
 			if (player && player.Position.X > 800)
 			{
 				levelXId++;
-				setLevel(getLevelString(levelXId, levelYId));
+				if(setLevel(getLevelString(levelXId, levelYId)))
 				player.Position.SetX(0 + 10);
 			}
 			if (player && player.Position.X < 0)
 			{
 				levelXId--;
-				setLevel(getLevelString(levelXId, levelYId));
+				if(setLevel(getLevelString(levelXId, levelYId)))
 				player.Position.SetX(800 - 10);
 			}if (player && player.Position.Y > 600)
 			{
 				levelYId++;
-				setLevel(getLevelString(levelXId, levelYId));
+				if(setLevel(getLevelString(levelXId, levelYId)))
 				player.Position.SetY(0 + 10);
 			}
 			if (player && player.Position.Y < 0)
 			{
 				levelYId--;
-				setLevel(getLevelString(levelXId, levelYId));
+				if(setLevel(getLevelString(levelXId, levelYId)))
 				player.Position.SetY(600 - 10);
 			}
 		}
