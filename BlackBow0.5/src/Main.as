@@ -34,7 +34,7 @@ package
 			var game:Game = new Game(33);
 			
 			//Set second parameter to 'true' for debug drawing, 'false' for non debug drawing
-			game.SetFrontGameState(new MainGameState(this, false));
+			game.SetFrontGameState(new MainGameState(this, true));
 			
 			addEventListener(Event.ENTER_FRAME, game.Update);
 		}

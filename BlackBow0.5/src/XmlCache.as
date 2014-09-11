@@ -49,8 +49,8 @@ package
 						
 						<component type="renderer">
 							<displaytype>player</displaytype>
-							<scalex>.5</scalex>
-							<scaley>.5</scaley>
+							<scalex>.1</scalex>
+							<scaley>.1</scaley>
 						</component>
 						
 						<component type="position">
@@ -60,7 +60,7 @@ package
 						
 						<component type="physics">
 							<width>.3</width>
-							<height>.3</height>
+							<height>.6</height>
 							<fixedrotation>true</fixedrotation>
 						</component>
 						

@@ -2,10 +2,12 @@ package GameSystems
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import GameComponents.BowComponent;
+	import GameComponents.CharacterComponent;
 	import GameComponents.InputCharacterComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
@@ -99,6 +101,34 @@ package GameSystems
 				gameobject.Rendering.Display.scaleX = gameobject.Rendering.ScaleX;
 				gameobject.Rendering.Display.scaleY = gameobject.Rendering.ScaleY;
 				
+				//Player Animation
+				if (gameobject.HasComponent(GameComponent.CHARACTER) && gameobject.Rendering.Display is MovieClip)
+				{
+					var character:CharacterComponent = gameobject.GetComponent(GameComponent.CHARACTER) as CharacterComponent;
+					var movieclip:MovieClip = gameobject.Rendering.Display as MovieClip;
+					
+					if (character.Facing == CharacterComponent.LEFT)
+					{
+						if(gameobject.Rendering.ScaleX > 0)
+							gameobject.Rendering.ScaleX *= -1;
+					}
+					else
+					{
+						if(gameobject.Rendering.ScaleX < 0)
+							gameobject.Rendering.ScaleX *= -1;
+					}
+					if (character.IsMoving)
+					{
+						trace("MOVE");
+						movieclip.play();
+					}
+					else
+					{
+						trace("MOVE");
+						movieclip.gotoAndStop(0);
+					}
+				}
+				
 				//Render HUD
 				if (!gameobject.HasComponent(GameComponent.INPUT) || !gameobject.HasComponent(GameComponent.CHARACTER) || !gameobject.HasComponent(GameComponent.BOW))
 					continue;
@@ -173,7 +203,8 @@ package GameSystems
 			switch(displayType)
 			{
 				case PLAYER:
-					return new PlayerSprite();
+					var fletch:fletcher = new fletcher();
+					return fletch;
 					break;
 				case ARROW:
 					return new ArrowSprite();
