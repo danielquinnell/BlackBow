@@ -119,12 +119,10 @@ package GameSystems
 					}
 					if (character.IsMoving)
 					{
-						trace("MOVE");
 						movieclip.play();
 					}
 					else
 					{
-						trace("MOVE");
 						movieclip.gotoAndStop(0);
 					}
 				}
