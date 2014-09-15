@@ -33,6 +33,7 @@ package
 		public static const INPUT:String = "input";
 		public static const HEALTH:String = "health";
 		public static const ANIMATION:String = "animation";
+		public static const DECTECTION:String = "detection";
 	}
 
 }

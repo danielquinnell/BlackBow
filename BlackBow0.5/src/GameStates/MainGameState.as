@@ -9,11 +9,13 @@ package GameStates
 	import flash.text.engine.RenderingMode;
 	import GameComponents.BowComponent;
 	import GameComponents.CharacterComponent;
+	import GameComponents.DetectionComponent;
 	import GameComponents.InputCharacterComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
 	import GameSystems.BowSystem;
 	import GameSystems.CharacterSystem;
+	import GameSystems.DetectionSystem;
 	import GameSystems.InputSystem;
 	import GameSystems.PhysicsSystem;
 	import GameSystems.ProjectileSystem;
@@ -55,6 +57,7 @@ package GameStates
 			gameScene.AddGameSystem(new CharacterSystem());
 			gameScene.AddGameSystem(new BowSystem());
 			gameScene.AddGameSystem(new ProjectileSystem());
+			gameScene.AddGameSystem(new DetectionSystem());
 			
 			levelPhysicsData = new PhysicsData();
 			levelXId = 0;
@@ -64,6 +67,7 @@ package GameStates
 			XmlCache.LoadXMLEmbed();
 			player = XmlCache.CreateGameObject("player", gameScene, true, 790, 100);
 			player.AddComponent(new BowComponent());
+			player.AddComponent(new DetectionComponent());
 			//Allow the player to be controllable
 			player.AddComponent(new InputCharacterComponent());
 			

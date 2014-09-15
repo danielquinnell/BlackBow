@@ -60,7 +60,7 @@ package
 						
 						<component type="physics">
 							<width>.3</width>
-							<height>.6</height>
+							<height>.5</height>
 							<fixedrotation>true</fixedrotation>
 						</component>
 						

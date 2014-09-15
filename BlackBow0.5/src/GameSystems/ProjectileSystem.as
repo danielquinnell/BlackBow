@@ -46,7 +46,6 @@ package GameSystems
 		{
 			super.Update(deltaTime);
 			
-			
 			for each(var gObject:GameObject in gameObjects)
 			{
 				if (!gObject || !gObject.HasComponent(GameComponent.PHYSICS) || !gObject.Position)

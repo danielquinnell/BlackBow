@@ -8,6 +8,7 @@ package GameSystems
 	import flash.events.EventDispatcher;
 	import GameComponents.BowComponent;
 	import GameComponents.CharacterComponent;
+	import GameComponents.DetectionComponent;
 	import GameComponents.InputCharacterComponent;
 	import GameComponents.PositionComponent;
 	import GameComponents.RendererComponent;
@@ -90,6 +91,9 @@ package GameSystems
 			if (DebugDraw)
 				debugRender.graphics.clear();
 			
+			aimingLine.graphics.clear();
+			aimingLine.parent.setChildIndex(aimingLine, aimingLine.parent.numChildren - 1);
+			
 			for each (var gameobject:GameObject in gameObjects)
 			{
 				if (!gameobject.Rendering || !gameobject.Position || !gameobject.Rendering.Display)
@@ -128,13 +132,27 @@ package GameSystems
 				}
 				
 				//Render HUD
+				
+				
+				//Draw detection circles
+				if (gameobject.HasComponent(GameComponent.DECTECTION))
+				{
+					var detection:DetectionComponent = gameobject.GetComponent(GameComponent.DECTECTION) as DetectionComponent;
+					aimingLine.graphics.beginFill(0xFFFFFF, .5);
+					aimingLine.graphics.lineStyle(.0001, 0xFFFFFF);
+					aimingLine.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius);
+					aimingLine.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius - 5);
+					aimingLine.graphics.endFill();
+				}
+				
 				if (!gameobject.HasComponent(GameComponent.INPUT) || !gameobject.HasComponent(GameComponent.CHARACTER) || !gameobject.HasComponent(GameComponent.BOW))
 					continue;
 				
 				var input:InputCharacterComponent = gameobject.GetComponent(GameComponent.INPUT) as InputCharacterComponent;
 				var bow:BowComponent = gameobject.GetComponent(GameComponent.BOW) as BowComponent;
 				
-				aimingLine.graphics.clear();
+				
+				//Draw aiming line
 				var moveX:Number = gameobject.Position.X;
 				var moveY:Number = gameobject.Position.Y;
 				var incrementX = Math.cos(bow.Angle);
@@ -142,11 +160,8 @@ package GameSystems
 				
 				var distance = Math.abs(input.AimX - gameobject.Position.X) + Math.abs(input.AimY - gameobject.Position.Y);
 				var addedDistance = 0;
-				aimingLine.parent.setChildIndex(aimingLine, aimingLine.parent.numChildren - 1);
 				for (var i:uint = 0; i < 5; i++)
 				{
-					
-					aimingLine.graphics.lineStyle(2);
 					aimingLine.graphics.beginFill(0xFFFFFF,1);
 					aimingLine.graphics.lineStyle(2, 0xFFFFFF);
 					aimingLine.graphics.moveTo(moveX, moveY);
