@@ -31,6 +31,11 @@ package GameComponents
 			CurrentRadius = 0;
 			RadiusTweening = 100;
 		}
+		
+		override public function Clone():GameComponent 
+		{
+			return new DetectionComponent(Radii[1], Radii[2], Radii[0], Radii[3], Radii[4]);
+		}
 	}
 
 }

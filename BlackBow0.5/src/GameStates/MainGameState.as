@@ -67,7 +67,6 @@ package GameStates
 			XmlCache.LoadXMLEmbed();
 			player = XmlCache.CreateGameObject("player", gameScene, true, 790, 100);
 			player.AddComponent(new BowComponent());
-			player.AddComponent(new DetectionComponent());
 			//Allow the player to be controllable
 			player.AddComponent(new InputCharacterComponent());
 			

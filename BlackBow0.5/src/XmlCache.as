@@ -5,6 +5,7 @@ package
 	import flash.xml.XMLNode;
 	import GameComponents.BowComponent;
 	import GameComponents.CharacterComponent;
+	import GameComponents.DetectionComponent;
 	import GameComponents.HealthComponent;
 	import GameComponents.PhysicsComponent;
 	import GameComponents.PositionComponent;
@@ -94,6 +95,10 @@ package
 				case GameComponent.CHARACTER:
 					var character:CharacterComponent = new CharacterComponent(Number(xml.speed), false);
 					returnObject.Component = character;
+					break;
+				case GameComponent.DECTECTION:
+					var detection:DetectionComponent= new DetectionComponent(Number(xml.walk), Number(xml.run), Number(xml.stand), Number(xml.crouch),Number(xml.crouchwalk));
+					returnObject.Component = detection;
 					break;
 			}
 			

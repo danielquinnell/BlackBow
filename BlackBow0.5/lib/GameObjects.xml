@@ -26,7 +26,11 @@
 		<component type="character">
 			<speed>5</speed>
 		</component>
-						
+		
+		<component type="detection">
+			<stand>50</stand>
+			<walk>100</walk>
+		</component>
 	</gameobject>
 
 	<gameobject name="arrow">
@@ -44,6 +48,5 @@
 			<height>.1</height>
 			<sensor>true</sensor>
 		</component>
-					
 	</gameobject>
 </objects>
