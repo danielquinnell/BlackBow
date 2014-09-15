@@ -18,6 +18,8 @@ package
 	public class XmlCache 
 	{
 		private static var gameObjectCache:Dictionary = new Dictionary(); //<name, object>
+		[Embed(source = "../lib/GameObjects.xml", mimeType = "application/octet-stream")]
+		public static const GameObjectsXML:Class;
 		
 		public static function CreateGameObject(name:String, scene:GameScene, setPosition:Boolean = false, x:Number = 0, y:Number = 0):GameObject
 		{
@@ -38,57 +40,7 @@ package
 		
 		public static function LoadXMLEmbed()
 		{
-			var xml = 
-				<objects>
-					<gameobject name="player">
-						
-						<component type="health">
-							<maxhealth>100</maxhealth>
-							<health>100</health>
-						</component>
-						
-						<component type="renderer">
-							<displaytype>player</displaytype>
-							<scalex>.1</scalex>
-							<scaley>.1</scaley>
-						</component>
-						
-						<component type="position">
-							<x>500</x>
-							<y>100</y>
-						</component>
-						
-						<component type="physics">
-							<width>.3</width>
-							<height>.5</height>
-							<fixedrotation>true</fixedrotation>
-						</component>
-						
-						<component type="character">
-							<speed>5</speed>
-						</component>
-						
-					</gameobject>
-
-					<gameobject name="arrow">
-						
-						<component type="renderer">
-							<displaytype>arrow</displaytype>
-							<scalex>1</scalex>
-							<scaley>1</scaley>
-						</component>
-						
-						<component type="position"></component>
-						
-						<component type="physics">
-							<width>.1</width>
-							<height>.1</height>
-							<sensor>true</sensor>
-						</component>
-						
-					</gameobject>
-				</objects>;
-			LoadXML(xml);
+			LoadXML(new XML(new GameObjectsXML));
 		}
 		
 		public static function LoadXML(xml:XML)
@@ -97,7 +49,7 @@ package
 			{
 				var gameObjectName:String = xmlGameObject.@name.toString();
 				var componentList:Array = new Array();
-				
+				trace(gameObjectName);
 				for each (var xmlGameComponent:XML in xmlGameObject.component)
 				{
 					var cached = cacheComponent(xmlGameComponent);
