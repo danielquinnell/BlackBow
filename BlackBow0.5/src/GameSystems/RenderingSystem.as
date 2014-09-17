@@ -27,6 +27,7 @@ package GameSystems
 		private var debugRender:Shape;
 		
 		private var aimingLine:Shape;
+		private var detectionCircle:Shape;
 		
 		
 		public function RenderingSystem(displaycontainer:DisplayObjectContainer, debug:Boolean = false) 
@@ -36,8 +37,10 @@ package GameSystems
 			debugRender = new Shape();
 			
 			aimingLine = new Shape();
+			detectionCircle = new Shape();
 			displayContainer.addChild(debugRender);
 			displaycontainer.addChild(aimingLine);
+			displaycontainer.addChild(detectionCircle);
 		}
 		
 		override public function GameObjectRemoved(gameObj:GameObject):void
@@ -92,8 +95,9 @@ package GameSystems
 				debugRender.graphics.clear();
 			
 			aimingLine.graphics.clear();
+			detectionCircle.graphics.clear();
 			aimingLine.parent.setChildIndex(aimingLine, aimingLine.parent.numChildren - 1);
-			
+			//detectionCircle.parent.setChildIndex(detectionCircle, detectionCircle.parent.numChildren - 1);
 			for each (var gameobject:GameObject in gameObjects)
 			{
 				if (!gameobject.Rendering || !gameobject.Position || !gameobject.Rendering.Display)
@@ -138,11 +142,11 @@ package GameSystems
 				if (gameobject.HasComponent(GameComponent.DECTECTION))
 				{
 					var detection:DetectionComponent = gameobject.GetComponent(GameComponent.DECTECTION) as DetectionComponent;
-					aimingLine.graphics.beginFill(0xFFFFFF, .5);
-					aimingLine.graphics.lineStyle(.0001, 0xFFFFFF);
-					aimingLine.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius);
-					aimingLine.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius - 5);
-					aimingLine.graphics.endFill();
+					detectionCircle.graphics.beginFill(0xFFFFFF, .2);
+					//detectionCircle.graphics.lineStyle(.0001, 0x00);
+					detectionCircle.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius);
+					//detectionCircle.graphics.drawCircle(gameobject.Position.X, gameobject.Position.Y, detection.CurrentRadius - 5);
+					detectionCircle.graphics.endFill();
 				}
 				
 				if (!gameobject.HasComponent(GameComponent.INPUT) || !gameobject.HasComponent(GameComponent.CHARACTER) || !gameobject.HasComponent(GameComponent.BOW))
@@ -214,13 +218,13 @@ package GameSystems
 		public static function DisplayObjectFactory(displayType:String):DisplayObject
 		{
 			switch(displayType)
-			{
+			{ 
 				case PLAYER:
 					var fletch:fletcher = new fletcher();
 					return fletch;
 					break;
 				case ARROW:
-					return new ArrowSprite();
+					return new arrow();
 					break;
 				case "a1":
 					var ret:DisplayObjectContainer = new a1b();

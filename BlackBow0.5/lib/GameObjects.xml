@@ -37,15 +37,15 @@
 					
 		<component type="renderer">
 			<displaytype>arrow</displaytype>
-			<scalex>1</scalex>
-			<scaley>1</scaley>
+			<scalex>.5</scalex>
+			<scaley>.5</scaley>
 		</component>
 					
 		<component type="position"></component>
-					
+					 
 		<component type="physics">
-			<width>.1</width>
-			<height>.1</height>
+			<width>.01</width>
+			<height>.01</height>
 			<sensor>true</sensor>
 		</component>
 	</gameobject>
